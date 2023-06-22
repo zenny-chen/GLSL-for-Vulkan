@@ -35,6 +35,10 @@ static inline FILE* OpenFileWithRead(const char* filePath)
 
 #endif // _WIN32
 
+#ifndef max
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#endif // !max
+
 
 enum MY_CONSTANTS
 {
@@ -623,7 +627,7 @@ static VkResult AllocateMemoryAndBuffers(VkDevice device, const VkPhysicalDevice
     vkGetBufferMemoryRequirements(device, deviceBuffers[1], &deviceMemBufRequirements);
 
     // two memory buffers share one device local memory.
-    const VkDeviceSize deviceMemTotalSize = bufferSize * 2;
+    const VkDeviceSize deviceMemTotalSize = max(bufferSize * 2, deviceMemBufRequirements.size);
     // Find device local property memory type index
     for (memoryTypeIndex = 0; memoryTypeIndex < pMemoryProperties->memoryTypeCount; memoryTypeIndex++)
     {

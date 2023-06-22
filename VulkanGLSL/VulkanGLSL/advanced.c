@@ -7,6 +7,10 @@
 #include <errno.h>
 #include <vulkan/vulkan.h>
 
+#ifndef max
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#endif // !max
+
 
 enum MY_CONSTANTS
 {
@@ -125,7 +129,7 @@ static VkResult AllocateMemoryAndBuffers(VkDevice device, const VkPhysicalDevice
     vkGetBufferMemoryRequirements(device, deviceBuffers[1], &deviceMemBufRequirements);
 
     // dst memory buffer, src memory buffer and the atomic memory buffer share one device local memory.
-    const VkDeviceSize deviceMemTotalSize = bufferSize * 2 + ADDITIONAL_ADDRESS_BUFFER_SIZE;
+    const VkDeviceSize deviceMemTotalSize = max(bufferSize * 2 + ADDITIONAL_ADDRESS_BUFFER_SIZE, deviceMemBufRequirements.size);
     // Find device local property memory type index
     for (memoryTypeIndex = 0; memoryTypeIndex < pMemoryProperties->memoryTypeCount; memoryTypeIndex++)
     {
@@ -219,7 +223,6 @@ static VkResult AllocateMemoryAndBuffers(VkDevice device, const VkPhysicalDevice
             break;
         }
     }
-
     deviceMemAllocInfo.allocationSize = deviceMemBufRequirements.size;
     deviceMemAllocInfo.memoryTypeIndex = memoryTypeIndex;
 
