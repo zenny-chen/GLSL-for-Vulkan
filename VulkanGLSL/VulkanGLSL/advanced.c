@@ -697,15 +697,23 @@ void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPropertie
             sumAtomicValue += i;
         }
 
-        int* dstMem = hostBuffer;
-
-        for (int i = 0; i < (int)elemCount; i++)
+        unsigned* dstMem = hostBuffer;
+        // Verify low 16-bit values
+        for (unsigned i = 0; i < elemCount; i++)
         {
-            if ((dstMem[i] & 0xffff) != i)
+            if ((dstMem[i] & 0xffffU) != i)
             {
-                fprintf(stderr, "Result error @ %d, result is: %d\n", i, dstMem[i] & 0xffff);
+                fprintf(stderr, "Low 16-bit result error @ %d, result is: %d\n", i, dstMem[i] & 0xffffU);
                 break;
             }
+        }
+        // Verify high 16-bit values
+        int dstAtomicSum = 0;
+        for (int i = 0; i < (int)elemCount; ++i) {
+            dstAtomicSum += dstMem[i] >> 16;
+        }
+        if (dstAtomicSum != sumAtomicValue) {
+            fprintf(stderr, "High 16-bit result is not correct: %u\n", dstAtomicSum);
         }
 
         dstMem = (unsigned*)((uint8_t*)hostBuffer + bufferSize + ADDITIONAL_ADDRESS_BUFFER_SIZE);
@@ -717,7 +725,8 @@ void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPropertie
         printf("The final atomic value is: %u\n", atomValue);
 
         vkUnmapMemory(specDevice, deviceMemories[0]);
-    } while (false);
+    }
+    while (false);
 
     if (fence != VK_NULL_HANDLE) {
         vkDestroyFence(specDevice, fence, NULL);

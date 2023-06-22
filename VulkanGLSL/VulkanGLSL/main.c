@@ -1163,8 +1163,8 @@ static void RunSimpleComputeTest(void)
         printf("The first 5 elements sum = %d\n", dstMem[0] + dstMem[1] + dstMem[2] + dstMem[3] + dstMem[4]);
 
         vkUnmapMemory(s_specDevice, deviceMemories[0]);
-
-    } while (false);
+    }
+    while (false);
 
     if (fence != VK_NULL_HANDLE) {
         vkDestroyFence(s_specDevice, fence, NULL);
