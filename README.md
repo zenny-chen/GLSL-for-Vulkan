@@ -9,6 +9,7 @@ Introduction to GLSL for Vulkan API
     - [关于demo](#about_demo)
     - [语言体系概述](#language_system_overview)
 - [着色概述](#shading_overview)
+    - [顶点处理器](#vertex_processor) 
 
 <br />
 
@@ -64,5 +65,11 @@ GLSL 从整个语法体系上来看就像是C语言的子集，然后再融入�
 ## <a name="shading_overview"></a> 着色概述
 
 OpenGL着色语言实际上分为几种紧密相关的语言。这些语言用于创建包含在API的处理流水线中的每个可编程处理器的着色器。当前，这些处理器有：**顶点（vertex）**、**细分曲面控制（tessellation control）**、**细分曲面计算（tessellation evaluation）**、**几何（geometry）**、**片段（fragment）**，以及 **计算（compute）** 处理器。
+
+GLSL的基本语法对以上所有可编程处理器均通用，而只有少部分的 **`layout`** 属性、内建函数等只能用于一些特定的处理器着色器。
+
+<br />
+
+#### <a name="vertex_processor"></a> 顶点处理器
 
 
