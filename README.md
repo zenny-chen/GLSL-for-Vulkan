@@ -9,7 +9,8 @@ Introduction to GLSL for Vulkan API
     - [关于demo](#about_demo)
     - [语言体系概述](#language_system_overview)
 - [着色概述](#shading_overview)
-    - [顶点处理器](#vertex_processor) 
+    - [顶点处理器](#vertex_processor)
+    - [细分曲面控制处理器](#tessellation_control_processor)
 
 <br />
 
@@ -72,4 +73,15 @@ GLSL的基本语法对以上所有可编程处理器均通用，而只有少部�
 
 #### <a name="vertex_processor"></a> 顶点处理器
 
+*顶点处理器*（*vertex processor*）是一个可编程单元，对正来临的顶点及其相关联的数据进行操作。在此处理器上所运行的用OpenGL着色语言编写的编译单元被称为 *顶点着色器*（vertex shader）*。当一组顶点着色器被成功编译并被连接之后，它们最后产生一个 *顶点着色器可执行程序*（*vertex shader executable*）运行在顶点处理器上。
+
+顶点处理器一次处理一个顶点。不过它不会取代一次需要了解多个顶点的图形操作。
+
+<br />
+
+#### <a name="tessellation_control_processor"></a> 细分曲面控制处理器
+
+*细分曲面控制处理器*（*tessellation control processor*）是一个可编程单元，它处理正在来临的顶点及其相关联的数据的一个 patch，然后发射一个新的输出 patch。运行在此处理器上的用OpenGL着色器语言编写的编译单元被称为 *细分曲面控制着色器*（*tessellation control shaders*）。当一组细分曲面控制着色器被成功编译并连接之后，它们将产生一个 *细分曲面控制着色器可执行程序*（*tessellation control shader executable*）运行在细分曲面控制处理器上。
+
+细分曲面控制着色器为输出 patch 的每个顶点进行调用。每个调用（invocation，即线程）可以读输入或输出 patch 的任一顶点的属性，但只能写对应输出 patch 顶点的逐顶点属性。着色器调用（线程）所有一起产生一组输出 patch 的逐 patch 属性。
 
