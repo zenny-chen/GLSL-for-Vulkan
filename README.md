@@ -179,11 +179,11 @@ GLSL还可以使用这些预定义宏：**`__LINE__`**，**`__FILE__`**（基于
 **`__LINE__`** 将被替换为一个十进制整数常量，表示当前源文件中的行号。
 
 对于基于OpenGL的GLSL，**`__FILE__`** 将被替换为一个十进制整数常量，用于说明当前正在处理哪个源代码字符串号（即GLSL源代码数组索引）。由于OpenGL中往往是在运行时（on the fly）去编译GLSL源代码字符串的。比如以下OpenGL API：
-```c
-void glShaderSource(	GLuint shader,
- 	GLsizei count,
- 	const GLchar **string,
- 	const GLint *length);
+```cpp
+void glShaderSource(GLuint shader,
+                    GLsizei count,
+                    const GLchar **string,
+                    const GLint *length);
 ```
 这里的参数 string 存放在一个或多个GLSL源代码字符串；length 则存放每个源代码字符串的长度。
 
