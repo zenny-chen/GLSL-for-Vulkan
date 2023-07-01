@@ -16,6 +16,7 @@ Introduction to GLSL for Vulkan API
     - [片段处理器](#fragment_processor)
     - [计算处理器](#compute_processor)
 - [基本语法](#basic)
+    - [预处理器（preprocessor） ](#preprocessor)
 
 <br />
 
@@ -144,4 +145,30 @@ GLSL的基本语法对以上所有可编程处理器均通用，而只有少部�
 
 GLSL没有字符或字符串数据类型，因此不包含受单引号或双引号包围的字符。
 
+<br />
+
+#### <a name="preprocessor"></a> 预处理器（preprocessor）
+
+GLSL的预处理器与 C++98 所能支持的预处理器一样，而且尤其自己的扩展。不过上述已经提到，由于GLSL不支持字符类型，所以也不支持预处理器的 **`#`** 操作符，但原始的GLSL能支持 **`##`** 操作符做符号拼接，但 **glslangValidator** 工具则不支持此语法特性。
+
+具体来说，GLSL支持以下列出的预处理指示符（preprocessor directives）：**`#`**（空预处理指示符），**`#define`**，**`#undef`**，**`#if`**，**`#ifdef`**，**`#ifndef`**，**`else`**，**`#elif`**，**`#endif`**，**`#error`**，**`#pragma`**，**`#extension`**，**`#version`**，**`#line`**。此外，在预处理器之中还能使用这些操作符：**`defined`**，**`##`**（**glslangValidator** 工具不支持此特性）。
+
+每个 **井号**（**number sign**，**`#`**）可以被放在一行的开头，当然其前面也可以插入空格或水平制表符。它后面也可以放空格和水平制表符，而且可以放在指示符之前。每个指示符以一个换行符（new-line）结束。预处理并不改变一段源文件字符串的换行个数以及相对位置。预处理在换行被行连接字符移除之后发生。
+
+一行中的井号（**`#`**）被其自己忽略。任何没有在上述所列出的指示符都将引发编译时错误。
+
+以下都是合法的预处理器
+```c
+// null directive
+#
+// preceded by spaces
+    #
+// followed by spaces and precedint the directive
+#    define    MY_VALUE1    1
+
+// Commonly used
+#define     MY_VALUE0       0
+
+#define     MY_CONSTANT_VALUE   ((MY_VALUE1 + MY_VALUE0) * 100)
+```
 
