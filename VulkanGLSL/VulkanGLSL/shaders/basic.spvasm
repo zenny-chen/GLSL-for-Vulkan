@@ -8,7 +8,7 @@
                OpMemoryModel Logical GLSL450
                OpEntryPoint GLCompute %main "main" %gl_GlobalInvocationID
                OpExecutionMode %main LocalSize 1 1 1
-               OpSource GLSL 450
+               OpSource GLSL 460
                OpSourceExtension "GL_EXT_shader_explicit_arithmetic_types"
                OpName %main "main"
                OpName %g_gtid "g_gtid"
