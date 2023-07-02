@@ -163,7 +163,7 @@ GLSL的预处理器与 C++98 所能支持的预处理器一样，而且尤其自
 #
 // preceded by spaces
     #
-// followed by spaces and precedint the directive
+// followed by spaces and preceding the directive
 #    define    MY_VALUE1    1
 
 // Commonly used
