@@ -250,3 +250,54 @@ defined ( identifier )
 ```
 可以被用于允许对一个着色器的编译和注解带有调试信息，使得该着色器可以连上调试器来运行使用。而我们在使用基于 Vulkan 的GLSL时，可以对 **glslangValidator** 工具传递 **-g** 命令行选项以生成带有调试信息的spv文件。默认情况下，调试是被自动关闭的。
 
+着色器应该声明它们所写的GLSL语言版本。一个着色器所使用的语言版本通过 **`#version`** 指示符进行指定：
+```glsl
+#version  number  profile_opt
+```
+而且大部分GLSL实现都要求将 **`#version`** 的声明放在GLSL源文件的一开始。这里，*number* 必须是GLSL语言的一个版本，遵循上述提到的 **`__VERSION__`** 相同的约定。比如，`#version 460` 指示符对于任一使用 4.60 GLSL版本的着色器而言是必须的。如果某个GLSL编译器不支持某个用 *number* 表示的GLSL语言版本，那么将引发一个编译器错误。对于版本1.10的GLSL，则不要求着色器必须包含此指示符，而不包含 **`#version`** 指示符的着色器将被对待为目标版本为1.10。指定了 `#version 100` 的着色器将被对待为目标版本为1.00的 OpenGL ES 着色语言。指定了 `#version 300` 的着色器将被对待为目标版本为3.00的 OpenGL ES 着色语言。指定了 `#version 310` 的着色器将被对待为目标版本为3.10的 OpenGL ES 着色语言。
+
+如果提供了可选的 *profile* 实参，那么它必须是一个 OpenGL profile 的名字（因此对于基于 Vulkan 的GLSL而言，我们不需要指定此 *profile* 实参。）。当前有以下三种选择：
+```glsl
+core
+compatibility
+es
+```
+一个 *profile* 实参只能对于1.50版本或更高版本的GLSL进行使用。如果不提供 profile 实参，并且指定的版本为1.50或更高，那么默认为 **core**。如果指定了版本为300或310，那么 profile 实参 **必须不能** 是可选的，且必须指定为 **es**，否则将会引发编译时错误。**es** profile 的语言规格说明在《The OpenGL ES Shading Language specification》中描述。
+
+声明了不同的 **core** 或 **compatibility** profile 的着色器可以被一起连接。然而，**es** profile 的着色器则无法用非 **es** profile 的着色器一起连接，而与同样带有 **es** profile 但具有不同版本的着色器进行连接也无法被一起连接，否则会产生一个连接时错误。
+
+被指定为属于特定于 **compatibility** profile 的特征在 **core** profile 中是不可用的。当用于生成 SPIR-V 时，**compatibility** profile 的特征是不可用的。
+
+对于GLSL实现所支持的每种 profile，都有一个内建的宏定义。所有实现提供了以下宏定义：
+```c
+#define GL_core_profile 1
+```
+
+提供了 **compatibility** profile 的GLSL实现提供了以下宏：
+```c
+#define GL_compatibility_profile 1
+```
+
+提供了 **es** profile 的GLSL实现提供了以下宏：
+```c
+#define GL_es_profile 1
+```
+
+**`#version`** 指示符必须发生在一个着色器中的任何事之前，除了注释和空白符。
+
+默认情况下，GLSL语言的编译器对于并不遵循此规范的着色器必须发射编译时的词法和语法错误。任一扩展行为必须先被允许。用于控制编译器关于扩展行为的指示符用 **`#extension`** 指示符进行声明。
+
+```glsl
+#extension extension_name : behavior
+#extension all : behavior
+```
+
+这里，*extension_name* 是一个扩展的名字。符号 **all** 意思是当前行为应用当前编译器所支持的所有扩展。*behavior* 可以是以下选项之一：
+
+**行为** | **效果**
+---- | ----
+**require** | 由扩展 *extension_name* 所指定的行为。<br /> 如果 *extension_name* 扩展不受支持，或是指定了 **all**，那么将对 **`#extension`** 给出一个编译时错误。
+**enable** | 由扩展 *extension_name* 所指定的行为。<br /> 如果 *extension_name* 扩展不受支持，那么将对 **`#extension`** 发出警告。<br /> 如果指定了 **all**，则给出一个编译时错误。
+**warn** | 由扩展 *extension_name* 所指定的行为，除了对任一该扩展的可探测到的使用发出警告之外，除非这种使用受其他被允许或所要求的扩展支持。<br /> 如果指定了 **all**，那么对任一所使用的扩展的所有可探测到的使用都会发出警告。<br /> 如果扩展 *extension_name* 没被支持，则对 **`#extension`** 发出警告。
+**disable** | 就好比扩展 *extension_name* 不是此语言定义的一部分的行为（包括发出错误和警告）。<br /> 如果指定了 **all**，那么行为必须恢复回正被编译的语言的非扩展核心版本。<br /> 如果扩展 *extension_name* 没被支持，则对 **`#extension`** 发出警告。
+
