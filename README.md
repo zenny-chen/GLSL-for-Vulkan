@@ -17,6 +17,7 @@ Introduction to GLSL for Vulkan API
     - [计算处理器](#compute_processor)
 - [基本语法](#basic)
     - [预处理器（preprocessor） ](#preprocessor)
+    - [注释（Comments）](#comments)
 
 <br />
 
@@ -313,5 +314,29 @@ es
 每个扩展可定义它所允许的作用域的粒度。如果没有任何说明，则粒度是整个着色器（也就是一单个编译单元），并且扩展指示符必须发生在任一非预处理符号之前。若有必要，连接器可以迫使大于一单个编译单元的粒度，这种情况下，每个所涉及到的着色器将不得不包含所需要的扩展指示符。
 
 包含 **`#extension`** 和 **`#version`** 指示符的行不做宏扩展。
+
+**`#line`** 在宏替换之后，必须具有以下形式之一：
+
+```c
+#line line
+#line line source-string-number
+```
+
+这里，*line* 和 *source-string-number* 是常量整数表达式。如果这些常量表达式不是整数字面量，那么行为是未定义的。在处理了此指示符之后（包括其换行），实现行为则表现为好似它正在行号 *line* 以及源代码字符串号 *source-string-number* 处进行编译。后续的源代码字符串将按顺序进行编号，直到另一个 **`#line`** 指示符覆盖该编号。
+
+当着色器针对 OpenGL SPIR-V 进行编译时，可用以下预定义宏：
+```c
+#define GL_SPIRV 100
+```
+
+当目标为 Vulkan 时，可用以下预定义宏：
+```c
+#define VULKAN 100
+```
+
+<br />
+
+#### <a name="comments"></a> 注释（Comments）
+
 
 
