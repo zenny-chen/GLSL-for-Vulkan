@@ -6,18 +6,26 @@
 #
 // preceded by spaces
     #
-// followed by spaces and precedint the directive
+// followed by spaces and preceding the directive
 #    define    MY_VALUE1    1
 // Commonly used
-#define     MY_VALUE6       6
+#define     MY_VALUE2       14
 
-// ## operator is not supported by `glslangValidator` tool.
+// ATTENTION: ## operator is not supported by `glslangValidator` tool.
 #define MY_CONSTANT_CONSTRUCT(a, b)      a ## b
 
-// 'MY_CONSTANT_VALUE' is used at line 26, so here `__LINE__` will substitute 26.
-// The complete 'MY_CONSTANT_VALUE' used at line 26 will substitute 100.
+#ifndef VULKAN
+#error  VULKAN macro is not pre-defined!
+#endif
+
+#if !defined(MY_VALUE1) || !defined(MY_VALUE2)
+#error Either MY_VALUE1 or MY_VALUE2 is not defined!
+#endif
+
+// 'MY_CONSTANT_VALUE' is used at line 34, so here `__LINE__` will substitute 34.
+// The complete 'MY_CONSTANT_VALUE' used at line 34 will substitute 100.
 // filename-based `__FILE__` required extension: `GL_GOOGLE_cpp_style_line_directive`
-#define MY_CONSTANT_VALUE   ((MY_VALUE1 * __LINE__ - MY_VALUE6) * 5 +  __VERSION__ - 460)
+#define MY_CONSTANT_VALUE   ((MY_VALUE1 * __LINE__ - MY_VALUE2) * 5 +  __VERSION__ - 460)
 
 layout(local_size_x_id = 0, local_size_y_id = 1, local_size_z_id = 2) in;
 
