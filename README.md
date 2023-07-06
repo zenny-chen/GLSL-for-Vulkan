@@ -19,6 +19,7 @@ Introduction to GLSL for Vulkan API
     - [预处理器（preprocessor） ](#preprocessor)
     - [注释（Comments）](#comments)
     - [定义](#definitions)
+        - [静态使用](#static_use)
 
 <br />
 
@@ -352,4 +353,12 @@ a = b; // this is still in the first comment
 <br />
 
 #### <a name="definitions"></a> 定义
+
+以下所描述的语言规则依赖于接下来的定义。
+
+<br />
+
+##### <a name="static_use"></a> 静态使用
+
+一个着色器包含了对一个变量 x 的 *静态使用*（**static use*），如果在预处理之后，该着色器包含了一条语句将访问 x 的任一部分，无论控制流是否会致使该语句被执行。这么一个变量被引用为 *静态使用的*。如果该访问时一次写，那么 x 被进一步称为 *静态赋值的*。
 
