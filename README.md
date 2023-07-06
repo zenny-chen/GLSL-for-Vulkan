@@ -18,6 +18,7 @@ Introduction to GLSL for Vulkan API
 - [基本语法](#basic)
     - [预处理器（preprocessor） ](#preprocessor)
     - [注释（Comments）](#comments)
+    - [定义](#definitions)
 
 <br />
 
@@ -338,5 +339,17 @@ es
 
 #### <a name="comments"></a> 注释（Comments）
 
+GLSL中注释用 **`/*`** 和 **`*/`** 作为界限范围，或是用 **`//`** 加一个换行。起始注释定界符（**`/*`** 或 **`//`**）并不在一个注释内部被识别为注释定界符，因此注释是无法被嵌套的。一个 **`/*`** 包含了其终结界定符 **`*/`**。然而，一个 **`//`** 注释不包含（或消除）其终结的换行。
 
+在注释内可以使用任一字节值，除了一个值为0的字节不能使用外。对于注释内容不会给出任何错误，并且对注释内容也无需进行校验。
+
+通过行接续字符（**`\`**）逻辑上在注释被处理之前发生。也就是说，以行接续字符（**`\`**）结尾的一个单行注释包含了该注释中的下一行。
+```c
+// a single-line comment containing the next line \
+a = b; // this is still in the first comment
+```
+
+<br />
+
+#### <a name="definitions"></a> 定义
 
