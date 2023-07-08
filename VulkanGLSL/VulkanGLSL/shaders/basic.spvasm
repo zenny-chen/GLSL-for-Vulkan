@@ -1,7 +1,7 @@
 ; SPIR-V
 ; Version: 1.3
 ; Generator: Khronos Glslang Reference Front End; 11
-; Bound: 79
+; Bound: 91
 ; Schema: 0
                OpCapability Shader
           %1 = OpExtInstImport "GLSL.std.450"
@@ -13,6 +13,7 @@
                OpName %main "main"
                OpName %g_gtid "g_gtid"
                OpName %gl_GlobalInvocationID "gl_GlobalInvocationID"
+               OpName %indexable "indexable"
                OpName %CustomPushConstants "CustomPushConstants"
                OpMemberName %CustomPushConstants 0 "a"
                OpMemberName %CustomPushConstants 1 "b"
@@ -49,9 +50,9 @@
                OpDecorate %Dst Block
                OpDecorate %__1 DescriptorSet 0
                OpDecorate %__1 Binding 0
-               OpDecorate %75 SpecId 0
-               OpDecorate %76 SpecId 1
-               OpDecorate %77 SpecId 2
+               OpDecorate %87 SpecId 0
+               OpDecorate %88 SpecId 1
+               OpDecorate %89 SpecId 2
                OpDecorate %gl_WorkGroupSize BuiltIn WorkgroupSize
        %void = OpTypeVoid
           %3 = OpTypeFunction %void
@@ -63,8 +64,14 @@
 %_ptr_Input_v3uint = OpTypePointer Input %v3uint
 %gl_GlobalInvocationID = OpVariable %_ptr_Input_v3uint Input
 %_ptr_Input_uint = OpTypePointer Input %uint
-        %int = OpTypeInt 32 1
+%_ptr_Function_uint = OpTypePointer Function %uint
+     %uint_8 = OpConstant %uint 8
+%_arr_uint_uint_8 = OpTypeArray %uint %uint_8
      %uint_2 = OpConstant %uint 2
+         %21 = OpConstantComposite %_arr_uint_uint_8 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2
+     %uint_7 = OpConstant %uint 7
+%_ptr_Function__arr_uint_uint_8 = OpTypePointer Function %_arr_uint_uint_8
+        %int = OpTypeInt 32 1
 %_arr_uint_uint_2 = OpTypeArray %uint %uint_2
       %v4int = OpTypeVector %int 4
 %CustomPushConstants = OpTypeStruct %int %uint %_arr_uint_uint_2 %v4int
@@ -84,48 +91,54 @@
         %__0 = OpVariable %_ptr_StorageBuffer_Src StorageBuffer
 %_ptr_StorageBuffer_uint = OpTypePointer StorageBuffer %uint
 %spec_constant = OpSpecConstant %int 100
-         %62 = OpSpecConstantOp %uint IAdd %spec_constant %uint_0
-         %63 = OpSpecConstantOp %uint ISub %uint_2 %62
+         %74 = OpSpecConstantOp %uint IAdd %spec_constant %uint_0
 %_runtimearr_uint_0 = OpTypeRuntimeArray %uint
         %Dst = OpTypeStruct %_runtimearr_uint_0
 %_ptr_StorageBuffer_Dst = OpTypePointer StorageBuffer %Dst
         %__1 = OpVariable %_ptr_StorageBuffer_Dst StorageBuffer
-         %75 = OpSpecConstant %uint 1
-         %76 = OpSpecConstant %uint 1
-         %77 = OpSpecConstant %uint 1
-%gl_WorkGroupSize = OpSpecConstantComposite %v3uint %75 %76 %77
+         %87 = OpSpecConstant %uint 1
+         %88 = OpSpecConstant %uint 1
+         %89 = OpSpecConstant %uint 1
+%gl_WorkGroupSize = OpSpecConstantComposite %v3uint %87 %88 %89
        %main = OpFunction %void None %3
           %5 = OpLabel
+  %indexable = OpVariable %_ptr_Function__arr_uint_uint_8 Function
                OpStore %g_gtid %uint_0
          %14 = OpAccessChain %_ptr_Input_uint %gl_GlobalInvocationID %uint_0
          %15 = OpLoad %uint %14
                OpStore %g_gtid %15
-         %28 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_0
-         %29 = OpLoad %int %28
-         %32 = OpAccessChain %_ptr_PushConstant_uint %_ %int_0 %int_1
-         %33 = OpLoad %uint %32
-         %34 = OpBitcast %int %33
-         %35 = OpIAdd %int %29 %34
-         %37 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_0
-         %38 = OpLoad %int %37
-         %40 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_1
+         %22 = OpLoad %uint %g_gtid
+         %24 = OpBitwiseAnd %uint %22 %uint_7
+               OpStore %indexable %21
+         %27 = OpAccessChain %_ptr_Function_uint %indexable %24
+         %28 = OpLoad %uint %27
+         %40 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_0
          %41 = OpLoad %int %40
-         %42 = OpIAdd %int %38 %41
-         %43 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_2
-         %44 = OpLoad %int %43
-         %45 = OpIAdd %int %42 %44
-         %47 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_3
-         %48 = OpLoad %int %47
-         %49 = OpIAdd %int %45 %48
-         %50 = OpISub %int %35 %49
-         %57 = OpLoad %uint %g_gtid
-         %59 = OpAccessChain %_ptr_StorageBuffer_uint %__0 %int_0 %57
-         %60 = OpLoad %uint %59
-         %64 = OpIMul %uint %60 %63
-         %66 = OpBitcast %uint %50
-         %67 = OpIAdd %uint %64 %66
-         %72 = OpLoad %uint %g_gtid
-         %74 = OpAccessChain %_ptr_StorageBuffer_uint %__1 %int_0 %72
-               OpStore %74 %67
+         %44 = OpAccessChain %_ptr_PushConstant_uint %_ %int_0 %int_1
+         %45 = OpLoad %uint %44
+         %46 = OpBitcast %int %45
+         %47 = OpIAdd %int %41 %46
+         %49 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_0
+         %50 = OpLoad %int %49
+         %52 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_1
+         %53 = OpLoad %int %52
+         %54 = OpIAdd %int %50 %53
+         %55 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_2
+         %56 = OpLoad %int %55
+         %57 = OpIAdd %int %54 %56
+         %59 = OpAccessChain %_ptr_PushConstant_int %_ %int_0 %int_3 %uint_3
+         %60 = OpLoad %int %59
+         %61 = OpIAdd %int %57 %60
+         %62 = OpISub %int %47 %61
+         %68 = OpLoad %uint %g_gtid
+         %70 = OpAccessChain %_ptr_StorageBuffer_uint %__0 %int_0 %68
+         %71 = OpLoad %uint %70
+         %75 = OpISub %uint %28 %74
+         %76 = OpIMul %uint %71 %75
+         %78 = OpBitcast %uint %62
+         %79 = OpIAdd %uint %76 %78
+         %84 = OpLoad %uint %g_gtid
+         %86 = OpAccessChain %_ptr_StorageBuffer_uint %__1 %int_0 %84
+               OpStore %86 %79
                OpReturn
                OpFunctionEnd
