@@ -21,6 +21,7 @@ Introduction to GLSL for Vulkan API
     - [定义](#definitions)
         - [静态使用](#static_use)
         - [动态均匀表达式与均匀控制流](#dynamic_uniform_expressions)
+- [变量与类型](#variables_and_types)
 
 <br />
 
@@ -378,4 +379,28 @@ a = b; // this is still in the first comment
 SPIR-V 关于控制流指令的介绍可参考这里：[3.42.17. Control-Flow Instructions](https://registry.khronos.org/SPIR-V/specs/unified1/SPIRV.html#_control_flow_instructions)。
 
 一个表达式对一个正在消费它的动态实例而言是 *动态均匀的*（*dynamically uniform*），当该表达式的值对于执行那个动态实例的（在当前调用组中的）所有的调用（即线程）都相同时。
+
+*均匀控制流*（*Uniform control flow*）（或称为“收拢的”（**converged**）控制流）当调用组中所有的调用（即线程）执行相同控制流路径（并因而执行相同指令序列的动态实例）时发生。均匀控制流在 *main()* 入口处为初始状态，然后一直持续，直到一个带条件的分支为不同的调用（即线程）采用不同的控制路径（非均匀，或“岔开的”（**divergent**）的控制流）。这种分岔可以重新聚拢，将所有调用（即线程）再一次执行相同的控制流路径，而这重新建立了均匀控制流存在。如果控制流对于一个选择或循环的入口是均匀的，并且在调用组中的所有调用（即线程）后续离开那个选择或循环，那么控制流重新聚拢为均匀的。
+
+比如：
+```c
+void main(void)
+{
+    float a = ...; // this is uniform control flow
+    if (a < b) { // this expression is true for some fragments, not all
+        ...; // non-uniform control flow
+    }
+    else {
+        ...; // non-uniform control flow
+    }
+    ...; // uniform control flow again
+}
+```
+注意，常量表达式是平凡动态均匀的。它遵循的是，基于常量表达式的典型的循环计数器也是动态均匀的。
+
+<br />
+
+## <a name="variables_and_types"></a> 变量与类型
+
+
 
