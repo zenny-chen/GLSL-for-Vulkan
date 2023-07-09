@@ -463,5 +463,13 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`dmat3`** | 一个 3 × 3 的双精度浮点矩阵 | %mat3v3double = **`OpTypeMatrix`** %v3double 3 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
 **`dmat4`** | 一个 4 × 4 的双精度浮点矩阵 | %mat4v4double = **`OpTypeMatrix`** %v4double 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
 **`dmat2x2`** | 与 **`dmat2`** 相同 | 与 **`dmat2`** 相同 | 与 **`dmat2`** 相同
+**`dmat2x3`** | 一个具有2列3行的双精度矩阵 | %mat2v3double = **`OpTypeMatrix`** %v3double 2 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`dmat2x4`** | 一个具有2列4行的双精度浮点矩阵 | %mat2v4double = **`OpTypeMatrix`** %v4double 2 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`dmat3x2`** | 一个具有3列2行的双精度浮点矩阵 | %mat3v2double = **`OpTypeMatrix`** %v2double 3 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`dmat3x3`** | 与 **`dmat3`** 相同 | 与 **`dmat3`** 相同 | 与 **`dmat3`** 相同
+**`dmat3x4`** | 一个具有3列4行的双精度浮点矩阵 | %mat3v4double = **`OpTypeMatrix`** %v4double 3 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`dmat4x2`** | 一个具有4列2行的双精度浮点矩阵 | %mat4v2double = **`OpTypeMatrix`** %v2double 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`dmat4x3`** | 一个具有4列3行的双精度浮点矩阵 | %mat4v3double = **`OpTypeMatrix`** %v3double 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`dmat4x4`** | 与 **`dmat4`** 相同 | 与 **`dmat4`** 相同 | 与 **`dmat4`** 相同
 
 
