@@ -23,6 +23,7 @@ Introduction to GLSL for Vulkan API
         - [动态均匀表达式与均匀控制流](#dynamic_uniform_expressions)
 - [变量与类型](#variables_and_types)
 - [基本类型](#basic_types)
+    - [透明类型(Transparent Types)](#transparent_types)
 
 <br />
 
@@ -419,7 +420,9 @@ OpenGL着色语言是类型安全的。在类型之间存在一些隐式转换�
 
 OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 
-**透明类型**
+<br />
+
+#### <a name="transparent_types"></a> 透明类型(Transparent Types)
 
 **类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
 ---- | ---- | ---- | ----
@@ -445,5 +448,15 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`uvec3`** | 一个3分量的无符号整数向量 | %v3uint = **`OpTypeVector`** %uint 3 | **`OpTypeVector`** 声明了一个新的向量类型。*Component Type* 是结果类型的每个分量的类型。它必须是一个标量类型。<br /> *Component Count* 是结果类型中的分量的个数。*Component Count* 是一个无符号32位整数。它必须至少是2。<br /> 分量是从0开始，被依次编号的。
 **`uvec4`** | 一个4分量的无符号整数向量 | %v4uint = OpTypeVector %uint 4 | **`OpTypeVector`** 声明了一个新的向量类型。*Component Type* 是结果类型的每个分量的类型。它必须是一个标量类型。<br /> *Component Count* 是结果类型中的分量的个数。*Component Count* 是一个无符号32位整数。它必须至少是2。<br /> 分量是从0开始，被依次编号的。
 **`mat2`** | 一个 2 × 2 的单精度浮点矩阵 | %mat2v2float = **`OpTypeMatrix`** %v2float 2 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
-
+**`mat3`** | 一个 3 × 3 的单精度浮点矩阵 | %mat3v3float = **`OpTypeMatrix`** %v3float 3 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat4`** | 一个 4 × 4 的单精度浮点矩阵 | %mat4v4float = **`OpTypeMatrix`** %v4float 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat2x2`** | 与 **`mat2`** 相同 | 与 **`mat2`** 相同 | 与 **`mat2`** 相同
+**`mat2x3`** | 一个具有2列3行的单精度浮点矩阵 | %mat2v3float = **`OpTypeMatrix`** %v3float 2 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat2x4`** | 一个具有2列4行的单精度浮点矩阵 | %mat2v4float = **`OpTypeMatrix`** %v4float 2 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat3x2`** | 一个具有3列2行的单精度浮点矩阵 | %v3uint = **`OpTypeVector`** %uint 3 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat3x3`** | 与 **`mat3x3`** 相同 | 与 **`mat3x3`** 相同 | 与 **`mat3x3`** 相同
+**`mat3x4`** | 一个具有3列4行的单精度浮点矩阵 | %mat3v4float = **`OpTypeMatrix`** %v4float 3 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat4x2`** | 一个具有4列2行的单精度浮点矩阵 | %mat4v2float = **`OpTypeMatrix`** %v2float 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat4x3`** | 一个具有4列3行的单精度浮点矩阵 | %mat4v3float = **`OpTypeMatrix`** %v3float 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
+**`mat4x4`** | 与 **`mat4`** 相同 | 与 **`mat4`** 相同 | 与 **`mat4`** 相同
 
