@@ -24,6 +24,7 @@ Introduction to GLSL for Vulkan API
 - [变量与类型](#variables_and_types)
 - [基本类型](#basic_types)
     - [透明类型(Transparent Types)](#transparent_types)
+    - [浮点隐含类型（Floating-Point Opaque Types）](#floating-point_opaque_types)
 
 <br />
 
@@ -471,5 +472,15 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`dmat4x2`** | 一个具有4列2行的双精度浮点矩阵 | %mat4v2double = **`OpTypeMatrix`** %v2double 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
 **`dmat4x3`** | 一个具有4列3行的双精度浮点矩阵 | %mat4v3double = **`OpTypeMatrix`** %v3double 4 | **`OpTypeMatrix`** 声明了一个新的矩阵类型。<br /> *Column Type* 是该矩阵中每一列的类型。它必须是向量类型。<br /> *Column Count* 是新矩阵类型中的列的个数。*Column Count* 是一个无符号32位整数。它必须至少是2。
 **`dmat4x4`** | 与 **`dmat4`** 相同 | 与 **`dmat4`** 相同 | 与 **`dmat4`** 相同
+
+注意以下表所说的“访问一个纹理”的地方，**`sampler*`** 隐含（**opaque**）类型访问一个指定类型的纹理，**`image*`** 隐含类型访问一个指定类型的图像。
+
+<br />
+
+#### <a name="floating-point_opaque_types"></a> 浮点隐含类型（Floating-Point Opaque Types）
+
+**类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
+---- | ---- | ---- | ----
+**`texture1D`** | 访问一个1D纹理的一个句柄（仅支持基于Vulkan的GLSL） | **`OpTypeImage`** %float 1D 0 0 0 1 Unknown | **`OpTypeImage`** 声明了一个图像类型。比如，由 **`OpTypeSampledImage`** 消费。该类型是隐含的：此类型的值不具有所定义的物理大小或是比特模式。<br /> *Sampled Type* 是从该图像类型所采样或读取到的结果分量的类型。它必须是一个标量数值类型或是 **`OpTypeVoid`**。<br /> *Dim* 是图像的维度。<br /> 以下所有字面量都是整数，每个字面量作为一个操作数。<br /> *Depth* 用于判定该图像是否为一个深度图像。（注意，是否实际完成了深度比较是采样操作码的一个属性，而不是此类型声明的属性。）<br /> **0** 指示不是一个深度图像 <br /> **1** 指示是一个深度图像 <br /> **2** 意味着没有指示说明它是否为一个深度图像。<br /> *Arrayed* 必须是以下所指示的值之一：<br /> **0** 指示为非阵列内容 <br /> **1** 指示为阵列内容 <br /> *MS* 必须是以下所指示的值之一：<br /> **0** 指示单一样本内容 <br /> **1** 指示多重采样内容 <br /> *Sampled* 指示此图像是否与一个采样器结合进行访问，并且必须是以下值之一：<br /> **0** 指示这只能在运行时可知，而无法在编译时判定 <br /> **1** 指示一个图像与采样操作兼容 <br /> **2** 指示一个图像与读/写操作兼容（一个 storage 或是子遍（subpass）数据图像）。 <br /> *Image Format* 是图像格式，并且可以是 **Unknown**，由客户端API进行指定。<br /> 如果 *Dim* 是 **`SubpassData`**，那么 *Sampled* 必须是2，*Image Format* 必须是 **Unknown**，并且执行模式必须是 **片段**（**Fragment**）。
 
 
