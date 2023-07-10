@@ -500,6 +500,13 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`texture2DMS`** | 访问一个2D多重采样纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float 2D 0 0 1 1 Unknown | 见 **`OpTypeImage`**
 **`sampler2DMS`** | 访问一个2D多重采样纹理的一个句柄 | %20 = **`OpTypeImage`** %float 2D 0 0 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`image2DMS`** | 访问一个2D多重采样纹理的一个句柄 | %44 = **`OpTypeImage`** %float 2D 0 0 1 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`texture2DMSArray`** | 访问一个2D多重采样阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float 2D 0 1 1 1 Unknown | 见 **`OpTypeImage`**
+**`sampler2DMSArray`** | 访问一个2D多重采样阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %float 2D 0 1 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`image2DMSArray`** | 访问一个2D多重采样阵列纹理的一个句柄 | %45 = **`OpTypeImage`** %float 2D 0 1 1 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`texture2DRect`** | 访问一个矩形纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float Rect 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`sampler2DRect`** | 访问一个矩形纹理的一个句柄 | %20 = **`OpTypeImage`** %float Rect 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`image2DRect`** | 访问一个矩形纹理的一个句柄 | %43 = **`OpTypeImage`** %float Rect 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`sampler2DRectShadow`** | 访问一个带有比较的矩形纹理 | %37 = **`OpTypeImage`** %float Rect 1 0 0 1 Unknown <br /> %38 = **`OpTypeSampledImage`** %37 | 见 **`OpTypeSampledImage`**
 **`textureCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float Cube 0 1 0 1 Unknown | 见 **`OpTypeImage`**
 **`samplerCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄 | %20 = **`OpTypeImage`** %float Cube 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`imageCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄 | %42 = **`OpTypeImage`** %float Cube 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
