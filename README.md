@@ -25,6 +25,7 @@ Introduction to GLSL for Vulkan API
 - [基本类型](#basic_types)
     - [透明类型(Transparent Types)](#transparent_types)
     - [浮点隐含类型（Floating-Point Opaque Types）](#floating-point_opaque_types)
+    - [基于Vulkan API的GLSL新增一些隐含类型的具体操作](#vulkan_glsl_opaque_types_operations)
 
 <br />
 
@@ -518,7 +519,47 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`samplerCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄 | %20 = **`OpTypeImage`** %float Cube 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`imageCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄 | %42 = **`OpTypeImage`** %float Cube 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 **`samplerCubeArrayShadow`** | 访问一个带有比较的立方体贴图阵列深度纹理（cube map array depth texture）的一个句柄 | %37 = **`OpTypeImage`** %float Cube 1 1 0 1 Unknown <br /> %38 = **`OpTypeSampledImage`** %37 | 见 **`OpTypeSampledImage`**
+**`textureBuffer`** | 访问一个缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | **`OpTypeImage`** %float Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`samplerBuffer`** | 访问一个缓存纹理的一个句柄 | %20 = **`OpTypeImage`** %float Buffer 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`imageBuffer`** | 访问一个缓存纹理的一个句柄 | %34 = **`OpTypeImage`** %float Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`subpassInput`** | 访问一个浮点子遍输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
+**`subpassInputMS`** | 访问一个多重采样的浮点子遍输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
 
+<br />
 
+#### <a name="signed_integer_opaque_types"></a> 带符号的整数隐含类型（Signed Integer Opaque Types）
+
+**类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
+---- | ---- | ---- | ----
+
+<br />
+
+#### <a name="vulkan_glsl_opaque_types_operations"></a> 基于Vulkan API的GLSL新增一些隐含类型的具体操作
+
+上表中列出了仅针对 Vulkan API 所支持的新增 GLSL 语法特性的隐含类型，比如：**`texture1D`**、**`textureCube`**、**`textureBuffer`**、**`sampler`**、**`samplerShadow`** 等。因此，这里对于 GLSL 的内建函数 **`texelFetch`** 也增加了直接对上述纹理类型的直接操作（通过开启 **GL_EXT_samplerless_texture_functions** 这一扩展）；当然也可以通过具体 sampler 的构造，通过传统的 **`texelFetch`** 或 **`texture`** 内建函数对上述纹理类型进行操作。比如以下代码：
+
+```glsl
+#version 460
+#extension GL_EXT_samplerless_texture_functions : enable
+
+void main(void)
+{
+    // 通过 texelFetch 直接访问 myTex1D 的 texel
+    vec4 value = texelFetch(myTex1D, 0, 0);
+
+    // 通过构造 sampler1D 来访问 myTex1D 的 texel
+    value += texelFetch(sampler1D(myTex1D, mySampler), 0, 0);
+
+    // texelFetch 没有 textureCube 类型的变种，因此只能使用 texture 函数进行采样
+    // 这里需要通过构造 samplerCube 用 texture 内建函数来访问 myTexCube 的 texel
+    value += texture(samplerCube(myTexCube, mySampler), vec3(0.0f, 0.0f, 0.0f));
+
+    // 通过 texelFetch 直接访问 myTexBuffer 的 数据
+    value += texelFetch(myTexBuffer, 0);
+
+    // 通过构造 samplerBuffer 来访问 myTexBuffer 的 texel
+    value += texelFetch(samplerBuffer(myTexBuffer, mySampler), 0);
+}
+```
 
 
