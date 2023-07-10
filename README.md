@@ -489,9 +489,21 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`sampler1DArray`** | 访问一个1D阵列纹理的一个句柄 | %33 = **`OpTypeImage`** %float 1D 0 1 0 1 Unknown <br /> %34 = **`OpTypeSampledImage`** %33 | 见 **`OpTypeSampledImage`**
 **`image1DArray`** | 访问一个1D阵列纹理的一个句柄 | %41 = **`OpTypeImage`** %float 1D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 **`sampler1DArrayShadow`** | 访问一个1D阵列纹理的一个句柄 | %36 = **`OpTypeImage`** %float 1D 1 1 0 1 Unknown <br /> %37 = **`OpTypeSampledImage`** %36 | 见 **`OpTypeSampledImage`**
+**`texture2D`** | 访问一个2D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float 2D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`sampler2D`** | 访问一个2D纹理的一个句柄 | %20 = **`OpTypeImage`** %float 2D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`image2D`** | 访问一个2D纹理的一个句柄 | %41 = **`OpTypeImage`** %float 2D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`sampler2DShadow`** | 访问一个带有比较的2D深度纹理的一个句柄 | %36 = **`OpTypeImage`** %float 2D 1 0 0 1 Unknown <br /> %37 = **`OpTypeSampledImage`** %36 | 见 **`OpTypeSampledImage`**
+**`texture2DArray`** | 访问一个2D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float 2D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`sampler2DArray`** | 访问一个2D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %float 2D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`image2DArray`** | 访问一个2D阵列纹理的一个句柄 | %42 = **`OpTypeImage`** %float 2D 0 1 0 2 Rgba8 | 见 **`OpTypeImage`**
+**`sampler2DArrayShadow`** | 访问一个带有比较的2D阵列深度纹理的一个句柄 | %37 = **`OpTypeImage`** %float 2D 1 1 0 1 Unknown <br /> %38 = **`OpTypeSampledImage`** %37 | 见 **`OpTypeSampledImage`**
+**`texture2DMS`** | 访问一个2D多重采样纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float 2D 0 0 1 1 Unknown | 见 **`OpTypeImage`**
+**`sampler2DMS`** | 访问一个2D多重采样纹理的一个句柄 | %20 = **`OpTypeImage`** %float 2D 0 0 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`image2DMS`** | 访问一个2D多重采样纹理的一个句柄 | %44 = **`OpTypeImage`** %float 2D 0 0 1 2 <*Image Format*> | 见 **`OpTypeImage`**
 **`textureCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float Cube 0 1 0 1 Unknown | 见 **`OpTypeImage`**
 **`samplerCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄 | %20 = **`OpTypeImage`** %float Cube 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`imageCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄 | %42 = **`OpTypeImage`** %float Cube 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`samplerCubeArrayShadow`** | 访问一个带有比较的立方体贴图阵列深度纹理（cube map array depth texture）的一个句柄 | %37 = **`OpTypeImage`** %float Cube 1 1 0 1 Unknown <br /> %38 = **`OpTypeSampledImage`** %37 | 见 **`OpTypeSampledImage`**
 
 
 
