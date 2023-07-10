@@ -545,6 +545,7 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 layout(set = 0, binding = 2) uniform texture1D myTex1D;
 layout(set = 0, binding = 3) uniform textureCube myTexCube;
 layout(set = 0, binding = 4) uniform textureBuffer myTexBuffer;
+layout(set = 0, binding = 5) uniform sampler mySampler;
 
 void main(void)
 {
@@ -558,10 +559,10 @@ void main(void)
     // 这里需要通过构造 samplerCube 用 texture 内建函数来访问 myTexCube 的 texel
     value += texture(samplerCube(myTexCube, mySampler), vec3(0.0f, 0.0f, 0.0f));
 
-    // 通过 texelFetch 直接访问 myTexBuffer 的 数据
+    // 通过 texelFetch 直接访问 myTexBuffer 的数据
     value += texelFetch(myTexBuffer, 0);
 
-    // 通过构造 samplerBuffer 来访问 myTexBuffer 的 texel
+    // 通过构造 samplerBuffer 来访问 myTexBuffer 的数据
     value += texelFetch(samplerBuffer(myTexBuffer, mySampler), 0);
 }
 ```
