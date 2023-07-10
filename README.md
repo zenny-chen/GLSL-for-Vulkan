@@ -542,6 +542,10 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 #version 460
 #extension GL_EXT_samplerless_texture_functions : enable
 
+layout(set = 0, binding = 2) uniform texture1D myTex1D;
+layout(set = 0, binding = 3) uniform textureCube myTexCube;
+layout(set = 0, binding = 4) uniform textureBuffer myTexBuffer;
+
 void main(void)
 {
     // 通过 texelFetch 直接访问 myTex1D 的 texel
