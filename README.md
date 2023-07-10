@@ -512,6 +512,7 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`image3D`** | 访问一个3D纹理的一个句柄 | %42 = **`OpTypeImage`** %float 3D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 **`textureCube`** | 访问一个立方体贴图纹理（cube mapped texture）的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float Cube 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`samplerCube`** | 访问一个立方体贴图纹理（cube mapped texture）的一个句柄 | %20 = **`OpTypeImage`** %float Cube 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`imageCube`** | 访问一个立方体贴图纹理（cube mapped texture）的一个句柄 | %48 = **`OpTypeImage`** %float Cube 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 **`samplerCubeShadow`** | 访问一个带有比较的立方体贴图的深度纹理 | %37 = **`OpTypeImage`** %float Cube 1 0 0 1 Unknown <br /> %38 = **`OpTypeSampledImage`** %37 | 见 **`OpTypeSampledImage`**
 **`textureCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %float Cube 0 1 0 1 Unknown | 见 **`OpTypeImage`**
 **`samplerCubeArray`** | 访问一个立方体贴图阵列纹理（cube map array texture）的一个句柄 | %20 = **`OpTypeImage`** %float Cube 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
