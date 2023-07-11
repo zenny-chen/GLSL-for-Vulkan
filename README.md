@@ -26,6 +26,7 @@ Introduction to GLSL for Vulkan API
     - [透明类型(Transparent Types)](#transparent_types)
     - [浮点隐含类型（Floating-Point Opaque Types）](#floating-point_opaque_types)
     - [基于Vulkan API的GLSL新增一些隐含类型的具体操作](#vulkan_glsl_opaque_types_operations)
+    - [用于 image 类型的格式限定符列表](#image_format_qualifiers)
 
 <br />
 
@@ -578,5 +579,17 @@ void main(void)
     value += texelFetch(samplerBuffer(myTexBuffer, mySampler), 0);
 }
 ```
+
+<br />
+
+#### <a name="image_format_qualifiers"></a> 用于 image 类型的格式限定符列表
+
+以下列表列出了用于修饰 **image** 隐含类型的由GLSL所支持的全部格式限定符。
+
+GLSL image 类型格式 | **`layout`** image 类型 | 对应的 SPIR-V 格式 | SPIR-V 中所需要开启的能力
+---- | ---- | ---- | ----
+rgba32f | 浮点 **`layout`** **image** 类型 | Rgba32f | Shader
+rgba16f | 浮点 **`layout`** **image** 类型 | Rgba16f | Shader
+rg32f | 浮点 **`layout`** **image** 类型 | Rg32f | StorageImageExtendedFormats
 
 
