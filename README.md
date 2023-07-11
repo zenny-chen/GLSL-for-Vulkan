@@ -544,6 +544,10 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`itexture2DArray`** | 访问一个整数2D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
 **`isampler2DArray`** | 访问一个整数2D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`iimage2DArray`** | 访问一个整数2D阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int 2D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2DMS`** | 访问一个整数2D多重采样纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2DMS`** | 访问一个整数2D多重采样纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2DMS`** | 访问一个整数2D多重采样纹理的一个句柄 | %43 = **`OpTypeImage`** %int 2D 0 0 1 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown | 见 **`OpTypeImage`**
 
 <br />
 
@@ -628,7 +632,7 @@ r32ui | 无符号整数 **`layout`** **image** 类型 | R32ui | Shader
 r16ui | 无符号整数 **`layout`** **image** 类型 | R16ui | StorageImageExtendedFormats
 r8ui | 无符号整数 **`layout`** **image** 类型 | R8ui | StorageImageExtendedFormats
 
-【注：上述列表中关于浮点 **`layout`** **image** 类型，如果该类型后面含有 ***f*** 字母后缀，那说明该类型数据在主机端和GPU设备端均是以浮点数的形式给出的。如果该类型后面没有后缀 ***f***，且没有后缀 ***_snorm***，那说明该类型在主机端是用8位或16位整数存储的，而在GPU设备端会被实现转换为 [0.0, 1.0] 区间范围内的规格化浮点数，其实也就相当于是 **unorm** 类型，即无符号规格化浮点数类型。而带有 ***s_norm*** 后缀的，则表示该类型数据在主机端是用8位或16位存储的，而在GPU设备端则会被实现转换为 [-1.0, 1.0] 区间范围内的浮点数，这也就意味着它是带符号规格化浮点数类型。】
+【注：上述列表中关于浮点 **`layout`** **image** 类型，如果该类型后面含有 ***f*** 字母后缀，那说明该类型数据在主机端和GPU设备端均是以浮点数的形式给出的。如果该类型后面没有后缀 ***f***，且没有后缀 ***_snorm***，那说明该类型在主机端是用8位或16位整数存储的，而在GPU设备端会被实现转换为 [0.0, 1.0] 区间范围内的规格化浮点数，其实也就相当于是 **unorm** 类型，即无符号规格化为单精度浮点数类型。而带有 ***s_norm*** 后缀的，则表示该类型数据在主机端是用8位或16位存储的，而在GPU设备端则会被实现转换为 [-1.0, 1.0] 区间范围内的浮点数，这也就意味着它是带符号规格化为单精度浮点数类型。】
 
 
 
