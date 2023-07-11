@@ -547,7 +547,9 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`itexture2DMS`** | 访问一个整数2D多重采样纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown | 见 **`OpTypeImage`**
 **`isampler2DMS`** | 访问一个整数2D多重采样纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`iimage2DMS`** | 访问一个整数2D多重采样纹理的一个句柄 | %43 = **`OpTypeImage`** %int 2D 0 0 1 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown | 见 **`OpTypeImage`**
+**`itexture2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int 2D 0 1 1 2 <*Image Format*> | 见 **`OpTypeImage`**
 
 <br />
 
@@ -590,7 +592,7 @@ void main(void)
 
 以下列表列出了用于修饰 **image** 隐含类型的由GLSL所支持的全部格式限定符。
 
-GLSL image 类型格式 | **`layout`** image 类型 | 对应的 SPIR-V 格式 | SPIR-V 中所需要开启的能力
+GLSL image 类型格式 | **`layout`** image 类型 | 对应的 SPIR-V 格式 <br /> （用于 **`OpTypeImage`** 中的 *Image Format*） | SPIR-V 中所需要开启的能力
 ---- | ---- | ---- | ----
 rgba32f | 浮点 **`layout`** **image** 类型 | Rgba32f | Shader
 rgba16f | 浮点 **`layout`** **image** 类型 | Rgba16f | Shader
