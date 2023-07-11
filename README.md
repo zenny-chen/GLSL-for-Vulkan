@@ -1,4 +1,4 @@
-![image](https://github.com/zenny-chen/GLSL-for-Vulkan/assets/23188560/dd3b1063-0a60-40b4-b055-243a9144193a)# GLSL-for-Vulkan
+# GLSL-for-Vulkan
 Introduction to GLSL for Vulkan API
 
 <br />
