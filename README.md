@@ -608,5 +608,18 @@ rg16_snorm | 浮点 **`layout`** **image** 类型 | Rg16Snorm | StorageImageExte
 rg8_snorm | 浮点 **`layout`** **image** 类型 | Rg8Snorm | StorageImageExtendedFormats
 r16_snorm | 浮点 **`layout`** **image** 类型 | R16Snorm | StorageImageExtendedFormats
 r8_snorm | 浮点 **`layout`** **image** 类型 | R8Snorm | StorageImageExtendedFormats
+rgba32i | 带符号整数 **`layout`** **image** 类型 | Rgba32i | Shader
+rgba16i | 带符号整数 **`layout`** **image** 类型 | Rgba16i | Shader
+rgba8i | 带符号整数 **`layout`** **image** 类型 | Rgba8i | Shader
+rg32i | 带符号整数 **`layout`** **image** 类型 | Rg32i | StorageImageExtendedFormats
+rg16i | 带符号整数 **`layout`** **image** 类型 | Rg16i | StorageImageExtendedFormats
+rg8i | 带符号整数 **`layout`** **image** 类型 | Rg8i | StorageImageExtendedFormats
+r32i | 带符号整数 **`layout`** **image** 类型 | R32i | Shader
+r16i | 带符号整数 **`layout`** **image** 类型 | R16i | StorageImageExtendedFormats
+r8i | 带符号整数 **`layout`** **image** 类型 | R8i | StorageImageExtendedFormats
+
+
+【注：上述列表中关于浮点 **`layout`** **image** 类型，如果该类型后面含有 ***f*** 字母后缀，那说明该类型数据在主机端和GPU设备端均是以浮点数的形式给出的。如果该类型后面没有后缀 ***f***，且没有后缀 ***_snorm***，那说明该类型在主机端是用8位或16位整数存储的，而在GPU设备端会被实现转换为 [0.0, 1.0] 区间范围内的规格化浮点数，其实也就相当于是 **unorm** 类型，即无符号规格化浮点数类型。而带有 ***s_norm*** 后缀的，则表示该类型数据在主机端是用8位或16位存储的，而在GPU设备端则会被实现转换为 [-1.0, 1.0] 区间范围内的浮点数，这也就意味着它是带符号规格化浮点数类型。】
+
 
 
