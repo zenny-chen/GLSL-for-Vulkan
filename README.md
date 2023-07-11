@@ -591,5 +591,22 @@ GLSL image 类型格式 | **`layout`** image 类型 | 对应的 SPIR-V 格式 | 
 rgba32f | 浮点 **`layout`** **image** 类型 | Rgba32f | Shader
 rgba16f | 浮点 **`layout`** **image** 类型 | Rgba16f | Shader
 rg32f | 浮点 **`layout`** **image** 类型 | Rg32f | StorageImageExtendedFormats
+rg16f | 浮点 **`layout`** **image** 类型 | Rg16f | StorageImageExtendedFormats
+r11f_g11f_b10f | 浮点 **`layout`** **image** 类型 | R11fG11fB10f | StorageImageExtendedFormats
+r32f | 浮点 **`layout`** **image** 类型 | R32f | Shader
+r16f | 浮点 **`layout`** **image** 类型 | R16f | StorageImageExtendedFormats
+rgba16 | 浮点 **`layout`** **image** 类型 | Rgba16 | StorageImageExtendedFormats
+rgb10_a2 | 浮点 **`layout`** **image** 类型 | Rgb10A2 | StorageImageExtendedFormats
+rgba8 | 浮点 **`layout`** **image** 类型 | Rgba8 | Shader
+rg16 | 浮点 **`layout`** **image** 类型 | Rg16 | StorageImageExtendedFormats
+rg8 | 浮点 **`layout`** **image** 类型 | Rg8 | StorageImageExtendedFormats
+r16 | 浮点 **`layout`** **image** 类型 | R16 | StorageImageExtendedFormats
+r8 | 浮点 **`layout`** **image** 类型 | R8 | StorageImageExtendedFormats
+rgba16_snorm | 浮点 **`layout`** **image** 类型 | Rgba16Snorm | StorageImageExtendedFormats
+rgba8_snorm | 浮点 **`layout`** **image** 类型 | Rgba8Snorm | Shader
+rg16_snorm | 浮点 **`layout`** **image** 类型 | Rg16Snorm | StorageImageExtendedFormats
+rg8_snorm | 浮点 **`layout`** **image** 类型 | Rg8Snorm | StorageImageExtendedFormats
+r16_snorm | 浮点 **`layout`** **image** 类型 | R16Snorm | StorageImageExtendedFormats
+r8_snorm | 浮点 **`layout`** **image** 类型 | R8Snorm | StorageImageExtendedFormats
 
 
