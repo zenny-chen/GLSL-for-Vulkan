@@ -1,4 +1,4 @@
-# GLSL-for-Vulkan
+![image](https://github.com/zenny-chen/GLSL-for-Vulkan/assets/23188560/dd3b1063-0a60-40b4-b055-243a9144193a)# GLSL-for-Vulkan
 Introduction to GLSL for Vulkan API
 
 <br />
@@ -531,6 +531,18 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 
 **类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
 ---- | ---- | ---- | ----
+**`itexture1D`** | 访问一个整数1D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %21 = **`OpTypeImage`** %int 1D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler1D`** | 访问一个整数1D纹理的一个句柄 | %21 = **`OpTypeImage`** %int 1D 0 0 0 1 Unknown <br /> %29 = **`OpTypeSampledImage`** %21 | 见 **`OpTypeSampledImage`**
+**`iimage1D`** | 访问一个整数1D纹理的一个句柄 | %39 = **`OpTypeImage`** %int 1D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture1DArray`** | 访问一个整数1D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 1D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler1DArray`** | 访问一个整数1D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 1D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage1DArray`** | 访问一个整数1D阵列纹理的一个句柄 | %43 = **`OpTypeImage`** %int 1D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2D`** | 访问一个整数2D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2D`** | 访问一个整数2D纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2D`** | 访问一个整数2D纹理的一个句柄 | %43 = **`OpTypeImage`** %int 2D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2DArray`** | 访问一个整数2D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2DArray`** | 访问一个整数2D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2DArray`** | 访问一个整数2D阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int 2D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 
 <br />
 
