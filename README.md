@@ -553,6 +553,9 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`itexture2DRect`** | 访问一个整数2D矩形纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Rect 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`isampler2DRect`** | 访问一个整数2D矩形纹理的一个句柄 | %20 = **`OpTypeImage`** %int Rect 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`iimage2DRect`** | 访问一个整数2D矩形纹理的一个句柄 | %42 = OpTypeImage %int Rect 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture3D`** | 访问一个整数3D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler3D`** | 访问一个整数3D纹理的一个句柄 | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage3D`** | 访问一个整数3D纹理的一个句柄 | %44 = **`OpTypeImage`** %int 3D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 
 <br />
 
