@@ -25,6 +25,7 @@ Introduction to GLSL for Vulkan API
 - [基本类型](#basic_types)
     - [透明类型(Transparent Types)](#transparent_types)
     - [浮点隐含类型（Floating-Point Opaque Types）](#floating-point_opaque_types)
+    - [无符号的整数隐含类型（Unsigned Integer Opaque Types）](#unsigned_integer_opaque_types)
     - [基于Vulkan API的GLSL新增一些隐含类型的具体操作](#vulkan_glsl_opaque_types_operations)
     - [用于 image 类型的格式限定符列表](#image_format_qualifiers)
 
@@ -523,8 +524,8 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`textureBuffer`** | 访问一个缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | **`OpTypeImage`** %float Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`samplerBuffer`** | 访问一个缓存纹理的一个句柄 | %20 = **`OpTypeImage`** %float Buffer 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`imageBuffer`** | 访问一个缓存纹理的一个句柄 | %34 = **`OpTypeImage`** %float Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`subpassInput`** | 访问一个浮点子遍输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
-**`subpassInputMS`** | 访问一个多重采样的浮点子遍输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
+**`subpassInput`** | 访问一个浮点子遍（subpass）输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
+**`subpassInputMS`** | 访问一个多重采样的浮点子遍（subpass）输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
 
 <br />
 
@@ -556,6 +557,27 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`itexture3D`** | 访问一个整数3D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`isampler3D`** | 访问一个整数3D纹理的一个句柄 | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`iimage3D`** | 访问一个整数3D纹理的一个句柄 | %44 = **`OpTypeImage`** %int 3D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itextureCube`** | 访问一个整数立方体贴图的纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Cube 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isamplerCube`** | 访问一个整数立方体贴图的纹理的一个句柄 | %20 = **`OpTypeImage`** %int Cube 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimageCube`** | 访问一个整数立方体贴图的纹理的一个句柄 | %43 = **`OpTypeImage`** %int Cube 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itextureCubeArray`** | 访问一个整数立方体贴图的阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Cube 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`isamplerCubeArray`** | 访问一个整数立方体贴图的阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int Cube 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimageCubeArray`** | 访问一个整数立方体贴图的阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int Cube 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itextureBuffer`** | 访问一个整数缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isamplerBuffer`** | 访问一个整数缓存纹理的一个句柄 | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimageBuffer`** | 访问一个整数缓存纹理的一个句柄 | %39 = **`OpTypeImage`** %int Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`isubpassInput`** | 访问一个整数子遍（subpass）输入的一个句柄 | %14 = **`OpTypeImage`** %int SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
+**`isubpassInputMS`** | 访问一个多重采样的整数子遍（subpass）输入的一个句柄 | %14 = **`OpTypeImage`** %int SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
+
+<br />
+
+#### <a name="unsigned_integer_opaque_types"></a> 无符号的整数隐含类型（Unsigned Integer Opaque Types）
+
+**类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
+---- | ---- | ---- | ----
+**`utexture1D`** | 访问一个无符号整数1D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 1D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`usampler1D`** | 访问一个无符号整数1D纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 1D 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimage1D`** | 访问一个无符号整数1D纹理的一个句柄 | %40 = **`OpTypeImage`** %uint 1D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 
 <br />
 
