@@ -524,8 +524,8 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`textureBuffer`** | 访问一个缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | **`OpTypeImage`** %float Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`samplerBuffer`** | 访问一个缓存纹理的一个句柄 | %20 = **`OpTypeImage`** %float Buffer 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`imageBuffer`** | 访问一个缓存纹理的一个句柄 | %34 = **`OpTypeImage`** %float Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`subpassInput`** | 访问一个浮点子遍（subpass）输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
-**`subpassInputMS`** | 访问一个多重采样的浮点子遍（subpass）输入的一个句柄 | %13 = **`OpTypeImage`** %float SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
+**`subpassInput`** | 访问一个浮点子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %13 = **`OpTypeImage`** %float SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
+**`subpassInputMS`** | 访问一个多重采样的浮点子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %13 = **`OpTypeImage`** %float SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
 
 <br />
 
@@ -566,8 +566,8 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`itextureBuffer`** | 访问一个整数缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`isamplerBuffer`** | 访问一个整数缓存纹理的一个句柄 | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
 **`iimageBuffer`** | 访问一个整数缓存纹理的一个句柄 | %39 = **`OpTypeImage`** %int Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`isubpassInput`** | 访问一个整数子遍（subpass）输入的一个句柄 | %14 = **`OpTypeImage`** %int SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
-**`isubpassInputMS`** | 访问一个多重采样的整数子遍（subpass）输入的一个句柄 | %14 = **`OpTypeImage`** %int SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
+**`isubpassInput`** | 访问一个整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %int SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
+**`isubpassInputMS`** | 访问一个多重采样的整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %int SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
 
 <br />
 
@@ -581,6 +581,24 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`utexture1DArray`** | 访问一个无符号整数1D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 1D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
 **`usampler1DArray`** | 访问一个无符号整数1D阵列纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 1D 0 1 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
 **`uimage1DArray`** | 访问一个无符号整数1D阵列纹理的一个句柄 | %43 = **`OpTypeImage`** %uint 1D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utexture2D`** | 访问一个无符号整数2D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 2D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`usampler2D`** | 访问一个无符号整数2D纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 2D 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimage2D`** | 访问一个无符号整数2D纹理的一个句柄 | %43 = **`OpTypeImage`** %uint 2D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utexture2DArray`** | 访问一个无符号整数2D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 2D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`usampler2DArray`** | 访问一个无符号整数2D阵列纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 2D 0 1 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimage2DArray`** | 访问一个无符号整数2D阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %uint 2D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utexture2DMS`** | 访问一个无符号整数2D多重采样纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 2D 0 0 1 1 Unknown | 见 **`OpTypeImage`**
+**`usampler2DMS`** | 访问一个无符号整数2D多重采样纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 2D 0 0 1 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimage2DMS`** | 访问一个无符号整数2D多重采样纹理的一个句柄 | %43 = **`OpTypeImage`** %uint 2D 0 0 1 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utexture2DMSArray`** | 访问一个无符号整数2D多重采样阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 2D 0 1 1 1 Unknown | 见 **`OpTypeImage`**
+**`usampler2DMSArray`** | 访问一个无符号整数2D多重采样阵列纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 2D 0 1 1 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeImage`**
+**`uimage2DMSArray`** | 访问一个无符号整数2D多重采样阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %uint 2D 0 1 1 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utexture2DRect`** | 访问一个无符号整数矩形纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint Rect 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`usampler2DRect`** | 访问一个无符号整数矩形纹理的一个句柄 | %19 = **`OpTypeImage`** %uint Rect 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimage2DRect`** | 访问一个无符号整数矩形纹理的一个句柄 | %42 = **`OpTypeImage`** %uint Rect 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utexture3D`** | 访问一个无符号整数3D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 3D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`usampler3D`** | 访问一个无符号整数3D纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 3D 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimage3D`** | 访问一个无符号整数3D纹理的一个句柄 | %44 = **`OpTypeImage`** %uint 3D 0 0 0 2 <*Image Format*> | **`OpTypeImage`**
 
 <br />
 
