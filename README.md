@@ -578,6 +578,9 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`utexture1D`** | 访问一个无符号整数1D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 1D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`usampler1D`** | 访问一个无符号整数1D纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 1D 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
 **`uimage1D`** | 访问一个无符号整数1D纹理的一个句柄 | %40 = **`OpTypeImage`** %uint 1D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utexture1DArray`** | 访问一个无符号整数1D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 1D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`usampler1DArray`** | 访问一个无符号整数1D阵列纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 1D 0 1 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimage1DArray`** | 访问一个无符号整数1D阵列纹理的一个句柄 | %43 = **`OpTypeImage`** %uint 1D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
 
 <br />
 
