@@ -599,6 +599,18 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`utexture3D`** | 访问一个无符号整数3D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint 3D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
 **`usampler3D`** | 访问一个无符号整数3D纹理的一个句柄 | %19 = **`OpTypeImage`** %uint 3D 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
 **`uimage3D`** | 访问一个无符号整数3D纹理的一个句柄 | %44 = **`OpTypeImage`** %uint 3D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utextureCube`** | 访问一个无符号整数立方体贴图的纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint Cube 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`usamplerCube`** | 访问一个无符号整数立方体贴图的纹理的一个句柄 | %19 = **`OpTypeImage`** %uint Cube 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimageCube`** | 访问一个无符号整数立方体贴图的纹理的一个句柄 | %42 = **`OpTypeImage`** %uint Cube 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`utextureCubeArray`** | 访问一个无符号整数立方体贴图阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint Cube 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`usamplerCubeArray`** | 访问一个无符号整数立方体贴图阵列纹理的一个句柄 | %19 = **`OpTypeImage`** %uint Cube 0 1 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimageCubeArray`** | 访问一个无符号整数立方体贴图阵列纹理的一个句柄 | %43 = **`OpTypeImage`** %uint Cube 0 1 0 2 Rgba8ui | 见 **`OpTypeImage`**
+**`utextureBuffer`** | 访问一个无符号整数缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | %19 = **`OpTypeImage`** %uint Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`usamplerBuffer`** | 访问一个无符号整数缓存纹理的一个句柄 | %19 = **`OpTypeImage`** %uint Buffer 0 0 0 1 Unknown <br /> %27 = **`OpTypeSampledImage`** %19 | 见 **`OpTypeSampledImage`**
+**`uimageBuffer`** | 访问一个无符号整数缓存纹理的一个句柄 | %39 = **`OpTypeImage`** %uint Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`atomic_uint`** | 访问一个无符号整数原子计数器的一个句柄（仅支持基于OpenGL的GLSL） |  |  
+**`usubpassInput`** | 访问一个无符号整数的子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %uint SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
+**`usubpassInputMS`** | 访问一个多重采样的无符号整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %uint SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
 
 <br />
 
