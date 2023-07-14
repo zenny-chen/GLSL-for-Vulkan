@@ -26,6 +26,7 @@ Introduction to GLSL for Vulkan API
     - [透明类型(Transparent Types)](#transparent_types)
     - [浮点隐含类型（Floating-Point Opaque Types）](#floating-point_opaque_types)
     - [无符号的整数隐含类型（Unsigned Integer Opaque Types）](#unsigned_integer_opaque_types)
+    - [采样器隐含类型（Sampler Opaque Types）](#sampler_opaque_types)
     - [基于Vulkan API的GLSL新增一些隐含类型的具体操作](#vulkan_glsl_opaque_types_operations)
     - [用于 image 类型的格式限定符列表](#image_format_qualifiers)
 
@@ -611,6 +612,14 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **`atomic_uint`** | 访问一个无符号整数原子计数器的一个句柄（仅支持基于OpenGL的GLSL） |  |  
 **`usubpassInput`** | 访问一个无符号整数的子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %uint SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
 **`usubpassInputMS`** | 访问一个多重采样的无符号整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %uint SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
+
+<br />
+
+#### <a name="sampler_opaque_types"></a> 采样器隐含类型（Sampler Opaque Types）
+
+**类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
+---- | ---- | ---- | ----
+**`sampler`** | 访问描述如何采样一个纹理状态的一个句柄 | **`OpTypeSampler`** | 声明了采样器类型，由 **`OpSampledImage`** 消费。此类型是隐含的（opaque）：此类型的值不具有所定义的物理大小，也没有比特模式。
 
 <br />
 
