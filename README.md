@@ -31,6 +31,7 @@ Introduction to GLSL for Vulkan API
     - [用于 image 类型的格式限定符列表](#image_format_qualifiers)
     - [Void 类型](#type_void)
     - [布尔类型（Booleans）](#type_bool)
+    - [整数（Integers）](#type_integers)
 
 <br />
 
@@ -738,5 +739,22 @@ bool done = false;    // 声明并初始化 "done"
 
 对于带条件的跳转所使用的表达式（**`if`**，**`for`**，**`?:`**，**`while`**，**`do-while`**）必须被计算为 **`bool`** 类型。
 
+<br />
+
+#### <a name="type_integers"></a> 整数（Integers）
+
+**定义**：
+
+- 一个 *整数类型*（*integral type*）是任一带符号的或无符号的，标量或向量整数类型。它排除了数组和结构体。
+- 一个 *标量整数类型*（*scalar integral type*）是一个标量带符号或无符号的整数类型。
+- 一个 *向量整数类型*（*vector integral type*）是一个带符号或无符号的整数向量。
+
+带符号或无符号的整数变量被完全支持。在本文中，术语 *整数*（*integer*）旨在普遍包括带符号及无符号整数，即对带符号与无符号整数的统称。
+
+对于OpenGL，无符号整数完全具有32位精度。当目标API为Vulkan时，**`highp`** 无符号整数完全具有32位精度。
+
+对于OpenGL，带符号整数具有32位，其中包含了一位符号位，并以2的补码形式给出。当目标API为Vulkan时，**`highp`** 带符号整数具有32位，包含了一位符号位，并以2的补码形式给出。
+
+当目标API为Vulkan时，**`mediump`** 和 **`lowp`** 整数由 SPIR-V 中的 **`RelaxedPrecision`** 装饰定义。
 
 
