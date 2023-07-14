@@ -29,6 +29,8 @@ Introduction to GLSL for Vulkan API
     - [采样器隐含类型（Sampler Opaque Types）](#sampler_opaque_types)
     - [基于Vulkan API的GLSL新增一些隐含类型的具体操作](#vulkan_glsl_opaque_types_operations)
     - [用于 image 类型的格式限定符列表](#image_format_qualifiers)
+    - [Void 类型](#type_void)
+    - [布尔类型（Booleans）](#type_bool)
 
 <br />
 
@@ -620,6 +622,7 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
 ---- | ---- | ---- | ----
 **`sampler`** | 访问描述如何采样一个纹理状态的一个句柄（仅支持基于Vulkan的GLSL） | **`OpTypeSampler`** | 声明了采样器类型，由 **`OpSampledImage`** 消费。此类型是隐含的（opaque）：此类型的值不具有所定义的物理大小，也没有比特模式。
+**`samplerShadow`** | 访问描述如何采样一个带有比较的深度纹理的一个句柄 | **`OpTypeSampler`** | 声明了采样器类型，由 **`OpSampledImage`** 消费。此类型是隐含的（opaque）：此类型的值不具有所定义的物理大小，也没有比特模式。
 
 <br />
 
@@ -705,6 +708,35 @@ r16ui | 无符号整数 **`layout`** **image** 类型 | R16ui | StorageImageExte
 r8ui | 无符号整数 **`layout`** **image** 类型 | R8ui | StorageImageExtendedFormats
 
 【注：上述列表中关于浮点 **`layout`** **image** 类型，如果该类型后面含有 ***f*** 字母后缀，那说明该类型数据在主机端和GPU设备端均是以浮点数的形式给出的。如果该类型后面没有后缀 ***f***，且没有后缀 ***_snorm***，那说明该类型在主机端是用8位或16位整数存储的，而在GPU设备端会被实现转换为 [0.0, 1.0] 区间范围内的规格化浮点数，其实也就相当于是 **unorm** 类型，即无符号规格化为单精度浮点数类型。而带有 ***s_norm*** 后缀的，则表示该类型数据在主机端是用8位或16位存储的，而在GPU设备端则会被实现转换为 [-1.0, 1.0] 区间范围内的浮点数，这也就意味着它是带符号规格化为单精度浮点数类型。】
+
+<br />
+
+此外，一个着色器可以使用数组和结构体来聚合这些基本类型，用以构建更复杂的类型。
+
+**GLSL没有指针类型**。但基于 Vulkan API 的GLSL通过开启 **[GL_EXT_buffer_reference](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GLSL_EXT_buffer_reference.txt)** 这一扩展，能在GLSL中使用对 **`buffer`** 块的引用。
+
+本规格说明中，一个 *聚合*（*aggregate*）将意指一个结构体或一个数组。（矩阵(**matrix**)和向量（**vector**）其本身不是聚合。）聚合、矩阵和向量统称为 *组合*（*composites*）。
+
+<br />
+
+#### <a name="type_void"></a> `void` 类型
+
+不返回一个值的函数必须被声明为 **`void`**。GLSL不存在默认的函数返回类型。关键字 **`void`** 不能在其他声明中使用（除非用于空的、正式的或实际形参列表，比如：`void main(void) { }`。），否则会引发编译时错误。
+
+<br />
+
+#### <a name="type_bool"></a> 布尔类型（Booleans）
+
+**定义**：一个 *布尔类型*（*boolean type*）是任一布尔标量或向量类型（**`bool`**，**`bvec2`**，**`bvec3`**，**`bvec4`**）。
+
+为了使得代码的条件执行更易于表达，**`bool`** 类型受到支持。当然也不能期待硬件能直接对此类型的变量予以支持。它是一个真实的布尔类型，仅保持着要么“真”、要么“假”这两种值的其中之一。两个关键字 **`true`** 和 **`false`** 可以被用作为布尔常量字面量。布尔变量可以如以下例子那样进行声明并可选地进行初始化：
+
+```glsl
+bool success;    // 将 "success" 声明为一个布尔变量
+bool done = false;    // 声明并初始化 "done"
+```
+
+对于带条件的跳转所使用的表达式（**`if`**，**`for`**，**`?:`**，**`while`**，**`do-while`**）必须被计算为 **`bool`** 类型。
 
 
 
