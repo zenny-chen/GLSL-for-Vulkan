@@ -791,7 +791,13 @@ uint k = 3u; // "u" 建立了该类型为 uint
 5000000000 // 错误：需要多于32位
 ```
 
-GLSL可通过开启 [GL_ARB_gpu_shader_int64](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_gpu_shader_int64.txt) 来使用64位整数。若当前实现支持此扩展，那么可以使用新增的64位整数类型：**`int64_t`**、**`uint64_t`**、**`i64vec2`**、**`u64vec2`**、**`i64vec3`**、**`u64vec3`**、**`i64vec4`**、**`u64vec4`**。此外，对于带符号的64位整数字面量采用 **l** 或 **L** 后缀；而对于无符号64位整数字面量则采用 **ul** 或 **UL** 后缀。
+GLSL可通过开启 [GL_ARB_gpu_shader_int64](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_gpu_shader_int64.txt) 或更为推荐的 [GL_EXT_shader_explicit_arithmetic_types_int64](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用64位整数。若当前实现支持此扩展，那么可以使用新增的64位整数类型：**`int64_t`**、**`uint64_t`**、**`i64vec2`**、**`u64vec2`**、**`i64vec3`**、**`u64vec3`**、**`i64vec4`**、**`u64vec4`**。此外，对于带符号的64位整数字面量采用 **l** 或 **L** 后缀；而对于无符号64位整数字面量则采用 **ul** 或 **UL** 后缀。
+
+GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_int16](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用16位整数。若当前实现支持此扩展，那么可以使用新增的16位整数类型：**`int16_t`**、**`uint16_t`**、**`i16vec2`**、**`u16vec2`**、**`i16vec3`**、**`u16vec3`**、**`i16vec4`**、**`u16vec4`**。此外，对于带符号的16位整数字面量采用 **s** 或 **S** 后缀；而对于无符号16位整数字面量则采用 **us** 或 **US** 后缀。
+
+GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_int8](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用8位整数。若当前实现支持此扩展，那么可以使用新增的8位整数类型：**`int8_t`**、**`uint8_t`**、**`i8vec2`**、**`u8vec2`**、**`i8vec3`**、**`u8vec3`**、**`i8vec4`**、**`u8vec4`**。8位整数字面量没有特定的后缀。
+
+GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_int32](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用新增的32位整数类型，这些类型与原有的32位整数类型对应等价。从而增加了以下关键字：**`int32_t`**（与 **`int`** 等价）、**`uint32_t`**（与 **uint** 等价）、**`i32vec2`**（与 **`ivec2`** 等价）、**`u32vec2`**（与 **`uvec2`** 等价）、**`i32vec3`**（与 **`u32vec3`** 等价）、**`i32vec4`**（与 **`ivec4`** 等价）、**`u32vec4`**（与 **`uvec4`** 等价）。
 
 <br />
 
@@ -807,6 +813,10 @@ double c, d = 2.0LF; // 双精度浮点
 作为某一处理单元的一个输入值，一个单精度或双精度浮点变量被期待匹配IEEE754浮点定义，用于精度和动态范围。在一个着色器内的浮点变量也根据IEEE754规范来编码单精度浮点值。
 
 （逻辑上，而不必在物理上），当用逻辑上的IEEE754进行编码时，操作（加法、乘法等）不必用IEEE754所要求的进行执行。
+
+如果浮点字面量存在指数部分，那么十进制浮点（**.**）可以不需要，比如：**`3E5`**、**`2e8`**。在一个浮点常量内不能在任何地方出现空白符，包括在一个后缀之前。当符号化（tokenizing）时，在一个新的符号开启前，将会识别匹配上述定义的最大符号。当存在 **lf** 或 **LF** 后缀时，该字面量具有类型 **double**。否则的话，该字面量具有类型 **float**。一个前导单目减号（**-**）被解释为一个单目操作符，且不作为浮点常量的一部分。
+
+GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float16](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用新增的16位浮点类型。若当前实现支持此扩展，那么可以使用新增的16位浮点类型：**`float16_t`**、**`f16vec2`**、**`f16vec3`**、**`f16vec4`**、**`f16mat2`**、**`f16mat3`**、**`f16mat4`**、**`f16mat2x2`**、**`f16mat2x3`**、**`f16mat2x4`**、**`f16mat3x2`**、**`f16mat3x3`**、**`f16mat3x4`**、**`f16mat4x2`**、**`f16mat4x3`**、**`f16mat4x4`**。此外，对于16位浮点字面量采用 **`hf`** 或 **`HF`** 后缀。具有类型 **`float16_t`** 的变量表示完全使用了16个比特的浮点数，并且使用 IEEE754-2008 中所描述的浮点表示进行存储。
 
 
 
