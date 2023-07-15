@@ -823,6 +823,18 @@ GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float32](https://gi
 
 GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float64](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用新增的64位浮点类型。若当前实现支持此扩展，那么可以使用此新增的64位浮点类型：**`float64_t`**（与 **`double`** 等价）、**`f64vec2`**（与 **`dvec2`** 等价）、**`f64vec3`**（与 **`dvec3`** 等价）、**`f64vec4`**（与 **`dvec4`** 等价）、**`f64mat2`**（与 **`dmat2`** 等价）、**`f64mat3`**（与 **`dmat3`** 等价）、**`f64mat4`**（与 **`dmat4`** 等价）、**`f64mat2x2`**（与 **`dmat2x2`** 等价）、**`f64mat2x3`**（与 **`dmat2x3`** 等价）、**`f64mat2x4`**（与 **`dmat2x4`** 等价）、**`f64mat3x2`**（与 **`dmat3x2`** 等价）、 **`f64mat3x3`**（与 **`dmat3x3`** 等价）、**`f64mat3x4`**（与 **`dmat3x4`** 等价）、**`f64mat4x2`**（与 **`dmat4x2`** 等价）、**`f64mat4x3`**（与 **`dmat4x3`** 等价）、**`f64mat4x4`**（与 **`dmat4x4`** 等价）。**`float64_t`** 类型与 **`double`** 类型的变量是等价的，并都表示了 IEEE 754-2008 中所描述的64位浮点表示。
 
+如果：
+
+- [GL_EXT_shader_explicit_arithmetic_types_int8](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt)
+- [GL_EXT_shader_explicit_arithmetic_types_int16](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt)
+- [GL_EXT_shader_explicit_arithmetic_types_int32](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt)
+- [GL_EXT_shader_explicit_arithmetic_types_int64](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt)
+- [GL_EXT_shader_explicit_arithmetic_types_float16](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt)
+- [GL_EXT_shader_explicit_arithmetic_types_float32](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt)
+- [GL_EXT_shader_explicit_arithmetic_types_float64](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt)
+
+上述任一扩展被允许，那么 [GL_EXT_shader_explicit_arithmetic_types](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展将被隐式开启。
+
 <br />
 
 #### <a name="type_vector"></a> 向量（Vectors）
