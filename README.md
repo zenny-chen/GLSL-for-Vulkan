@@ -33,6 +33,7 @@ Introduction to GLSL for Vulkan API
     - [布尔类型（Booleans）](#type_bool)
     - [整数（Integers）](#type_integers)
     - [浮点类型（Floats）](#type_float)
+    - [向量（Vectors）](#type_vector)
 
 <br />
 
@@ -818,11 +819,12 @@ double c, d = 2.0LF; // 双精度浮点
 
 GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float16](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用新增的16位浮点类型。若当前实现支持此扩展，那么可以使用此新增的16位浮点类型：**`float16_t`**、**`f16vec2`**、**`f16vec3`**、**`f16vec4`**、**`f16mat2`**、**`f16mat3`**、**`f16mat4`**、**`f16mat2x2`**、**`f16mat2x3`**、**`f16mat2x4`**、**`f16mat3x2`**、**`f16mat3x3`**、**`f16mat3x4`**、**`f16mat4x2`**、**`f16mat4x3`**、**`f16mat4x4`**。此外，对于16位浮点字面量采用 **`hf`** 或 **`HF`** 后缀。具有类型 **`float16_t`** 的变量表示完全使用了16个比特的浮点数，并且使用 IEEE 754-2008 中所描述的浮点表示进行存储。
 
-GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float32](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用新增的32位浮点类型。若当前实现支持此扩展，那么可以使用此新增的32位浮点类型：**`float32_t`**（与 **`float`** 等价）、**`f32vec2`**（与 **`vec2`** 等价）、**`f32vec3`**（与 **`vec3`** 等价）、**`f32vec4`**（与 **`vec4`** 等价）、**`f32mat2`**（与 **`mat2`** 等价）、**`f32mat3`**（与 **`mat3`** 等价）、**`f32mat4`**（与 **`mat4`** 等价）、**`f32mat2x2`**（与 **`mat2x2`** 等价）、**`f32mat2x3`**（与 **`mat2x3`** 等价）、**`f32mat2x4`**（与 **`mat2x4`** 等价）、**`f32mat3x2`**（与 **`mat3x2`** 等价）、**`f32mat3x3`**（与 **`mat3x3`** 等价）、**`f32mat3x4`**（与 **`mat3x4`** 等价）、**`f32mat4x2`**（与 **`mat4x2`** 等价）、**`f32mat4x3`**（与 **`mat4x3`** 等价）、**`f32mat4x4`**（与 **`mat4x4`** 等价）。此外，此扩展对单精度浮点字面量引入了后缀 **f** 或 **F**，使得带有此后缀的浮点字面量类型为32位单精度浮点类型。然而，对于缺省后缀的浮点字面量也仍然表示为32位单精度浮点类型，比如 **`0.5f`**、**`0.5F`** 和 **`0.5`** 均默认表示为 **`float`** 或 **`float32_t`** 类型。**`float32_t`** 类型与 **`float`** 类型是等价的，并都表示了 IEEE 754-2008 中所描述的32位浮点表示。
+GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float32](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用新增的32位浮点类型。若当前实现支持此扩展，那么可以使用此新增的32位浮点类型：**`float32_t`**（与 **`float`** 等价）、**`f32vec2`**（与 **`vec2`** 等价）、**`f32vec3`**（与 **`vec3`** 等价）、**`f32vec4`**（与 **`vec4`** 等价）、**`f32mat2`**（与 **`mat2`** 等价）、**`f32mat3`**（与 **`mat3`** 等价）、**`f32mat4`**（与 **`mat4`** 等价）、**`f32mat2x2`**（与 **`mat2x2`** 等价）、**`f32mat2x3`**（与 **`mat2x3`** 等价）、**`f32mat2x4`**（与 **`mat2x4`** 等价）、**`f32mat3x2`**（与 **`mat3x2`** 等价）、**`f32mat3x3`**（与 **`mat3x3`** 等价）、**`f32mat3x4`**（与 **`mat3x4`** 等价）、**`f32mat4x2`**（与 **`mat4x2`** 等价）、**`f32mat4x3`**（与 **`mat4x3`** 等价）、**`f32mat4x4`**（与 **`mat4x4`** 等价）。此外，此扩展对单精度浮点字面量引入了后缀 **f** 或 **F**，使得带有此后缀的浮点字面量类型为32位单精度浮点类型。然而，对于缺省后缀的浮点字面量也仍然表示为32位单精度浮点类型，比如 **`0.5f`**、**`0.5F`** 和 **`0.5`** 均默认表示为 **`float`** 或 **`float32_t`** 类型。**`float32_t`** 类型与 **`float`** 类型的变量是等价的，并都表示了 IEEE 754-2008 中所描述的32位浮点表示。
 
+GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float64](https://github.com/KhronosGroup/GLSL/blob/master/extensions/ext/GL_EXT_shader_explicit_arithmetic_types.txt) 扩展来使用新增的64位浮点类型。若当前实现支持此扩展，那么可以使用此新增的64位浮点类型：**`float64_t`**（与 **`double`** 等价）、**`f64vec2`**（与 **`dvec2`** 等价）、**`f64vec3`**（与 **`dvec3`** 等价）、**`f64vec4`**（与 **`dvec4`** 等价）、**`f64mat2`**（与 **`dmat2`** 等价）、**`f64mat3`**（与 **`dmat3`** 等价）、**`f64mat4`**（与 **`dmat4`** 等价）、**`f64mat2x2`**（与 **`dmat2x2`** 等价）、**`f64mat2x3`**（与 **`dmat2x3`** 等价）、**`f64mat2x4`**（与 **`dmat2x4`** 等价）、**`f64mat3x2`**（与 **`dmat3x2`** 等价）、 **`f64mat3x3`**（与 **`dmat3x3`** 等价）、**`f64mat3x4`**（与 **`dmat3x4`** 等价）、**`f64mat4x2`**（与 **`dmat4x2`** 等价）、**`f64mat4x3`**（与 **`dmat4x3`** 等价）、**`f64mat4x4`**（与 **`dmat4x4`** 等价）。**`float64_t`** 类型与 **`double`** 类型的变量是等价的，并都表示了 IEEE 754-2008 中所描述的64位浮点表示。
 
+<br />
 
-      Variables of type "float64_t" and "double" are equivalent and represent
-      floating-point with 64-bits floating-point representation
-      described in IEEE 754-2008.
+#### <a name="type_vector"></a> 向量（Vectors）
+
 
