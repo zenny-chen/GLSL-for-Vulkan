@@ -34,6 +34,7 @@ Introduction to GLSL for Vulkan API
     - [整数（Integers）](#type_integers)
     - [浮点类型（Floats）](#type_float)
     - [向量（Vectors）](#type_vector)
+    - [隐含类型（Opaque Types）](#opaque_types)
 
 <br />
 
@@ -839,4 +840,39 @@ GLSL可通过开启 [GL_EXT_shader_explicit_arithmetic_types_float64](https://gi
 
 #### <a name="type_vector"></a> 向量（Vectors）
 
+OpenGL着色语言包含了用于浮点值、整数值以及布尔值这些类型的泛型的 2、3 和 4 分量向量的数据类型。浮点向量变量可以被用于存放颜色、法线、位置、纹理坐标、纹理查找结果等等。布尔向量可以被用于对数值向量的按各个分量进行比较。以下是向量声明的一些例子：
+
+```glsl
+vec2 texcoord1, texcoord2;
+vec3 position;
+vec4 myRGBA;
+ivec2 textureLookup;
+bvec3 less;
+```
+
+向量的初始化用构造器来完成。见 “[向量与矩阵构造器](#vector_and_matrix_constructors)”。
+
+<br />
+
+#### <a name="type_matrices"></a> 矩阵（Matrices）
+
+OpenGL着色语言具有浮点数值的 2 × 2、2 × 3、2 × 4、3 × 2、3 × 3、3 × 4、4 × 2、4 × 3，以及 4 × 4 矩阵。以 **mat** 开头的矩阵类型具有单精度分量，而以 **dmat** 开头的矩阵类型具有双精度分量。此类型中的第一个数是列的个数（或者说是列向量的个数），而第二个数则是行的个数（或者说是每一列向量的分量个数）。如果该类型仅有一个数，那么此矩阵为一个方阵。矩阵声明的例子如下：
+
+```glsl
+mat2 mat2D;
+mat3 optMatrix;
+mat4 view, projection;
+mat4x4 view; // 另一种方式来声明 mat4 变量
+mat3x2 m; // 具有 3 列 2 行的一个矩阵，或者可视为具有 3 个列向量的矩阵，每个列向量含有 2 个分量
+dmat4 highPrecisionMVP;
+dmat2x4 dm;
+```
+
+矩阵值的初始化用构造器来完成。见 “[向量与矩阵构造器](#vector_and_matrix_constructors)”。
+
+<br />
+
+#### <a name="opaque_types"></a> 隐含类型（Opaque Types）
+
+**定义**：一个 *隐含类型*（*opaque type*）是一种类型，此类型的内部结构从语言中受到隐藏。
 
