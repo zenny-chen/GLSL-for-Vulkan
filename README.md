@@ -39,6 +39,7 @@ Introduction to GLSL for Vulkan API
         - [与纹理结合的采样器（Texture-Combined Samplers）](#texture-combined_samplers)
         - [图像（Images）](#images)
         - [原子计数器（Atomic Counters）](#atomic_counters)
+        - [纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）](#texture_sampler_and_samplerShadow_types)
 
 <br />
 
@@ -910,5 +911,18 @@ dmat2x4 dm;
 
 原子计数器仅支持基于OpenGL的GLSL，而不支持基于 Vulkan API 的GLSL。对于 Vulkan API 而言，可直接使用各类原子数据类型。
 
-原子计数器类型（比如 **`atomic_uint`**）是对计数器的隐含句柄，其声明和行为如上面针对隐含类型所描述的那样。
+原子计数器类型（比如 **`atomic_uint`**）是对计数器的隐含句柄，其声明和行为如上面针对隐含类型所描述的那样。它们所声明的变量指定了要访问哪个计数器，当使用在“[原子计数器函数（Atomic Counter Functions）](#atomic_counter_functions)”中所描述的内建原子计数器函数时。它们被绑定到在“[原子计数器布局限定符（Atomic Counter Layout Qualifiers）](#atomic_counter_layout_qualifiers)”中所描述的缓存。
+
+在一个着色器内被聚合到数组中的原子计数器只能用动态均匀整数表达式进行索引，否则结果是未定义的。
+
+结构体成员不能被声明为原子计数器类型。
+
+当目标API为Vulkan时，原子计数器类型不可用。
+
+<br />
+
+##### <a name="texture_sampler_and_samplerShadow_types"></a> 纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）
+
+
+
 
