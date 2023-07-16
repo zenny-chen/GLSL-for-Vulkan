@@ -39,7 +39,7 @@ Introduction to GLSL for Vulkan API
         - [与纹理结合的采样器（Texture-Combined Samplers）](#texture-combined_samplers)
         - [图像（Images）](#images)
         - [原子计数器（Atomic Counters）](#atomic_counters)
-        - [纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）](#texture_sampler_and_samplerShadow_types)
+        - [纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）](#texture_samplerShadow_types)
 
 <br />
 
@@ -921,7 +921,7 @@ dmat2x4 dm;
 
 <br />
 
-##### <a name="texture_sampler_and_samplerShadow_types"></a> 纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）
+##### <a name="texture_samplerShadow_types"></a> 纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）
 
 
 
