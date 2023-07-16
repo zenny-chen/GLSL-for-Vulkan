@@ -631,7 +631,7 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 **类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
 ---- | ---- | ---- | ----
 **`sampler`** | 访问描述如何采样一个纹理状态的一个句柄（仅支持基于Vulkan的GLSL） | **`OpTypeSampler`** | 声明了采样器类型，由 **`OpSampledImage`** 消费。此类型是隐含的（opaque）：此类型的值不具有所定义的物理大小，也没有比特模式。
-**`samplerShadow`** | 访问描述如何采样一个带有比较的深度纹理的一个句柄 | **`OpTypeSampler`** | 声明了采样器类型，由 **`OpSampledImage`** 消费。此类型是隐含的（opaque）：此类型的值不具有所定义的物理大小，也没有比特模式。
+**`samplerShadow`** | 访问描述如何采样一个带有比较的深度纹理的一个句柄（仅支持基于Vulkan的GLSL） | **`OpTypeSampler`** | 声明了采样器类型，由 **`OpSampledImage`** 消费。此类型是隐含的（opaque）：此类型的值不具有所定义的物理大小，也没有比特模式。
 
 <br />
 
@@ -923,6 +923,6 @@ dmat2x4 dm;
 
 ##### <a name="texture_samplerShadow_types"></a> 纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）
 
-
+纹理（比如 **`texture2D`**）、**`sampler`**、和 **`samplerShadow`** 类型均为隐含类型，其声明与行为如上面针对隐含类型所描述的那样。这些类型只有当目标API为Vulkan时才可用。当在一个着色器内聚合进数组时，这些类型只能使用一个动态均匀表达式进行索引，否则纹理查找将会导致未定义的值。纹理变量是对一维、二维及三维纹理、立方体贴图等等的句柄，这些列在基本类型表中。
 
 
