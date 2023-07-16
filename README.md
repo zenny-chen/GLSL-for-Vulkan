@@ -42,6 +42,7 @@ Introduction to GLSL for Vulkan API
         - [纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）](#texture_sampler_and_samplerShadow_types)
         - [子遍输入（Subpass Inputs）](#subpass_inputs)
         - [结构体（Structures）](#structures)
+        - [数组（Arrays）](#arrays)
 
 <br />
 
@@ -977,5 +978,15 @@ struct T {
     int unknown[];    // 错误：作为结构体成员，必须指明数组的大小，且大小必须大于零
 };
 ```
+
+结构体可以在声明时使用构造器进行初始化，在“[结构体构造器（Structure Constructors）](#structure_constructors)”中讨论。
+
+任何对一个类型或限定符使用的限制也应用于包含一个该类型或限定符成员的任一结构体。这也递归地应用于以那些结构体类型所定义的结构体成员。
+
+<br />
+
+<a name="arrays"></a>
+##### 数组（Arrays）
+
 
 
