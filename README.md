@@ -546,41 +546,41 @@ OpenGL着色语言支持以下基本数据类型，如以下分组列出。
 
 **类型** | **含义** | 对应的 SPIR-V 类型 | SPIR-V 类型的描述
 ---- | ---- | ---- | ----
-**`itexture1D`** | 访问一个整数1D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %21 = **`OpTypeImage`** %int 1D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
-**`isampler1D`** | 访问一个整数1D纹理的一个句柄 | %21 = **`OpTypeImage`** %int 1D 0 0 0 1 Unknown <br /> %29 = **`OpTypeSampledImage`** %21 | 见 **`OpTypeSampledImage`**
-**`iimage1D`** | 访问一个整数1D纹理的一个句柄 | %39 = **`OpTypeImage`** %int 1D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture1DArray`** | 访问一个整数1D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 1D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
-**`isampler1DArray`** | 访问一个整数1D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 1D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimage1DArray`** | 访问一个整数1D阵列纹理的一个句柄 | %43 = **`OpTypeImage`** %int 1D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture2D`** | 访问一个整数2D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
-**`isampler2D`** | 访问一个整数2D纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimage2D`** | 访问一个整数2D纹理的一个句柄 | %43 = **`OpTypeImage`** %int 2D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture2DArray`** | 访问一个整数2D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
-**`isampler2DArray`** | 访问一个整数2D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimage2DArray`** | 访问一个整数2D阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int 2D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture2DMS`** | 访问一个整数2D多重采样纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown | 见 **`OpTypeImage`**
-**`isampler2DMS`** | 访问一个整数2D多重采样纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimage2DMS`** | 访问一个整数2D多重采样纹理的一个句柄 | %43 = **`OpTypeImage`** %int 2D 0 0 1 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown | 见 **`OpTypeImage`**
-**`isampler2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimage2DMSArray`** | 访问一个整数2D多重采样阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int 2D 0 1 1 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture2DRect`** | 访问一个整数2D矩形纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Rect 0 0 0 1 Unknown | 见 **`OpTypeImage`**
-**`isampler2DRect`** | 访问一个整数2D矩形纹理的一个句柄 | %20 = **`OpTypeImage`** %int Rect 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimage2DRect`** | 访问一个整数2D矩形纹理的一个句柄 | %42 = OpTypeImage %int Rect 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itexture3D`** | 访问一个整数3D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
-**`isampler3D`** | 访问一个整数3D纹理的一个句柄 | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimage3D`** | 访问一个整数3D纹理的一个句柄 | %44 = **`OpTypeImage`** %int 3D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itextureCube`** | 访问一个整数立方体贴图的纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Cube 0 0 0 1 Unknown | 见 **`OpTypeImage`**
-**`isamplerCube`** | 访问一个整数立方体贴图的纹理的一个句柄 | %20 = **`OpTypeImage`** %int Cube 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimageCube`** | 访问一个整数立方体贴图的纹理的一个句柄 | %43 = **`OpTypeImage`** %int Cube 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itextureCubeArray`** | 访问一个整数立方体贴图的阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Cube 0 1 0 1 Unknown | 见 **`OpTypeImage`**
-**`isamplerCubeArray`** | 访问一个整数立方体贴图的阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int Cube 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimageCubeArray`** | 访问一个整数立方体贴图的阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int Cube 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`itextureBuffer`** | 访问一个整数缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
-**`isamplerBuffer`** | 访问一个整数缓存纹理的一个句柄 | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
-**`iimageBuffer`** | 访问一个整数缓存纹理的一个句柄 | %39 = **`OpTypeImage`** %int Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
-**`isubpassInput`** | 访问一个整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %int SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
-**`isubpassInputMS`** | 访问一个多重采样的整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %int SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
+**`itexture1D`** | 访问一个带符号整数1D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %21 = **`OpTypeImage`** %int 1D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler1D`** | 访问一个带符号整数1D纹理的一个句柄 | %21 = **`OpTypeImage`** %int 1D 0 0 0 1 Unknown <br /> %29 = **`OpTypeSampledImage`** %21 | 见 **`OpTypeSampledImage`**
+**`iimage1D`** | 访问一个带符号整数1D纹理的一个句柄 | %39 = **`OpTypeImage`** %int 1D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture1DArray`** | 访问一个带符号整数1D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 1D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler1DArray`** | 访问一个带符号整数1D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 1D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage1DArray`** | 访问一个带符号整数1D阵列纹理的一个句柄 | %43 = **`OpTypeImage`** %int 1D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2D`** | 访问一个带符号整数2D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2D`** | 访问一个带符号整数2D纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2D`** | 访问一个带符号整数2D纹理的一个句柄 | %43 = **`OpTypeImage`** %int 2D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2DArray`** | 访问一个带符号整数2D阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2DArray`** | 访问一个带符号整数2D阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2DArray`** | 访问一个带符号整数2D阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int 2D 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2DMS`** | 访问一个带符号整数2D多重采样纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2DMS`** | 访问一个带符号整数2D多重采样纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 0 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2DMS`** | 访问一个带符号整数2D多重采样纹理的一个句柄 | %43 = **`OpTypeImage`** %int 2D 0 0 1 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2DMSArray`** | 访问一个带符号整数2D多重采样阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2DMSArray`** | 访问一个带符号整数2D多重采样阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int 2D 0 1 1 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2DMSArray`** | 访问一个带符号整数2D多重采样阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int 2D 0 1 1 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture2DRect`** | 访问一个带符号整数2D矩形纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Rect 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler2DRect`** | 访问一个带符号整数2D矩形纹理的一个句柄 | %20 = **`OpTypeImage`** %int Rect 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage2DRect`** | 访问一个带符号整数2D矩形纹理的一个句柄 | %42 = OpTypeImage %int Rect 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itexture3D`** | 访问一个带符号整数3D纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isampler3D`** | 访问一个带符号整数3D纹理的一个句柄 | %20 = **`OpTypeImage`** %int 3D 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimage3D`** | 访问一个带符号整数3D纹理的一个句柄 | %44 = **`OpTypeImage`** %int 3D 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itextureCube`** | 访问一个带符号整数立方体贴图的纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Cube 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isamplerCube`** | 访问一个带符号整数立方体贴图的纹理的一个句柄 | %20 = **`OpTypeImage`** %int Cube 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimageCube`** | 访问一个带符号整数立方体贴图的纹理的一个句柄 | %43 = **`OpTypeImage`** %int Cube 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itextureCubeArray`** | 访问一个带符号整数立方体贴图的阵列纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Cube 0 1 0 1 Unknown | 见 **`OpTypeImage`**
+**`isamplerCubeArray`** | 访问一个带符号整数立方体贴图的阵列纹理的一个句柄 | %20 = **`OpTypeImage`** %int Cube 0 1 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimageCubeArray`** | 访问一个带符号整数立方体贴图的阵列纹理的一个句柄 | %44 = **`OpTypeImage`** %int Cube 0 1 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`itextureBuffer`** | 访问一个带符号整数缓存纹理的一个句柄（仅支持基于Vulkan的GLSL） | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown | 见 **`OpTypeImage`**
+**`isamplerBuffer`** | 访问一个带符号整数缓存纹理的一个句柄 | %20 = **`OpTypeImage`** %int Buffer 0 0 0 1 Unknown <br /> %28 = **`OpTypeSampledImage`** %20 | 见 **`OpTypeSampledImage`**
+**`iimageBuffer`** | 访问一个带符号整数缓存纹理的一个句柄 | %39 = **`OpTypeImage`** %int Buffer 0 0 0 2 <*Image Format*> | 见 **`OpTypeImage`**
+**`isubpassInput`** | 访问一个带符号整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %int SubpassData 0 0 0 2 Unknown | 见 **`OpTypeImage`**
+**`isubpassInputMS`** | 访问一个多重采样的带符号整数子遍（subpass）输入的一个句柄（仅支持Vulkan中的片段着色器） | %14 = **`OpTypeImage`** %int SubpassData 0 0 1 2 Unknown | 见 **`OpTypeImage`**
 
 <br />
 
@@ -932,7 +932,11 @@ dmat2x4 dm;
 <a name="subpass_inputs"></a>
 ##### 子遍输入（Subpass Inputs）
 
+子遍输入类型只有当目标API为Vulkan时才可用。
 
+子遍输入类型（比如 **`subpassInput`**）是隐含类型，其声明和行为如上面针对隐含类型所描述的那样。当在一个着色器内被聚合进数组时，它们只能用一个动态均匀整数表达式进行索引，否则结果是未定义的。
+
+子遍输入类型是对二维单个样本的或多重采样的图像的句柄，对于每种浮点、带符号整数、以及无符号整数数据类型具有不同的类型。
 
 
 
