@@ -34,6 +34,7 @@ Introduction to GLSL for Vulkan API
     - [整数（Integers）](#type_integers)
     - [浮点类型（Floats）](#type_float)
     - [向量（Vectors）](#type_vector)
+    - [矩阵（Matrices）](#type_matrices)
     - [隐含类型（Opaque Types）](#opaque_types)
 
 <br />
