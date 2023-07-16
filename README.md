@@ -921,7 +921,8 @@ dmat2x4 dm;
 
 <br />
 
-##### <a name="texture_samplerShadow_types"></a> 纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）
+<a name="texture_samplerShadow_types"></a>
+##### 纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）
 
 纹理（比如 **`texture2D`**）、**`sampler`**、和 **`samplerShadow`** 类型均为隐含类型，其声明与行为如上面针对隐含类型所描述的那样。这些类型只有当目标API为Vulkan时才可用。当在一个着色器内聚合进数组时，这些类型只能使用一个动态均匀表达式进行索引，否则纹理查找将会导致未定义的值。纹理变量是对一维、二维及三维纹理、立方体贴图等等的句柄，这些列在基本类型表中。
 
