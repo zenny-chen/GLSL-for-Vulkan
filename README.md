@@ -40,6 +40,7 @@ Introduction to GLSL for Vulkan API
         - [图像（Images）](#images)
         - [原子计数器（Atomic Counters）](#atomic_counters)
         - [纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）](#texture_sampler_and_samplerShadow_types)
+        - [子遍输入（Subpass Inputs）](#subpass_inputs)
 
 <br />
 
@@ -924,6 +925,14 @@ dmat2x4 dm;
 <a name="texture_sampler_and_samplerShadow_types"></a>
 ##### 纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）
 
-纹理（比如 **`texture2D`**）、**`sampler`**、和 **`samplerShadow`** 类型均为隐含类型，其声明与行为如上面针对隐含类型所描述的那样。这些类型只有当目标API为Vulkan时才可用。当在一个着色器内聚合进数组时，这些类型只能使用一个动态均匀表达式进行索引，否则纹理查找将会导致未定义的值。纹理变量是对一维、二维及三维纹理、立方体贴图等等的句柄，这些列在基本类型表中。
+纹理（比如 **`texture2D`**）、**`sampler`**、和 **`samplerShadow`** 类型均为隐含类型，其声明与行为如上面针对隐含类型所描述的那样。这些类型只有当目标API为Vulkan时才可用。当在一个着色器内聚合进数组时，这些类型只能使用一个动态均匀表达式进行索引，否则纹理查找将会导致未定义的值。纹理变量是对一维、二维及三维纹理、立方体贴图等等的句柄，这些列在基本类型表中。对于每种纹理目标，以及对于每种浮点、带符号整数、以及无符号整数数据类型，都有不同的纹理类型。纹理可以用 **`sampler`** 或 **`samplerShadow`** 类型的一个变量进行结合，以创建一个纹理绑定的采样器类型（比如：**`sampler2D`** 或 **`sampler2DShadow`**）。这通过一个构造器来实现，比如：`sampler2D(texture2D, sampler)`，`sampler2DShadow(texture2D, sampler)`，`sampler2DShadow(texture2D, samplerShadow)`，或是 `sampler2D(texture2D, samplerShadow)`，这些细节在 [构造器（Constructors）](#constructors) 这一章中描述。
+
+<br />
+
+<a name="subpass_inputs"></a>
+##### 子遍输入（Subpass Inputs）
+
+
+
 
 
