@@ -41,6 +41,7 @@ Introduction to GLSL for Vulkan API
         - [原子计数器（Atomic Counters）](#atomic_counters)
         - [纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）](#texture_sampler_and_samplerShadow_types)
         - [子遍输入（Subpass Inputs）](#subpass_inputs)
+        - [结构体（Structures）](#structures)
 
 <br />
 
@@ -939,6 +940,11 @@ dmat2x4 dm;
 子遍输入类型是对二维单个样本的或多重采样的图像的句柄，对于每种浮点、带符号整数、以及无符号整数数据类型具有不同的类型。
 
 子遍类型只在片段着色器中可用。如果在其他任一流水线阶段中使用它们则会产生一个编译时错误。
+
+<br />
+
+<a name="structures"></a>
+##### 结构体（Structures）
 
 
 
