@@ -43,6 +43,7 @@ Introduction to GLSL for Vulkan API
         - [子遍输入（Subpass Inputs）](#subpass_inputs)
         - [结构体（Structures）](#structures)
         - [数组（Arrays）](#arrays)
+        - [隐式转换（Implicit Conversions）](#implicit_conversions)
 
 <br />
 
@@ -1179,4 +1180,48 @@ void main(void)
 
 对于隐式指定大小或运行时指定大小的数组，只有最外边的维度才能缺省对大小的指定。包含一个未知数组大小的一个类型不能用于构成一个数组，直到它得到了一个显式的大小，除非是对于 shader storage blocks，只有其最后的成员是未指定大小的数组。
 
-在一个 shader storage block 中，最后一个成员可以不显式指定大小来声明。
+在一个 shader storage block 中，最后一个成员可以不显式指定大小来声明。在此情况下，有效的数组大小从存储在 interface block 中的数据大小在运行时推导出。这样的运行时确定大小的数组可以用通用整数表达式进行索引。然而，将它们作为实参传递给一个函数、或是用一个负数常量表达式对它们索引，将会引发编译时错误。
+
+<br />
+
+<a name="implicit_conversions"></a>
+##### 隐式转换（Implicit Conversions）
+
+在某些情况下，一个表达式及其类型将会被隐式转换为一个不同的类型。下表展示了所有GLSL所允许的隐式转换，另外，涉及到8位、16位、**`int32_t`** 类型所表示的32位整数、64位整数以及16位、**`float64_t`** 类型所表示的64位浮点数时，将需要开启对应特定的 **GL_EXT_shader_explicit_arithmetic_types** 扩展。
+
+**下表展示了整数之间的隐式转换**
+
+表达式类型 | 可以被隐式转换到的类型
+---- | ----
+int8_t | uint8_t, int16_t, uint16_t, uint32_t, int64_t, uint64_t, ***int***
+i8vec2 | u8vec2, i16vec2, u16vec2, u32vec2, i64vec2, u64vec2, ***ivec2***
+i8vec3 | u8vec3, i16vec3, u16vec3, u32vec3, i64vec3, u64vec3, ***ivec3***
+i8vec4 | u8vec4, i16vec4, u16vec4, u32vec4, i64vec4, u64vec4, ***ivec4***
+int16_t | uint16_t, uint32_t, int64_t, uint64_t, ***int***
+i16vec2 | u16vec2, u32vec2, i64vec2, u64vec2, ***ivec2***
+i16vec3 | u16vec3, u32vec3, i64vec3, u64vec3, ***ivec3***
+i16vec4 | u16vec4, u32vec4, i64vec4, u64vec4, ***ivec4***
+uint8_t | int16_t, uint16_t, uint32_t, int64_t, uint64_t, ***int***
+u8vec2 | i16vec2, u16vec2, u32vec2, i64vec2, u64vec2, ***ivec2***
+u8vec3 | i16vec3, u16vec3, u32vec3, i64vec3, u64vec3, ***ivec3***
+u8vec4 | i16vec4, u16vec4, u32vec4, i64vec4, u64vec4, ***ivec4***
+uint16_t | uint32_t, int64_t, uint64_t, ***int***
+u16vec2 | u32vec2, i64vec2, u64vec2, ***ivec2***
+u16vec3 | u32vec3, i64vec3, u64vec3, ***ivec3***
+u16vec4 | u32vec4, i64vec4, u64vec4, ***ivec4***
+int32_t | uint32_t, int64_t, uint64_t
+i32vec2 | u32vec2, i64vec2, u64vec2
+i32vec3 | u32vec3, i64vec3, u64vec3
+i32vec4 | u32vec4, i64vec4, u64vec4
+uint32_t | int64_t, uint64_t
+u32vec2 | i64vec2, u64vec2
+u32vec3 | i64vec3, u64vec3
+u32vec4 | i64vec4, u64vec4
+int64_t | uint64_t
+i64vec2 | u64vec2
+i64vec3 | u64vec3
+i64vec4 | u64vec4 
+
+
+
+
