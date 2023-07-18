@@ -1222,6 +1222,37 @@ i64vec2 | u64vec2
 i64vec3 | u64vec3
 i64vec4 | u64vec4 
 
+**下表展示了浮点数之间的隐式转换**
+
+表达式类型 | 可以被隐式转换到的类型
+---- | ----
+float16_t  | float32_t, ***double***
+float32_t | ***double***
+f16vec2    | f32vec2, ***dvec2***
+f32vec2 | ***dvec2***
+f16vec3    | f32vec3, ***dvec3***
+f32vec3 | ***dvec3***
+f16vec4    | f32vec4, ***dvec4***
+f32vec4 | ***dvec4***
+f16mat2    | f32mat2, ***dmat2***
+f32mat2 | ***dmat2***
+f16mat3    | f32mat3, ***dmat3***
+f32mat3 | ***dmat3***
+f16mat4    | f32mat4, ***dmat4***
+f32mat4 | ***dmat4**
+f16mat2x3  | f32mat2x3, ***dmat2x3***
+f32mat2x3 | ***dmat2x3***
+f16mat2x4  | f32mat2x4, ***dmat2x4***
+f32mat2x4 | ***dmat2x4***
+f16mat3x2  | f32mat3x2, ***dmat3x2***
+f32mat3x2 | ***dmat3x2***
+f16mat3x4  | f32mat3x4, ***dmat3x4***
+f32mat3x4 | ***dmat3x4***
+f16mat4x2  | f32mat4x2, ***dmat4x2***
+f32mat4x2 | ***dmat4x2***
+f16mat4x3  | f32mat4x3, ***dmat4x3***
+f32mat4x3 | ***dmat4x3***
+
 
 
 
