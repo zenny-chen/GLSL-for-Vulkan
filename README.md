@@ -1299,7 +1299,7 @@ const uint uintValue = byteValue;
 
 对于上述第二条语句，将会产生如下式样的 SPIR-V 目标代码：
 
-```spv
+```llvm
 %48 = OpSConvert %int %46
 %49 = OpBitcast %uint %48
 ```
