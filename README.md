@@ -1189,7 +1189,7 @@ void main(void)
 
 在某些情况下，一个表达式及其类型将会被隐式转换为一个不同的类型。下表展示了所有GLSL所允许的隐式转换，另外，涉及到8位、16位、**`int32_t`** 类型所表示的32位整数、64位整数以及16位、**`float64_t`** 类型所表示的64位浮点数时，将需要开启对应特定的 **GL_EXT_shader_explicit_arithmetic_types** 扩展。
 
-**下表展示了整数之间的隐式转换**
+**下表展示了GLSL所允许的整数之间的隐式转换**
 
 表达式类型 | 可以被隐式转换到的类型
 ---- | ----
@@ -1222,7 +1222,7 @@ i64vec2 | u64vec2
 i64vec3 | u64vec3
 i64vec4 | u64vec4 
 
-**下表展示了浮点数之间的隐式转换**
+**下表展示了GLSL所允许的浮点数之间的隐式转换**
 
 表达式类型 | 可以被隐式转换到的类型
 ---- | ----
@@ -1253,6 +1253,58 @@ f32mat4x2 | ***dmat4x2***
 f16mat4x3  | f32mat4x3, ***dmat4x3***
 f32mat4x3 | ***dmat4x3***
 
+**下表展示了GLSL所允许的整数到浮点数的隐式转换**
+
+表达式类型 | 可以被隐式转换到的类型
+---- | ----
+int8_t     | float16_t, float32_t, float64_t
+i8vec2     | f16vec2, f32vec2, f64vec2
+i8vec3     | f16vec3, f32vec3, f64vec3
+i8vec4     | f16vec4, f32vec4, f64vecv4
+int16_t    | float16_t, float32_t, float64_t
+i16vec2    | f16vec2, f32vec2, f64vec2
+i16vec3    | f16vec3, f32vec3, f64vec3
+i16vec4    | f16vec4, f32vec4, f64vec4
+uint8_t    | float16_t, float32_t, float64_t
+u8vec2     | f16vec2, f32vec2, f64vec2
+u8vec3     | f16vec3, f32vec3, f64vec3
+u8vec4     | f16vec4, f32vec4, f64vec4
+uint16_t   | float16_t, float32_t, float64_t
+u16vec2    | f16vec2, f32vec2, f64vec2
+u16vec3    | f16vec3, f32vec3, f64vec3
+u16vec4    | f16vec4, f32vec4, f64vec4
+int32_t    | float32_t, float64_t
+i32vec2    | f32vec2, f64vec2
+i32vec3    | f32vec3, f64vec3
+i32vec4    | f32vec4, f64vec4
+uint32_t   | float32_t, float64_t
+u32vec2    | f32vec2, f64vec2
+u32vec3    | f32vec3, f64vec3
+u32vec4    | f32vec4, f64vec4
+int64_t    | float64_t
+i64vec2    | f64vec2
+i64vec3    | f64vec3
+i64vec4    | f64vec4
+uint64_t   | float64_t 
+u64vec2    | f64vec2
+u64vec3    | f64vec3
+u64vec4    | f64vec4
+
+上述三个表中，用加黑粗体标识出来的类型表示类型 **晋升**（**promotion**）。当一种类型向另一种目标类型进行隐式转换时，倘若源类型能晋升到目标类型同样的位宽，那么会先发生类型晋升，再做对应的类型转换。比如，当我们需要将一个 **`int8_t`** 类型的整数变量转换为 **`uint`** 类型时，原始整数会先从 **`int8_t`** 类型晋升到 **`int`** 类型，随后再从 **int** 类型隐式转换为 **uint** 类型。我们看以下例子：
+
+```cpp
+const int8_t byteValue = int8_t(100);
+const uint uintValue = byteValue;
+```
+
+对于上述第二条语句，将会产生如下式样的 SPIR-V 目标代码：
+
+```perl
+%48 = OpSConvert %int %46
+%49 = OpBitcast %uint %48
+```
+
+从上述 SPIR-V 汇编代码中可见，这里是先用 **`OpSConvert`** 指令将加载的 **`int8_t`** 类型的整数变量先转换为 **`int`** 类型。随后再使用 **`OpBitcast`** 指令将晋升后的 **`int`** 类型的整数转换为 **`uint`** 类型。
 
 
 
