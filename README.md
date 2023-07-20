@@ -44,6 +44,7 @@ Introduction to GLSL for Vulkan API
         - [结构体（Structures）](#structures)
         - [数组（Arrays）](#arrays)
         - [隐式转换（Implicit Conversions）](#implicit_conversions)
+        - [初始化器（Initializers）](#initializers)
 
 <br />
 
@@ -1349,6 +1350,17 @@ const uint16_t ushortValue = byteValue;
 
 每个整数类型都具有如下定义的整数转换等级：
 
+- 没有两种带符号整数类型具有相同等级。
+- 一个标量带符号整数类型的等级将高于任一具有更小位宽的标量带符号整数类型的等级。
+- **`int64_t`** 的等级应该高于 **`int`** 的等级，**`int`** 的等级应该高于 **`int16_t`** 的等级，**`int16_t`** 的等级将高于 **`int8_t`** 的等级。
+- 任一向量带符号整数类型的等级等于基本标量带符号整数类型的等级。
+- 任一标量无符号整数类型的等级将等于对应标量带符号整数类型的等级。
+- 任一向量无符号整数类型的等级等于对应的标量无符号整数类型的等级。
+
+<br />
+
+<a name="initializers"></a>
+##### 初始化器（Initializers）
 
 
 
