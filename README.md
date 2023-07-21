@@ -41,10 +41,11 @@ Introduction to GLSL for Vulkan API
         - [原子计数器（Atomic Counters）](#atomic_counters)
         - [纹理、采样器、以及 samplerShadow 类型（Texture, sampler, and samplerShadow Types）](#texture_sampler_and_samplerShadow_types)
         - [子遍输入（Subpass Inputs）](#subpass_inputs)
-        - [结构体（Structures）](#structures)
-        - [数组（Arrays）](#arrays)
-        - [隐式转换（Implicit Conversions）](#implicit_conversions)
-        - [初始化器（Initializers）](#initializers)
+    - [结构体（Structures）](#structures)
+    - [数组（Arrays）](#arrays)
+    - [隐式转换（Implicit Conversions）](#implicit_conversions)
+    - [初始化器（Initializers）](#initializers)
+- [作用域（Scoping）](#scoping)
 
 <br />
 
@@ -947,7 +948,7 @@ dmat2x4 dm;
 <br />
 
 <a name="structures"></a>
-##### 结构体（Structures）
+#### 结构体（Structures）
 
 用户自定义类型可以通过将其他已定义的类型聚合到使用 **`struct`** 关键字的一个结构体进行创建。比如：
 
@@ -988,7 +989,7 @@ struct T {
 <br />
 
 <a name="arrays"></a>
-##### 数组（Arrays）
+#### 数组（Arrays）
 
 相同类型的变量可以通过声明一个名字，后面跟着方括号（**[ ]**），方括号内可以放一个可选的大小，而被聚合到数组中。当一个数组大小在一个声明中指定时，它必须是一个大于零的整数常量表达式（见“[常量表达式（Constant Expressions）](#constant_expressions)”）。除了一个着色器存储块（shader storage block，见“[Interface Blocks](#interface_blocks)”）中的最后所声明的成员，一个数组的大小必须被显式声明（即，显式地指定数组的大小）。任一数组的大小必须在将它作为一个实参传递给一个函数之前被声明。任何对这些规则的违背都会产生编译时错误。声明一个不具有大小的一个数组是合法的，但后面要重新将它声明为同名同类型的数组，且指定一个大小，否则只能用常量表达式（隐式大小）对它进行索引（此时GLSL实现能在编译时隐式确定该数组的大小）。然而，除非做了说明，否则 interface blocks 不能被重新声明；一个用户声明的 block 中的一个未指定大小的数组成员不能通过一个 block 的重新声明来指定其大小。对一个数组用某一确定的大小进行声明之后，然后（在同一着色器内）用一个大于或等于其所声明大小的整数常量表达式对该数组进行索引，那么会产生一个编译时错误。要用一个大小小于等于当前着色器中索引该数组的早先所使用的任一索引来重新声明一个未指定大小的数组，那么会产生一个编译时错误。如果用一个负数的常量表达式取索引一个数组，也会产生一个编译时错误。声明为一个函数声明中正式形参的数组必须指定一个大小。如果用值大于等于数组所指定大小、或是用小于0的一个非常量表达式来索引一个数组，则会导致未定义行为。数组只有一单个维度（在“[ ]”内的一单个条目），然而，可以声明数组的数组。所有类型（基本类型、结构体、数组）都能作为数组的元素来形成一个数组。
 
@@ -1186,7 +1187,7 @@ void main(void)
 <br />
 
 <a name="implicit_conversions"></a>
-##### 隐式转换（Implicit Conversions）
+#### 隐式转换（Implicit Conversions）
 
 在某些情况下，一个表达式及其类型将会被隐式转换为一个不同的类型。下表展示了所有GLSL所允许的隐式转换，另外，涉及到8位、16位、**`int32_t`** 类型所表示的32位整数、64位整数以及16位、**`float64_t`** 类型所表示的64位浮点数时，将需要开启对应特定的 **GL_EXT_shader_explicit_arithmetic_types** 扩展。
 
@@ -1360,7 +1361,7 @@ const uint16_t ushortValue = byteValue;
 <br />
 
 <a name="initializers"></a>
-##### 初始化器（Initializers）
+#### 初始化器（Initializers）
 
 在声明时，可以给一个变量提供初始值，用一个等号（**=**）然后在后面跟着一个初始化器进行指定。初始化器要么是一个 *赋值表达式*（*assignment-expression*），要么是一个用花括号包围住的初始化器列表。
 
@@ -1415,6 +1416,52 @@ struct {
     int b;
 } e = { 1.2, 2, 3 }; // 非法
 ```
+
+在所有情况下，应用于一个对象的最里面的初始化器（即，不在花括号中包围的一个初始化器列表）必须具有与正被初始化的对象具有相同类型，或是根据“[隐式转换（Implicit Conversions）](#implicit_conversions)”可以被转换为该对象的类型。在后者情况下，在该赋值被完成前，对该初始化器完成一次隐式转换。
+
+```cpp
+struct {
+    float a;
+    int b;
+} e = { 1.2, 2 }; // 合法！所有类型都匹配
+struct {
+    float a;
+    int b;
+} e = { 1, 3 }; // 合法！第一个初始化器被隐式转换
+```
+
+所有以下声明均将导致一个编译时错误。
+
+```glsl
+int a = true; // illegal
+vec4 b[2] = { vec4(0.0), 1.0 }; // illegal
+mat4x2 c = { vec3(0.0), vec3(1.0) }; // 非法
+struct S1 {
+    vec4 a;
+    vec4 b;
+};
+struct {
+    float s;
+    float t;
+} d[] = { S1(vec4(0.0), vec4(1.1)) }; // 非法
+```
+
+如果一个初始化器（或初始化器列表）提供给了一个未指定大小的数组，那么该数组的大小由在该初始化器内的顶层（非嵌套的）初始化器的个数来确定。所有以下声明创建了显式指定具有五个元素大小的数组：
+
+```cpp
+float a[] = float[](3.4, 4.2, 5.0, 5.2, 1.1);
+float b[] = { 3.4, 4.2, 5.0, 5.2, 1.1 };
+float c[] = a; // 给 c 显式指定了大小5
+float d[5] = b; // 与上述一样
+```
+
+对于正被初始化的组合，如果一个初始化器列表中有过少或过多初始化器，那么会产生一个编译时错误。也就是，一个数组中的所有元素，一个结构体的所有成员，一个矩阵的所有列，以及一个向量的所有分量，必须恰好存在一个初始化器表达式，而不带有未消费的初始化器。
+
+<br />
+
+<a name="scoping"></a>
+## 作用域（Scoping）
+
 
 
 
