@@ -1535,9 +1535,13 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 
 存储限定符 | 含义 | 对应 SPIR-V 的存储类（Storage Class） | 描述
 ---- | ---- | ---- | ----
-<无：默认>（修饰的变量定义在函数内） | 本地读/写存储器，或是一个函数的输入形参 | **`Function`** | 只在当前调用（线程）所声明的函数内可见。正规的函数存储器。
-<无：默认>（修饰的变量定义在当前编译单元的全局作用域内） | 本地读/写存储器 | **`Private`** | 对当前调用（线程）中的所有函数可见。正规的全局存储器。
+<无：默认>（修饰的变量定义在函数内） | 本地读/写存储器，或是一个函数的输入形参 | **`Function`** | 只在当前调用（线程）所声明的函数内可见。<br /> 正规的函数存储器。
+<无：默认>（修饰的变量定义在当前编译单元的全局作用域内） | 本地读/写存储器 | **`Private`** | 对当前调用（线程）中的所有函数可见。<br /> 正规的全局存储器。
 **`const`** | 一个变量，其值不能被改变 | N/A | 实现可能直接用 **`OpConstant`**、**`OpConstantComposite`** 等常量创建指令（Constant-Creation Instructions）进行优化。
-**`in`** | 对来自先前的流水线阶段的连接，用此存储限定符修饰的变量被拷贝进来。 | **`Input`** | 来自流水线的输入。对当前调用（线程）中跨所有函数可见。用此存储类所声明的变量是只读的，并且不能具有初始化器。
+**`in`** | 从先前的流水线阶段输入到一个着色器的连接，用此存储限定符修饰的变量被拷贝进来。 | **`Input`** | 来自流水线的输入。<br /> 对当前调用（线程）中跨所有函数可见。<br /> 用此存储类所声明的变量是只读的，并且不能具有初始化器。
+**`out`** | 输出一个着色器的连接，输出到后续的一个流水线阶段，变量被拷贝出去。 | **`Output`** | 输出到流水线。对当前调用（线程）中跨所有函数可见。
+**`uniform`**（非 **`uniform`** block） | 值不会跨正被处理的图元进行改变。<br /> **`uniform`** 对象在一个着色器、API、和应用之间形成连接。 | **`UniformConstant`** | 外部共享的，跨所有工作组中的所有调用（线程）中的所有函数可见。<br /> 图形 **`uniform`** 存储器。<br /> OpenCL常量存储器。<br /> 以此存储类所声明的变量是只读的。<br /> 它们可以具有初始化器，正如被客户端API所允许的那样。<br /> 比如：`layout(set = 0, binding = 1) uniform highp sampler2D imageSampler;`
+**`uniform`**（**`uniform`** block） | 值不会跨正被处理的图元进行改变。<br /> **`uniform`** 对象在一个着色器、API、和应用之间形成连接。 | **`Uniform`** | 外部共享的，对跨所有工作组中的所有调用（线程）中的所有函数可见。<br /> 图形 **uniform** blocks（在SPIR-V 1.3版本前，还对应 buffer blocks）。<br /> 比如：`layout(set = 0, binding = 2) uniform MyBlock { uvec4 u_data; };`
+**`buffer`** | 值被存放在一个缓存对象中，并且可以通过着色器调用（线程）以及API进行读写。 | **`StorageBuffer`** | 外部共享的，对跨所有工作组中的所有调用（线程）中的所有函数可读、可写、可见。 <br /> 图形 storage buffers （buffer blocks）。<br /> 此存储类仅从 SPIR-V 1.3版本起才可用。另外可参阅扩展：[VK_KHR_storage_buffer_storage_class](https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_storage_buffer_storage_class.html)，[VK_KHR_variable_pointers](https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_variable_pointers.html)
 
 
