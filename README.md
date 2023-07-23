@@ -1543,5 +1543,7 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 **`uniform`**（非 **`uniform`** block） | 值不会跨正被处理的图元进行改变。<br /> **`uniform`** 对象在一个着色器、API、和应用之间形成连接。 | **`UniformConstant`** | 外部共享的，跨所有工作组中的所有调用（线程）中的所有函数可见。<br /> 图形 **`uniform`** 存储器。<br /> OpenCL常量存储器。<br /> 以此存储类所声明的变量是只读的。<br /> 它们可以具有初始化器，正如被客户端API所允许的那样。<br /> 比如：`layout(set = 0, binding = 1) uniform highp sampler2D imageSampler;`
 **`uniform`**（**`uniform`** block） | 值不会跨正被处理的图元进行改变。<br /> **`uniform`** 对象在一个着色器、API、和应用之间形成连接。 | **`Uniform`** | 外部共享的，对跨所有工作组中的所有调用（线程）中的所有函数可见。<br /> 图形 **uniform** blocks（在SPIR-V 1.3版本前，还对应 buffer blocks）。<br /> 比如：`layout(set = 0, binding = 2) uniform MyBlock { uvec4 u_data; };`
 **`buffer`** | 值被存放在一个缓存对象中，并且可以通过着色器调用（线程）以及API进行读写。 | **`StorageBuffer`** | 外部共享的，对跨所有工作组中的所有调用（线程）中的所有函数可读、可写、可见。 <br /> 图形 storage buffers （buffer blocks）。<br /> 此存储类仅从 SPIR-V 1.3版本起才可用。另外可参阅扩展：[VK_KHR_storage_buffer_storage_class](https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_storage_buffer_storage_class.html)，[VK_KHR_variable_pointers](https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_variable_pointers.html)
+**`shared`** | 仅用于计算着色器；变量存储在一个工作组中跨所有工作项共享。 | **`Workgroup`** | 在一个工作组内跨所有调用（线程）共享。<br /> 跨所有函数可见。<br /> 对应GLSL中的 **`shared`** 存储限定符。<br /> 对应OpenCL **`local`** 存储器。
+
 
 
