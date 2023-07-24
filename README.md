@@ -1558,7 +1558,7 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 
 函数内的局部变量只能使用 **`const`** 存储限定符（或是不使用存储限定符）。
 
-注意，函数形参可以使用 **`const`**、**`in`**、以及 **`out`** 限定符，但仅作为 *形参限定符*（*parameter qualifiers.*）。形参限定符在“函数调用约定（[Function Calling Conventions）](#function_calling_conventions)”一节中被讨论。
+注意，函数形参可以使用 **`const`**、**`in`**、以及 **`out`** 限定符，但仅作为 *形参限定符*（*parameter qualifiers.*）。形参限定符在“[函数调用约定（Function Calling Conventions）](#function_calling_conventions)”一节中被讨论。
 
 函数返回类型和结构体成员不使用存储限定符。
 
