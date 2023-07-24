@@ -1545,5 +1545,15 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 **`buffer`** | 值被存放在一个缓存对象中，并且可以通过着色器调用（线程）以及API进行读写。 | **`StorageBuffer`** | 外部共享的，对跨所有工作组中的所有调用（线程）中的所有函数可读、可写、可见。 <br /> 图形 storage buffers （buffer blocks）。<br /> 此存储类仅从 SPIR-V 1.3版本起才可用。另外可参阅扩展：[VK_KHR_storage_buffer_storage_class](https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_storage_buffer_storage_class.html)，[VK_KHR_variable_pointers](https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_KHR_variable_pointers.html)
 **`shared`** | 仅用于计算着色器；变量存储在一个工作组中跨所有工作项共享。 | **`Workgroup`** | 在一个工作组内跨所有调用（线程）共享。<br /> 跨所有函数可见。<br /> 对应GLSL中的 **`shared`** 存储限定符。<br /> 对应OpenCL **`local`** 存储器。
 
+某些输入和输出限定的变量可以用最多一个额外的辅助存储限定符（auxiliary storage qualifier）进行限定。这些GLSL中的辅助限定符对应于 SPIR-V 中的装饰（**`Decoration`**）。装饰为一个 *<id>* 或是一个结构体的成员添加了额外的信息。
 
+辅助存储限定符 | 含义 | 对应 SPIR-V 装饰 | 描述
+---- | ---- | ---- | ----
+**`centroid`** | 基于质心的插值 | **`Centroid`** | 必须只能用子一个存储器对象声明或是一个结构体类型的成员上。<br /> 如果与多重采样光栅化一起使用，那么允许为一整个像素给出一单个插值位置。<br /> 该插值位置同时坐落于该像素内以及正被光栅化的图元内。<br /> 仅针对 **`Input`** 和 **`Output`** 有效。
+**`sample`** | 逐样本的插值 | **`Sample`** | 必须只能用在存储器对象声明或是一个结构体类型的一个成员上。<br /> 如果与多重采样光栅化一起使用，那么要求逐样本插值。插值位置则是同时坐落于像素和正被光栅化的图元中的样本的位置。仅对 **`Input`** 和 **`Output`** 有效。
+**`patch`** | 逐细分曲面 patch 的属性 | **`Patch`** | 必须只能用在一个存储器对象声明或是一个结构体类型的一个成员上。<br /> 指示了一个细分 patch。仅对 **`Input`** 和 **`Output`** 存储类有效。<br /> 对由非细分曲面执行模型所引用的对象或类型进行使用则是无效的。
+
+并非所有限定符的组合都被允许的。辅助存储限定符只能与 **`in`** 或 **`out`** 存储限定符一起使用。后续会有额外的限定符规则。
+
+函数内的局部变量只能使用 **`const`** 存储限定符（或是不使用存储限定符）。
 
