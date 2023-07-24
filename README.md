@@ -47,6 +47,7 @@ Introduction to GLSL for Vulkan API
     - [初始化器（Initializers）](#initializers)
 - [作用域（Scoping）](#scoping)
 - [存储限定符（Storage Qualifiers）](#storage_qualifiers)
+    - [默认的存储限定符（Default Storage Qualifier）](#default_storage_qualifier)
 
 <br />
 
@@ -1556,4 +1557,22 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 并非所有限定符的组合都被允许的。辅助存储限定符只能与 **`in`** 或 **`out`** 存储限定符一起使用。后续会有额外的限定符规则。
 
 函数内的局部变量只能使用 **`const`** 存储限定符（或是不使用存储限定符）。
+
+注意，函数形参可以使用 **`const`**、**`in`**、以及 **`out`** 限定符，但仅作为 *形参限定符*（*parameter qualifiers.*）。形参限定符在“函数调用约定（[Function Calling Conventions）](#function_calling_conventions)”一节中被讨论。
+
+函数返回类型和结构体成员不使用存储限定符。
+
+在全局声明中的初始化器只能被用于全局变量的声明中，而这些全局变量声明不带有存储限定符，不过可带有一个 **`const`** 限定符，或带有一个 **`uniform`** 限定符。
+
+不带有存储限定符的全局变量，如果它们不在其声明中被初始化或是被应用初始化，那么将不被初始化。从而会在进入 **`main()`** 函数之后具有未定义的值。
+
+当用来自一个着色器阶段的输出去比较一个后续着色器阶段的一个输入时，如果输入和输出的辅助限定符（或缺省辅助限定符）不相同，那么它们则是不匹配的。
+
+<br />
+
+<a name="default_storage_qualifier"></a>
+#### 默认的存储限定符（Default Storage Qualifier）
+
+
+
 
