@@ -1576,7 +1576,7 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 
 如果一个全局变量不存在任何限定符，那么该变量对于当前应用或运行在其他流水线阶段的着色器不具有连接。对于不受限定的全局变量或函数内局部变量，对它们的声明看上去就好比分配与当前目标平台所对应的处理器相关联的存储器。此变量将提供对此分配的存储器的读写访问。
 
-对于一个不受限定的函数局部变量，它会被 **glslangValidator** 编译成作为一条 SPIR-V 指令的 *Result <id>*。而对于一个不受限定、或只受 **`const`** 限定的全局变量，它会被  **glslangValidator** 编译为具有 **`Private`** 存储类或 **`Function`** 存储类的 SPIR-V 指令，根据编译器对当前上下文的优化编排。比如：
+对于一个不受限定的函数局部变量，它会被 **glslangValidator** 编译成作为一条 SPIR-V 指令的 *Result <id>*。而对于一个不受限定、或只受 **`const`** 限定的全局变量，它会被 **glslangValidator** 编译为具有 **`Private`** 存储类的 SPIR-V 指令。而对于一个全局数组，可能会被 **glslangValidator** 编译为具有 **`Function`** 的存储类，由于在实际对数组的操作过程中，SPIR-V 会生成一个索引变量进行访问，而这里的索引变量是 **`Function`** 存储类的。比如：
 ```glsl
 #version 450
 
@@ -1598,6 +1598,9 @@ void main(void)
 ```llvm
        %void = OpTypeVoid
           %3 = OpTypeFunction %void
+
+; generate an indexable variable with Function storage class to access array elements
+%indexable = OpVariable %_ptr_Function__arr_uint_uint_8 Function
 
 ; g_gtid global variable type
 %_ptr_Private_uint = OpTypePointer Private %uint
@@ -1630,6 +1633,8 @@ void main(void)
          ; define localVar
          %20 = OpIAdd %uint %18 %uint_20
 ```
+
+**注意**：Vulkan API不支持 SPIR-V 中的 **`CrossWorkgroup`** 存储类，它仅针对 OpenCL 中的、用 **`global`** 存储类限定符修饰的全局存储器变量。
 
 <br />
 
