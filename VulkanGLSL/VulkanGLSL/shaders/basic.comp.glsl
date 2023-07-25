@@ -55,7 +55,7 @@ layout(std430, set = 0, binding = 1) buffer readonly Src {
     uint srcBuffer[];
 };
 
-// Private constant
+// Function const array
 const uint g_constants[8] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
 
 // Private variable
@@ -67,8 +67,9 @@ void main(void)
 
     const uint constValue = g_constants[g_gtid & 7];
 
-    const int constantValue = pushConstants.a + int(pushConstants.b) - 
+    const int constantValue = pushConstants.a + int(pushConstants.b) -
         (pushConstants.secondConstant.x + pushConstants.secondConstant.y + pushConstants.secondConstant.z + pushConstants.secondConstant.w);
+
     const uint srcValue = srcBuffer[g_gtid] * (constValue - uint(spec_constant)) + constantValue;
     dstBuffer[g_gtid] = srcValue;
 }
