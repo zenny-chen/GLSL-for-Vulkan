@@ -48,6 +48,7 @@ Introduction to GLSL for Vulkan API
 - [作用域（Scoping）](#scoping)
 - [存储限定符（Storage Qualifiers）](#storage_qualifiers)
     - [默认的存储限定符（Default Storage Qualifier）](#default_storage_qualifier)
+    - [常量限定符（Constant Qualifier）](#constant_qualifier)
 
 <br />
 
@@ -1572,6 +1573,68 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 
 <a name="default_storage_qualifier"></a>
 #### 默认的存储限定符（Default Storage Qualifier）
+
+如果一个全局变量不存在任何限定符，那么该变量对于当前应用或运行在其他流水线阶段的着色器不具有连接。对于不受限定的全局变量或函数内局部变量，对它们的声明看上去就好比分配与当前目标平台所对应的处理器相关联的存储器。此变量将提供对此分配的存储器的读写访问。
+
+对于一个不受限定的函数局部变量，它会被 **glslangValidator** 编译成作为一条 SPIR-V 指令的 *Result <id>*。而对于一个不受限定、或只受 **`const`** 限定的全局变量，它会被  **glslangValidator** 编译为具有 **`Private`** 存储类或 **`Function`** 存储类的 SPIR-V 指令，根据编译器对当前上下文的优化编排。比如：
+```glsl
+#version 450
+
+// Function constant
+const uint g_constants[8] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
+
+// Private variable
+uint g_gtid = 0;
+
+void main(void)
+{
+    g_gtid = gl_GlobalInvocationID.x;
+    uint localVar = g_gtid + 20;
+}
+```
+
+编译为 SPIR-V 之后：
+
+```llvm
+       %void = OpTypeVoid
+          %3 = OpTypeFunction %void
+
+; g_gtid global variable type
+%_ptr_Private_uint = OpTypePointer Private %uint
+
+     ; define g_gtid variable
+     %g_gtid = OpVariable %_ptr_Private_uint Private
+
+%_ptr_Input_uint = OpTypePointer Input %uint
+%_ptr_Function_uint = OpTypePointer Function %uint
+    %uint_20 = OpConstant %uint 20
+     %uint_8 = OpConstant %uint 8
+
+%_arr_uint_uint_8 = OpTypeArray %uint %uint_8
+     %uint_2 = OpConstant %uint 2
+         ; define g_constants initializers
+         %25 = OpConstantComposite %_arr_uint_uint_8 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2 %uint_2
+
+; g_constants array type
+%_ptr_Function__arr_uint_uint_8 = OpTypePointer Function %_arr_uint_uint_8
+
+; main function entry
+%main = OpFunction %void None %3
+
+         ; gl_GlobalInvocationID intrinsic variable has Input storage class.
+         %14 = OpAccessChain %_ptr_Input_uint %gl_GlobalInvocationID %uint_0
+         %15 = OpLoad %uint %14
+               OpStore %g_gtid %15
+
+         %18 = OpLoad %uint %g_gtid
+         ; define localVar
+         %20 = OpIAdd %uint %18 %uint_20
+```
+
+<br />
+
+<a name="constant_qualifier"></a>
+#### 常量限定符（Constant Qualifier）
 
 
 
