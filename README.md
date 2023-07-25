@@ -1599,9 +1599,6 @@ void main(void)
        %void = OpTypeVoid
           %3 = OpTypeFunction %void
 
-; generate an indexable variable with Function storage class to access array elements
-%indexable = OpVariable %_ptr_Function__arr_uint_uint_8 Function
-
 ; g_gtid global variable type
 %_ptr_Private_uint = OpTypePointer Private %uint
 
@@ -1621,8 +1618,12 @@ void main(void)
 ; g_constants array type
 %_ptr_Function__arr_uint_uint_8 = OpTypePointer Function %_arr_uint_uint_8
 
-; main function entry
-%main = OpFunction %void None %3
+       ; main function entry
+       %main = OpFunction %void None %3
+          %5 = OpLabel
+
+; generate an indexable variable with Function storage class to access array elements
+%indexable = OpVariable %_ptr_Function__arr_uint_uint_8 Function
 
          ; gl_GlobalInvocationID intrinsic variable has Input storage class.
          %14 = OpAccessChain %_ptr_Input_uint %gl_GlobalInvocationID %uint_0
