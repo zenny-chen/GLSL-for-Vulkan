@@ -1580,7 +1580,7 @@ while (i == 0); // 这里的 i 是17，其作用域在 do-while 体的外部
 ```glsl
 #version 450
 
-// Function constant
+// Function const array
 const uint g_constants[8] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
 
 // Private variable
