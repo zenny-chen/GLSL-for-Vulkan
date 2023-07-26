@@ -49,6 +49,7 @@ Introduction to GLSL for Vulkan API
 - [存储限定符（Storage Qualifiers）](#storage_qualifiers)
     - [默认的存储限定符（Default Storage Qualifier）](#default_storage_qualifier)
     - [常量限定符（Constant Qualifier）](#constant_qualifier)
+    - [常量表达式（Constant Expressions）](#constant_expressions)
 
 <br />
 
@@ -1650,4 +1651,27 @@ const float ceiling = a + b; // a and b not necessarily constants
 ```
 
 GLSL不允许对结构体成员用 **`const`** 进行限定。结构体变量可以用 **`const`** 声明，并用一个结构体构造器或是初始化器进行初始化。
+
+对于在全局作用域用 **`const`** 所声明的初始化器必须是常量表达式，如下面“[常量表达式（Constant Expressions）](#constant_expressions)”中所定义的那样。
+
+<br />
+
+<a name="constant_expressions"></a>
+#### 常量表达式（Constant Expressions）
+
+SPIR-V 的特化常量在GLSL中被表达为用 **`const`** 限定且带有 **constant_id** 这一 **`layout`** 限定符修饰的常量，在“[特化常量限定符（Specialization-Constant Qualifier）](#specialization-constant_qualifier)”中描述。
+
+一个 *常量表达式*（*constant expression*）是以下描述之一：
+
+- 一个字面量值（比如 **5**，或是 **`true`**）。
+- 用 **`const`** 限定符修饰并带有一个初始化器所声明的一个变量，这里此初始化器是一个常量表达式。这包括了带有一个特化常量 **`layout`** 限定符声明的 **`const`** 变量，比如：`layout(constant_id = 3) const uint total_data_elem_count = 1024U;`，以及不带有特化常量 **`layout`** 限定符所声明的 **`const`** 变量，比如：
+```cpp
+const int array_length = 8;
+// 这里可以用 const 修饰的常量 array_length 来指定数组大小
+const uint g_constants[array_length] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
+```
+
+- 用 **`const`** 限定的内建变量。
+- 通过一个作用于所有操作数均为常量表达式的操作符所构成的一个表达式，包括获取一个常量数组的一个元素，或是获取一个常量结构体的一个成员，或是获取一个常量向量的分量。然而，最低优先权的顺序操作符（**,**）以及赋值操作符（**`=`**，**`+=`** 等）不包含在能创建一个常量表达式的操作符范围内。此外，还有用一个特化常量作为一个索引来访问一个数组也不会形成一个常量表达式。
+
 
