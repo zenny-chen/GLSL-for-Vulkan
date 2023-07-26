@@ -1642,6 +1642,12 @@ void main(void)
 <a name="constant_qualifier"></a>
 #### 常量限定符（Constant Qualifier）
 
+命名的编译时常量或只读变量可以使用 **`const`** 限定符进行声明。**`const`** 限定符可以用于任一非 **`void`** 透明基本数据类型，也可用于由这些基本类型构建而成的结构体和数组。对于一个 **`const`** 变量，如果在其声明外部对它进行写，则会引发一个编译时错误。因此，它们必须在声明时就被初始化，比如：
 
+```glsl
+const vec3 zAxis = vec3 (0.0, 0.0, 1.0);
+const float ceiling = a + b; // a and b not necessarily constants
+```
 
+GLSL不允许对结构体成员用 **`const`** 进行限定。结构体变量可以用 **`const`** 声明，并用一个结构体构造器或是初始化器进行初始化。
 
