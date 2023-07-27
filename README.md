@@ -1708,6 +1708,8 @@ const uint g_constants[array_length] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
         - **`normalize`**
     - 对用户自定义的函数（非内建函数）的函数调用不能被用于构成一个 *整数常量表达式*（*constant integral expression*） ，该表达式用于计算一个标量带符号或无符号的整数。
 
+常量表达式将以一种不变量（invariant）的方式来被计算，以至于在多个着色器中创建相同的值，当相同的常量表达式出现在那些着色器中时。关于如何创建 **`invariant`** 表达式，详细信息见“[**`invariant`** 限定符（The Invariant Qualifier）](#invariant_qualifier)”，而关于表达式如何被计算的，见“[精度限定符（Precision Qualifiers）](#precision_qualifiers)”。
+
 
 
 
