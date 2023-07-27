@@ -1683,5 +1683,32 @@ const uint g_constants[array_length] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
         - **`cos`**
         - **`asin`**
         - **`acos`**
+    - 指数函数
+        - **`pow`**
+        - **`exp`**
+        - **`log`**
+        - **`exp2`**
+        - **`log2`**
+        - **`sqrt`**
+        - **`inversesqrt`**
+    - 通常函数
+        - **`abs`**
+        - **`sign`**
+        - **`floor`**
+        - **`trunc`**
+        - **`round`**
+        - **`ceil`**
+        - **`mod`**
+        - **`min`**
+        - **`max`**
+        - **`clamp`**
+    - 几何函数
+        - **`length`**
+        - **`dot`**
+        - **`normalize`**
+    - 对用户自定义的函数（非内建函数）的函数调用不能被用于构成一个 *整数常量表达式*（*constant integral expression*） ，该表达式用于计算一个标量带符号或无符号的整数。
+
+
+
 
 
