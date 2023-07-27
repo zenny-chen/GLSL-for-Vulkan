@@ -50,6 +50,7 @@ Introduction to GLSL for Vulkan API
     - [默认的存储限定符（Default Storage Qualifier）](#default_storage_qualifier)
     - [常量限定符（Constant Qualifier）](#constant_qualifier)
     - [常量表达式（Constant Expressions）](#constant_expressions)
+    - [输入变量（Input Variables）](#input_variables)
 
 <br />
 
@@ -1710,7 +1711,16 @@ const uint g_constants[array_length] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
 
 常量表达式将以一种不变量（invariant）的方式来被计算，以至于在多个着色器中创建相同的值，当相同的常量表达式出现在那些着色器中时。关于如何创建 **`invariant`** 表达式，详细信息见“[**`invariant`** 限定符（The Invariant Qualifier）](#invariant_qualifier)”，而关于表达式如何被计算的，见“[精度限定符（Precision Qualifiers）](#precision_qualifiers)”。
 
+常量表达式关心 **`precise`** 和 **`invariant`** 限定符，但将总是以一种不变量的方式进行计算，独立于对这种限定的使用，以至于在多个着色器中创建相同的值，当相同的常量表达式出现在那些着色器中时。关于如何创建 **`invariant`** 表达式，详细信息见“[**`invariant`** 限定符（The Invariant Qualifier）](#invariant_qualifier)”，而关于表达式如何被计算的，见“[精度限定符（Precision Qualifiers）](#precision_qualifiers)”。
 
+常量表达式可以被一个主机平台计算，并从而不要求同样的表达式在着色器执行目标上会对同样的值进行计算。然而，主机端必须使用比起目标设备端相同或更高的精度。当精度限定符无法被确定时，表达式以 **`highp`** 进行计算。见“[默认精度限定符（Default Precision Qualifiers）](#default_precision_qualifiers)”。
+
+特化常量表达式不会被编译器前端计算，取而代之的是保留表达式所需要的操作，随后在主机端再去计算它们。
+
+<br />
+
+<a name="input_variables"></a>
+#### 输入变量（Input Variables）
 
 
 
