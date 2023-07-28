@@ -1726,7 +1726,7 @@ const uint g_constants[array_length] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
 
 只有被静态读的输入变量需要被先前的阶段写；对输入变量有过多的声明是允许的。这在下表中展示。
 
-
+![mismatched_input_variables](images/mismatched_input_variables.png)
 
 
 
