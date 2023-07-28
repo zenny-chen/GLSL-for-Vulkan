@@ -1728,5 +1728,6 @@ const uint g_constants[array_length] = { 2U, 2U, 2U, 2U, 2U, 2U, 2U, 2U };
 
 ![mismatched_input_variables](images/mismatched_input_variables.png)
 
+消费错误仅基于静态使用。编译可能会生成一个警告，但不会是错误，对于任何动态对编译器的使用能够推断出那可能导致未定义值的消费。
 
 
