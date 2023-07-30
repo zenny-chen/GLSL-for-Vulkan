@@ -51,6 +51,7 @@ Introduction to GLSL for Vulkan API
     - [常量限定符（Constant Qualifier）](#constant_qualifier)
     - [常量表达式（Constant Expressions）](#constant_expressions)
     - [输入变量（Input Variables）](#input_variables)
+    - [Uniform 变量（Uniform Variables）](#uniform_variables)
 
 <br />
 
@@ -1788,6 +1789,17 @@ noperspective centroid in vec2 myTexCoord;
 ```
 
 片段着色器输入用顶点处理流水线中的最后活跃的着色器形成一个接口。对于此接口，最后活跃着色器阶段的输出变量以及相同名字的片段着色器输入变量必须在类型和限定上匹配，但有这么些例外：存储限定符必须（也当然）不能相同，即一个是 **`in`**，一个是 **`out`**。同时，插值限定符（比如 **`flat`**）和辅助限定（比如 **`centroid`**）可以不同。这些不匹配在任一对阶段之间是被允许的。当插值或辅助限定符不匹配时，那些在片段着色器中所提供的那些取代那些在先前阶段中所提供的。如果任何这样的限定符在片段着色器中完全缺失，那么会使用默认的，而不是先前阶段中可能已被声明的任何限定符。也就是说，所要关心的是片段着色器中所声明的，而不是在先前阶段的着色器中所声明的。
+
+当两个着色器阶段之间的接口使用来自两个独立的程序对象而形成时，当程序被连接时不可能取检测输入与输出之间的不匹配性。当在这种接口上，输入与输出之间有不匹配性时，跨这些接口所传递的值将会部分或是完全未定义的。
+
+着色器可以确保跨这些接口的匹配，要么通过使用输入与输出 **`layout`** 限定符（见“[输入Layout限定符（Input Layout Qualifiers）](#input_layout_qualifiers)”和“[输出Layout限定符（Output Layout Qualifiers）](#output_layout_qualifiers)”），要么通过对 blocks 或变量使用相同的输入与输出声明。
+
+计算着色器不允许用户自定义的输入变量，且不会随着任何其他的着色器阶段来形成一个正式的接口。计算着色器的输入通过GLSL所提供的内建变量给出。一个计算着色器的所有其他输入显式地通过图像加载、纹理读取、从 **`uniform`** 或 **`uniform`** 缓存加载，或其他用户提供的代码进行获取。对计算着色器中重新声明内建输入变量是不允许的。
+
+<br />
+
+<a name="uniform_variables"></a>
+#### Uniform 变量（Uniform Variables）
 
 
 
