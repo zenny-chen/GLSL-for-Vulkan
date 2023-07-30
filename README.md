@@ -52,6 +52,7 @@ Introduction to GLSL for Vulkan API
     - [常量表达式（Constant Expressions）](#constant_expressions)
     - [输入变量（Input Variables）](#input_variables)
     - [Uniform 变量（Uniform Variables）](#uniform_variables)
+    - [输出变量（Output Variables）](#output_variables)
 
 <br />
 
@@ -1814,6 +1815,13 @@ uniform vec3 color = vec3(0.7, 0.7, 0.2); // 该值在连接时被分配
 
 对于可用于每种着色器类型的 uniform 的存储量有一个依赖于实现的限制，而如果超出此限制，则将会引发编译时或连接时错误。仅被声明但没被使用的 uniform 变量并不计入此限制内。在一个着色器内所使用的用户自定义 uniform 变量以及内建 uniform 变量的个数被加在一起，以确定可用的 uniform 存储是否已经超过了。
 
-在着色器中的 uniform 在连接到一个程序或是独立的程序时，都共享了一单个全局名字空间。因此，具有相同名字的所有静态使用的 uniform 变量的类型、初始化器、以及任一位置指示符，必须跨所有被连接到一单个程序的着色器都匹配。然而在所有被连接的着色器中，不要求重复初始化器或位置指示符。
+在着色器中的 uniform 在连接到一个程序或是独立的程序时，都共享了一单个全局名字空间。因此，具有相同名字的所有静态使用的 uniform 变量的类型、初始化器、以及任一位置指示符，必须跨所有被连接到一单个程序的着色器都匹配。然而在所有被连接的着色器中，不要求重复初始化器或位置指示符。由于此单个 uniform 名字空间是跨阶段的，因而一个 uniform 变量名字的作用域是每一个阶段的：如果一个 uniform 变量名在一个阶段声明（比如，一个顶点着色器），但没有在另一个中声明（比如，一个片段着色器），那么该名字在其他阶段仍然可作为不同用途进行使用。
+
+<br />
+
+<a name="output_variables"></a>
+#### 输出变量（Output Variables）
+
+
 
 
