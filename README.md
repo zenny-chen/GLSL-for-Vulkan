@@ -1774,7 +1774,19 @@ in float foo[]; // 用于顶点的 "out float foo" 几何着色器输入
 - 一个[布尔类型](#type_bool)
 - 一个[隐式转换](#implicit_conversions)
 
+如果具有或包含整数或双精度浮点类型的片段着色器输入，则必须用插值限定符 **`flat`** 进行限定。
 
+片段输入的声明如以下例子描述：
 
+```glsl
+in vec3 normal;
+centroid in vec2 TexCoord;
+invariant centroid in vec4 Color;
+noperspective in float temperature;
+flat in vec3 myColor;
+noperspective centroid in vec2 myTexCoord;
+```
+
+片段着色器输入用顶点处理流水线中的最后活跃的着色器形成一个接口。对于此接口，最后活跃着色器阶段的输出变量以及相同名字的片段着色器输入变量必须在类型和限定上匹配，但有这么些例外：存储限定符必须（也当然）不能相同，即一个是 **`in`**，一个是 **`out`**。同时，插值限定符（比如 **`flat`**）和辅助限定（比如 **`centroid`**）可以不同。这些不匹配在任一对阶段之间是被允许的。
 
 
