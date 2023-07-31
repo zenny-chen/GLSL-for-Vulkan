@@ -1822,6 +1822,26 @@ uniform vec3 color = vec3(0.7, 0.7, 0.2); // 该值在连接时被分配
 <a name="output_variables"></a>
 #### 输出变量（Output Variables）
 
+着色器输出变量用 **`out`** 存储限定符进行声明。它们在声明当前着色器与后续API流水线的阶段之间形成输出接口。输出变量必须在全局作用域中声明。在着色器执行期间，输出变量的行为如非限定的全局变量那样。它们的值在着色器退出时被拷贝出，送给后续流水线阶段。只有会被后续流水线阶段所读的输出变量才需要被写入；对输出变量过多的声明是被允许的。
+
+不存在 **`inout`** 存储限定符用于将一单个变量名声明为同时作为对一个着色器的输入和输出。同时，一个变量也不能同时用 **`in`** 和 **`out`** 限定符进行声明，这将会导致编译时或连接时错误。**输出变量必须用不同于输入变量的名字进行声明。** 然而，用一个实例的名字在一个 interface block 内嵌套一个输入或输出，则允许通过一个 block 实例名来引用相同的名字，比如：
+
+```glsl
+// Vertex Shader
+out VertexData
+{
+  vec3 color;
+  vec2 texCoord;
+} outData;
+
+// Geometry Shader
+in VertexData
+{
+  vec3 color;
+  vec2 texCoord;
+} inData[];
+```
+
 
 
 
