@@ -1842,6 +1842,22 @@ in VertexData
 } inData[];
 ```
 
+顶点、细分曲面计算、以及几何输出变量，输出使用 **`out`** 存储限定符修饰所声明的逐顶点的数据。只能在一个细分曲面控制着色器中才能将 **`patch`** 应用到一个输出。要将 **`patch`** 使用到任一其他阶段中的输出时将会引发一个编译时错误。
+
+用以下任何一种类型或是包含以下任何一种类型来声明一个顶点、细分曲面控制、细分曲面计算、或是几何着色器的输出，将引发一个编译时错误：
+
+- 一个[布尔类型](#type_bool)
+- 一个[隐式转换](#implicit_conversions)
+
+独立的输出如以下例子中那样进行声明：
+
+```glsl
+out vec3 normal;
+centroid out vec2 TexCoord;
+invariant centroid out vec4 Color;
+flat out vec3 myColor;
+sample out vec4 perSampleColor;
+```
 
 
 
