@@ -1859,5 +1859,7 @@ flat out vec3 myColor;
 sample out vec4 perSampleColor;
 ```
 
+这些也可以出现在 interface block 中，在 “[Interface Blocks](#interface_blocks)”中描述。interface blocks 能更简单地允许将数组添加到从顶点到几何着色器的接口中。它们也允许一个片段着色器具有与一个几何着色器（针对一个给定的顶点着色器）相同的输入接口。
 
+细分曲面控制着色器输出变量被用于输出逐顶点和逐 patch 的数据。逐顶点输出变量被数组化（见“[输入变量（Input Variables）](#input_variables)”下的 *数组化*）并使用 **`out`** 限定符进行声明而没有 **`patch`** 限定符。逐 patch 输出变量使用 **`patch`** 和 **`out`** 限定符进行声明。
 
