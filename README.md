@@ -1863,3 +1863,13 @@ sample out vec4 perSampleColor;
 
 细分曲面控制着色器输出变量被用于输出逐顶点和逐 patch 的数据。逐顶点输出变量被数组化（见“[输入变量（Input Variables）](#input_variables)”下的 *数组化*）并使用 **`out`** 限定符进行声明而没有 **`patch`** 限定符。逐 patch 输出变量使用 **`patch`** 和 **`out`** 限定符进行声明。
 
+由于细分曲面控制着色器产生一个数组化的图元，由多个顶点构成，每个逐顶点输出变量（或输出块，见下面的 interface block）需要被声明为数组。比如，
+
+```glsl
+out float foo[]; // feeds next stage input "in float foo[]"
+```
+
+这么一个数组的每个元素对应于正被产生图元的一个顶点。每个数组可以可选地有一个声明的大小。该数组大小将通过输出 patch 中建立顶点个数的输出布局声明（如果存在，则必须与此相一致）进行设置。这将在后面的“[细分曲面控制输出（Tessellation Control Outputs）](#tessellation_control_outputs)”中描述。
+
+
+
