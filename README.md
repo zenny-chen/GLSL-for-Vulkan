@@ -53,6 +53,7 @@ Introduction to GLSL for Vulkan API
     - [输入变量（Input Variables）](#input_variables)
     - [Uniform 变量（Uniform Variables）](#uniform_variables)
     - [输出变量（Output Variables）](#output_variables)
+    - [缓存变量（Buffer Variables）](#buffer_variables)
 
 <br />
 
@@ -1887,6 +1888,28 @@ out float foo[]; // feeds next stage input "in float foo[]"
 
     - 该值在先前的同步点是未定义的，并且没有被同一个着色器调用（线程）写，自从、或
     - 输出变量被任一其他着色器调用在先前的与下一个同步点之间写，即便该赋值发生在跟在该读之后的代码中。
+
+片段输出们输出每个片段的数据，并且使用 **`out`** 存储限定符进行声明。在一个片段着色器输出声明中使用辅助存储限定符或插值限定符将引发一个编译时错误。用以下类型的任何一种，或包含以下类型中的任何一种来声明一个片段输出将产生一个编译时错误：
+
+- 一个[布尔类型](#type_bool)
+- 一个双精度标量或向量（**`double`**，**`dvec2`**，**`dvec3`**，**`dvec4`**）
+- 一个[隐含类型](#opaque_types)
+- 一个矩阵类型
+- 一个结构体
+ 
+片段输出如以下例子中那样来声明：
+
+```glsl
+out vec4 FragmentColor;
+out uint Luminosity;
+```
+
+计算着色器不具有内建输出变量，不支持用户自定义的输出变量，并且不形成与任何其他着色器阶段的正式接口。来自一个计算着色器的所有输出采用诸如图像存储以及对原子计数器进行操作的副作用的形式。
+
+<br />
+
+<a name="buffer_variables"></a>
+#### 缓存变量（Buffer Variables）
 
 
 
