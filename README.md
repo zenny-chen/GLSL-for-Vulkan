@@ -1911,5 +1911,12 @@ out uint Luminosity;
 <a name="buffer_variables"></a>
 #### 缓存变量（Buffer Variables）
 
+**`buffer`** 限定符被用于声明全局变量，这些全局变量被存放在通过图形API所绑定的一个缓存对象的数据存储中。缓存变量可以凭借在所有活跃的的着色器调用（线程）之间共享的底层存储进行读写。在一单个着色器调用（线程）内的缓存变量存储器读写则按次序处理。然而，在一个调用（线程）中所执行的读写次序，相对于由另一个调用（线程）所执行的读写次序是极大地未定义的。缓存变量可以用影响底层存储器是如何被访问的存储器限定符进行修饰，正如在“[存储限定符（Memory Qualifiers）](#memory_qualifiers)”中描述。
+
+**`buffer`** 限定符可以被用于声明 interface blocks（见“[Interface Blocks](#interface_blocks)”），随后它们即被引用为 **shader storage blocks**。在一个 block 外部来声明缓存变量将引发一个编译时错误。
+
+
+
+
 
 
