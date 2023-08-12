@@ -54,6 +54,7 @@ Introduction to GLSL for Vulkan API
     - [Uniform 变量（Uniform Variables）](#uniform_variables)
     - [输出变量（Output Variables）](#output_variables)
     - [缓存变量（Buffer Variables）](#buffer_variables)
+    - [共享变量（Shared Variables）](#shared_variables)
 
 <br />
 
@@ -1915,8 +1916,21 @@ out uint Luminosity;
 
 **`buffer`** 限定符可以被用于声明 interface blocks（见“[Interface Blocks](#interface_blocks)”），随后它们即被引用为 **shader storage blocks**。在一个 block 外部来声明缓存变量将引发一个编译时错误。
 
+```glsl
+// use buffer to create a buffer block (shader storage block)
+layout(std430, set = 0, binding = 0) buffer BufferName { // 外部可见的 buffer 名
+    int count; // 具有类型的、共享存储器……
+    vec4 v[];  // 最后一个成员可以是一个不指定大小的数组，直到连接时之后进行动态指定大小
+} Name;        // 在当前着色器内的 block 的名字
+```
 
+为每种着色器类型所能使用的 shader storage blocks 的数量、用于一个程序的所能绑定的 shader storage blocks 的数量、以及由每个独立的 shader storage block 所要求的 storage 的数量，是有依赖于实现的限制的。如果这些限制有任一种超出限制，那么将引发一个编译时或连接时错误。
 
+如果有多个着色器被连接在一起，那么它们将共享一单个全局缓存变量名字空间。因而，具有相同名字的所有声明的缓存变量的类型必须跨连接到一单个程序的所有着色器匹配。
 
+<br />
+
+<a name="shared_variables"></a>
+#### 共享变量（Shared Variables）
 
 
