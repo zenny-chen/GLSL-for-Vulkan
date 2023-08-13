@@ -55,6 +55,7 @@ Introduction to GLSL for Vulkan API
     - [输出变量（Output Variables）](#output_variables)
     - [缓存变量（Buffer Variables）](#buffer_variables)
     - [共享变量（Shared Variables）](#shared_variables)
+    - [Interface Blocks](#interface_blocks)
 
 <br />
 
@@ -1941,5 +1942,13 @@ layout(std430, set = 0, binding = 0) buffer BufferName { // 外部可见的 buff
 
 为了实现对于 **`shared`** 变量的读写次序，必须使用 **`barrier()`** 函数来采用控制流栅栏（见“着色器调用控制函数（Shader Invocation Control
 Functions）”）。
+
+在一单个程序中，对所有声明为 **`shared`** 变量的总大小有一个限制。该限制用基本的机器单元进行表达，可以通过使用 OpenGL API 查询 **`MAX_COMPUTE_SHARED_MEMORY_SIZE`** 的值或是 Vulkan API 中 **`VkPhysicalDeviceProperties`** 中的 **`limits`** 成员的 **`maxComputeSharedMemorySize`** 的值进行判定。
+
+<br />
+
+<a name="interface_blocks"></a>
+#### Interface Blocks
+
 
 
