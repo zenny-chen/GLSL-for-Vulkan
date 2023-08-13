@@ -1969,4 +1969,14 @@ uniform Transform {
 
 上述代码建立了一个名字为 “Transform” 的 uniform block，在其内部有四个 uniform 成员组成。
 
+类型与声明符跟其他的在 blocks 外部的输入、输出、uniform、以及 buffer 变量声明都是相同的，但有以下例外：
+
+- 不允许初始化器
+- 不允许隐含类型
+- 结构体定义不允许嵌套在一个 block 的内部
+
+如果存在上述任一情况，则会引发一个编译时错误。
+
+
+
 
