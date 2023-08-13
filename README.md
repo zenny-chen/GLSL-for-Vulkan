@@ -1933,4 +1933,13 @@ layout(std430, set = 0, binding = 0) buffer BufferName { // 外部可见的 buff
 <a name="shared_variables"></a>
 #### 共享变量（Shared Variables）
 
+**`shared`** 限定符用于声明 **全局** 变量，这些全局变量具有在一个计算着色器工作组（线程组）中所有工作项（线程）之间所共享的存储。声明为 **`shared`** 的变量只能在计算着色器中使用（见“[计算处理器](#compute_processor)”）。对一个 **`shared`** 变量用任何其他形式来声明将会引发一个编译时错误。共享变量是隐式 **`coherent`** 的。（见“[存储器限定符（Memory Qualifiers）](#memory_qualifiers)”）。
+
+被声明为 **`shared`** 的变量不允许含有初始化器，并且其内容在着色器开始执行时是未定义的。任何写入到 **`shared`** 变量的数据将对在当前同一工作组（线程组）内的其他工作项（线程）可见。
+
+在没有同步的情况下，由一个着色器中某一工作组（线程组）内的不同调用（线程）对同一 **`shared`** 变量的读写次序是未定义的。
+
+为了实现对于 **`shared`** 变量的读写次序，必须使用 **`barrier()`** 函数来采用控制流栅栏（见“着色器调用控制函数（Shader Invocation Control
+Functions）”）。
+
 
