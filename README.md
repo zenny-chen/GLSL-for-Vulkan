@@ -1950,5 +1950,8 @@ Functions）”）。
 <a name="interface_blocks"></a>
 #### Interface Blocks
 
+输入、输出、uniform 以及 buffer 变量声明可以被组合成命名的 interface blocks，以提供更粗粒度的后备缓存，比起单独声明的实现。它们可以具有一个可选的实例名，在着色器中使用该名以引用其成员。一个可编程阶段的一个输出 block 由一个对应的后续可编程阶段的输入 block 后备缓存。一个 *`uniform block`* 由应用程序用一个缓存对象进行后备缓存。buffer 变量的一个 block称为一个 *着色器存储块（shader storage block）*，它也由应用程序用一个缓存对象进行后备缓存。
+
+如果一个顶点着色器中具有一个输入 block，或是一个片段着色器中具有一个输出 block，那么将产生一个编译时错误。这些使用将对未来使用进行保留。
 
 
