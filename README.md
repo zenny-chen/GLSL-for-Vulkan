@@ -1954,4 +1954,19 @@ Functions）”）。
 
 如果一个顶点着色器中具有一个输入 block，或是一个片段着色器中具有一个输出 block，那么将产生一个编译时错误。这些使用将对未来使用进行保留。
 
+一个 interface block 由一个 **`in`**、**`out`**、**`uniform`**、或 **`buffer`** 关键字打头，后面跟着一个 block 名，再后面跟一个左花括号 **{**。
+
+首先比如：
+
+```glsl
+uniform Transform {
+    mat4 ModelViewMatrix;
+    mat4 ModelViewProjectionMatrix;
+    uniform mat3 NormalMatrix; // 这里允许对 uniform 限定符的重声明
+    float Deformation;
+};
+```
+
+上述代码建立了一个名字为 “Transform” 的 uniform block，在其内部有四个 uniform 成员组成。
+
 
