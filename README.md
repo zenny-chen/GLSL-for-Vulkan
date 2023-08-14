@@ -1977,6 +1977,26 @@ uniform Transform {
 
 如果存在上述任一情况，则会引发一个编译时错误。
 
+如果在一个成员声明中没有使用可选的限定符，那么成员的限定符包含了由 *interface-qualifier* 所确定的所有 **`in`**、**`out`**、**`patch`**、**`uniform`**、或 **`buffer`**。如果使用了可选的限定符，那么这些可选的限定符可包含插值限定符、辅助存储限定符、以及存储限定符，并且它们必须声明一个与当前 block 的接口限定符相一致的输入、输出、或 uniform 成员：输入变量、输出变量、uniform 变量、以及 **`buffer`** 成员只能在相应的 **`in`** blocks、**`out`** blocks、**`uniform`** blocks、以及 shader storage blocks。
+
+对一个成员的存储限定符重复 **`in`**、**`out`**、**`patch`**、**`uniform`**、或 **`buffer`** 接口限定符是可选的。比如：
+
+```glsl
+in Material {
+    smooth in vec4 Color1; // 合法，在当前 block 内的输入
+    smooth vec4 Color2; // 合法，'in' 继承自 'in Material'
+    vec2 TexCoord; // 合法，TexCoord 是一个输入
+    uniform float Atten; // 非法，与 'in Material' 的存储限定符不匹配
+};
+```
+
+一个 *shader interface* 被定义为以下这些的其中之一：
+
+- 所有在一个程序中所声明的 uniform 变量和 uniform blocks。这跨越在一个程序内连接在一起的所有编译单元。
+- 在一个程序中所声明的所有 **`buffer`** blocks。
+- 在相邻可编程流水线阶段之间的界线：这跨越前一个阶段的所有编译单元中所声明的所有输出，以及在后一阶段的所有编译单元中的所有所声明的输入。注意，对于此定义的目的，片段着色器和前面的着色器被考虑为具有一个共享边界，即便在实践上，传递给片段着色器的所有值先进行传递通过光栅化器和插值器。
+
+block 名（*block-name*）被用于在着色器接口内部匹配：一个流水线阶段的一个输出 block 将匹配于后继流水线阶段中相同名字的输入 block。对于 uniform 或 shader storage blocks，应用使用 block 名来标识该 block。在越过接口匹配的一个着色器内，block 名没有其他用途；在全局作用域对任何不作为一个 block 名而使用一个 block 名时，将导致一个编译时错误。（比如，对一个全局变量名或函数名所使用的一个 block 名当前被保留了。）。在一个着色器内的同一着色器接口中（如上述所定义的），如果用同一个 block 名来多次声明一个 block，那么将导致一个编译时错误，即便这些所声明的 block 内容都是相同的。
 
 
 
