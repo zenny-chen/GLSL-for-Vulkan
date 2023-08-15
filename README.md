@@ -2046,6 +2046,7 @@ out Vertex3 {
     float Intensity;
     vec4 Color; // ERROR，与 Vertex2 中的 Color 名字冲突
 };
+
 float Color2; // ERROR，与 Vertex2 中的 Color2 名字冲突
 ```
 
