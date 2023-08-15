@@ -2050,7 +2050,30 @@ out Vertex3 {
 float Color2; // ERROR，与 Vertex2 中的 Color2 名字冲突
 ```
 
+对于声明为数组的 blocks，当访问其成员时，数组索引也必须被包含，如以下例子所示：
 
+```glsl
+uniform Transform { // API 使用 "Transform[2]" 来引用实例2
+    mat4 ModelViewMatrix;
+    mat4 ModelViewProjectionMatrix;
+    vec4 a[]; // array will get implicitly sized
+    float Deformation;
+} transforms[4];
+
+void test(in int x)
+{
+    mat4 mvMatrix = transforms[2].ModelViewMatrix; // 着色器访问实例2
+    // API 使用 "Transform.ModelViewMatrix" 来查询一个偏移或是其他查询
+    transforms[x].a.length(); // 对于所有的 x，'a' 的长度都是相同的
+    Transform[x]; // 非法！必须使用 'transforms'
+    Transform.a.length(); // 非法！必须使用 'transforms'
+
+    // 如果只有以下两个对 "Transform.a" 的解引用，那么对于所有的 transforms[x]，
+    // 'a' 的大小必须是8。
+    vec4 value1 = transforms[2].a[3];
+    vec4 value2 = transforms[3].a[7];
+}
+```
 
 
 
