@@ -1998,5 +1998,30 @@ in Material {
 
 block 名（*block-name*）被用于在着色器接口内部匹配：一个流水线阶段的一个输出 block 将匹配于后继流水线阶段中相同名字的输入 block。对于 uniform 或 shader storage blocks，应用使用 block 名来标识该 block。在越过接口匹配的一个着色器内，block 名没有其他用途；在全局作用域对任何不作为一个 block 名而使用一个 block 名时，将导致一个编译时错误。（比如，对一个全局变量名或函数名所使用的一个 block 名当前被保留了。）。在一个着色器内的同一着色器接口中（如上述所定义的），如果用同一个 block 名来多次声明一个 block，那么将导致一个编译时错误，即便这些所声明的 block 内容都是相同的。
 
+在一个着色器接口内的所匹配的 block 名必须在这些方面匹配：具有相同数量的声明，这些声明带有相同的类型顺序以及相同的成员名顺序，以及具有相匹配的每个成员的 layout 限定符（见下一部分）。匹配的 uniform 或 shader storage block 名（但不是输入或输出 block 名）必须要么都缺少一个实例名，要么都具有一个实例名，将它们的成员放在相同的相同的作用域层级。当匹配的 block 名呈现有实例名时，允许各个阶段的实例名有所不同；它们不需要针对 block 进行匹配。此外，如果一个匹配的 block 被声明为一个数组，那么数组的大小也必须匹配（或是在相继的着色器阶段之间遵循着色器接口的数组匹配规则）。任一不匹配都将生成一个连接时错误。在同一着色器内允许一个 block 名在不同着色器接口中具有不同的定义，允许，比如说，一个输入 block 和 输出 block 具有相同的名字。
+
+如果没有使用一个实例名（*instance-name*），那么在 block 内所声明的名字作用域在全局层，并且就好比它们在该 block 的外部被声明的样子进行访问。如果使用了一个实例名（*instance-name*），那么它将所有成员放在其自己的名字空间内的一个作用域中，然后用域选择器（**.**）操作符进行访问（跟结构体类似）。比如：
+
+```glsl
+in Light {
+    vec4 LightPos;
+    vec3 LightColor;
+};
+
+in ColoredTexture {
+    vec4 Color;
+    vec2 TexCoord;
+} Material; // 实例名
+
+vec3 Color; // 与 Material.Color 所不同的 Color
+vec4 LightPos; // 非法, 已定义了 LightPos。'Light' block 中所定义的 LightPos 和 LightColor 都是全局可见的
+
+void main()
+{
+    vec4 pos = LightPos; // 访问 'Light' block 中的 LightPos
+    vec4 color = Material.Color; // 访问 'ColoredTexture' block 中的 Color
+}
+```
+
 
 
