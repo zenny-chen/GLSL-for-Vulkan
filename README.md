@@ -2023,5 +2023,33 @@ void main()
 }
 ```
 
+在着色器语言（即，在API中）外部，成员名类似地进行标识，除了该 block 名总是被用于替代该实例名（API 访问总是针对着色器接口，而不是着色器。）如果没有实例名，那么API并不使用 block 名来访问一个成员，而直接是该成员名。
+
+在一个着色器接口内，所有对同一全局名的声明必须针对同一个对象，并且必须在类型上匹配，而且还要匹配它们是声明了一个变量还是一个不带实例名的 block 的成员。API也需要这个名来唯一地在着色器接口中标识一个对象。如果任一特定的着色器接口包含以下情况之一，那么将引发一个连接时错误：
+
+- 两个不同的 blocks，每一个都没有实例名，并且每个都具有相同名字的一个成员，或
+- 在一个 block 外部的一个变量，以及没有实例名的一个 block，这里该变量具有与该 block 中的一个成员相同的名字。
+
+```glsl
+out Vertex {
+    vec4 Position; // API transform/feedback 将使用 "Vertex.Position"
+    vec2 Texture;
+} Coords; // 着色器将使用 "Coords.Position"
+
+out Vertex2 {
+    vec4 Color; // API 将使用 "Color"
+    float Color2;
+};
+
+// 在与上面的 Vertex2 处于同一个程序内
+out Vertex3 {
+    float Intensity;
+    vec4 Color; // ERROR，与 Vertex2 中的 Color 名字冲突
+};
+float Color2; // ERROR，与 Vertex2 中的 Color2 名字冲突
+```
+
+
+
 
 
