@@ -56,6 +56,7 @@ Introduction to GLSL for Vulkan API
     - [缓存变量（Buffer Variables）](#buffer_variables)
     - [共享变量（Shared Variables）](#shared_variables)
     - [Interface Blocks](#interface_blocks)
+- [布局限定符（Layout Qualifiers）](#layout_qualifiers)
 
 <br />
 
@@ -2074,6 +2075,19 @@ void test(in int x)
     vec4 value2 = transforms[3].a[7];
 }
 ```
+
+对于声明为一个数组的 uniform 或 shader storage blocks，每个独立的数组元素对应于一个单独的缓存对象绑定范围，后备缓存一个 block 实例。由于数组大小指示了缓存对象所需的个数，uniform 和 shader storage block 数组声明必须指定一个数组大小。一个 uniform 或 shader storage block 数组只能用动态均匀整数表达式进行索引，否则结果是未定义的。
+
+当使用 OpenGL API 入口点来标识一个 blocks 数组中的一个独立的 block 的名字时，该名字字符串可以包含一个数组索引（比如，*Transform[2]*）。当使用 OpenGL API 入口点来引用一个block 成员的偏移或是其他特性时，则不能指定数组索引（比如：*Transform.ModelViewMatrix*）。
+
+细分曲面控制、细分曲面计算、以及几何着色器输入 blocks 必须被声明为数组，并且必须遵循对于相关流水线阶段的所有着色器输入的数组声明和连接规则。所有其他输入和输出 block 数组必须指定一个数组大小。
+
+对于每个流水线阶段所能使用的 uniform blocks 的个数、还有 shader storage blocks 的个数，是有依赖于实现的限制的。如果超过了其中一种限制，则会引发连接时错误。
+
+<br />
+
+<a name="layout_qualifiers"></a>
+## 布局限定符（Layout Qualifiers）
 
 
 
