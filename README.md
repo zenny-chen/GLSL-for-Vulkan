@@ -2089,5 +2089,19 @@ void test(in int x)
 <a name="layout_qualifiers"></a>
 ## 布局限定符（Layout Qualifiers）
 
+布局限定符可以有若干种声明形式。它们可以作为一个接口 block 定义或 block 成员的一部分，如先前语法部分中展示。它们也可以仅随一个 *interface-qualifier* 以建立由该限定符所做的其他声明的布局：
+
+*layout-qualifier interface-qualifier* **;**
+
+或是，它们可以用一个带有接口限定符所声明的独立的变量：
+
+*layout-qualifier interface-qualifier declaration* **;**
+
+布局的声明只能在全局作用域或是 block 成员进行，并且只能在以下子段部分中所指示的地方；它们的细节专门针对接口限定符是啥，并且将分别讨论。
+
+用于 *layout-qualifier-name* 的 tokens 是标识符，而不能是关键字。然而，**`shared`** 关键字允许作为一个 *layout-qualifier-id*。通常来说，它们可以用任意次序列出。依赖于次序意味着仅当下面存在显式指出的情况下。类似地，这些标识符并非大小写敏感的，除非在其他地方显式指明。
+
+一单个声明中可以出现多个布局限定符。此外，同一个 *layoutqualifier-name* 可以在一个布局限定符内出现多次，或是在同一个声明中跨多个布局限定符出现多次。当同一个 *layout-qualifier-name* 出现多次时，在一单个声明中，最后一次出现将会覆盖掉先前出现的。此外，如果这么一个 *layout-qualifier-name* 将影响后续声明或是其他可观察到的行为，那么只有最后一次的出现将会生效，其行为就好比该声明内的更早的出现并不存在似的。这对于覆盖 *layout-qualifier-name* 也是真的，这里一个将覆盖其他的（比如，**`row_major`** vs **`column_major`**）；只有最后一次出现才会生效。
+
 
 
