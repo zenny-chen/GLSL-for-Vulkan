@@ -2103,5 +2103,7 @@ void test(in int x)
 
 一单个声明中可以出现多个布局限定符。此外，同一个 *layoutqualifier-name* 可以在一个布局限定符内出现多次，或是在同一个声明中跨多个布局限定符出现多次。当同一个 *layout-qualifier-name* 出现多次时，在一单个声明中，最后一次出现将会覆盖掉先前出现的。此外，如果这么一个 *layout-qualifier-name* 将影响后续声明或是其他可观察到的行为，那么只有最后一次的出现将会生效，其行为就好比该声明内的更早的出现并不存在似的。这对于覆盖 *layout-qualifier-name* 也是真的，这里一个将覆盖其他的（比如，**`row_major`** vs **`column_major`**）；只有最后一次出现才会生效。
 
+*integer-constant-expression* 在“[常量表达式（Constant Expressions）](#constant_expressions)”中定义为“整数常量表达式”。而要将 *integer-constant-expression* 作为一个特化常量则会引发一个编译时错误。
+
 
 
