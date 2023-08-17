@@ -2105,5 +2105,10 @@ void test(in int x)
 
 *integer-constant-expression* 在“[常量表达式（Constant Expressions）](#constant_expressions)”中定义为“整数常量表达式”。而要将 *integer-constant-expression* 作为一个特化常量则会引发一个编译时错误。
 
+下表概括了布局限定符的使用。它展示了对于每种限定符，它可以被应用到哪些种类的声明。这些将在后续部分做详细讨论。
 
+布局限定符 | 仅用于限定符 | 独立的变量 | Block | Block 成员 | 允许的接口
+---- | ---- | ---- | ---- | ---- | ----
+**`shared`** <br /> **`packed`** <br /> **`std140`** <br /> **`std430`** | X | | X | | **`uniform`** / **`buffer`**
+**`row_major`** <br /> **`column_major`** | X | | X | X | **`uniform`** / **`buffer`**
 
