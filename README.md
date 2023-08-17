@@ -57,6 +57,7 @@ Introduction to GLSL for Vulkan API
     - [共享变量（Shared Variables）](#shared_variables)
     - [Interface Blocks](#interface_blocks)
 - [布局限定符（Layout Qualifiers）](#layout_qualifiers)
+    - [输入布局限定符（Input Layout Qualifiers）](#input_layout_qualifiers)
 
 <br />
 
@@ -2109,18 +2110,54 @@ void test(in int x)
 
 布局限定符 | 仅用于限定符 | 独立的变量 | Block | Block 成员 | 允许的接口
 ---- | ---- | ---- | ---- | ---- | ----
-**`shared`** <br /> **`packed`** <br /> **`std140`** <br /> **`std430`** | X | | X | | **`uniform`** / **`buffer`**
-**`row_major`** <br /> **`column_major`** | X | | X | X | **`uniform`** / **`buffer`**
-**`binding`** **=** | X | 仅限隐含类型 | X | | **`uniform`** / **`buffer`**
-**`offset`** **=** | | 仅用于原子计数器 | | X | **`uniform`** / **`buffer`**
-**`align`** **=** | | | X | X | **`uniform`** / **`buffer`**
-**`set`** **=** | | 仅用于隐含类型 | X | | **`uniform`** / **`buffer`** （仅用于 Vulkan）
-**`push_constant`** | | | X | | **`uniform`** （仅用于 Vulkan）
-**`input_attachment_index`** **=** | | 仅用于 subpass 类型 | | | **`uniform`** （仅用于 Vulkan）
-**`location`** **=** | | X | | | **`uniform`** / **`buffer`** 以及 subroutine 变量
-**`location`** **=** | | X | X | X | 所有 **`in`** / **`out`**，除了计算着色器
-**`component`** **=** | | X | | X | 所有 **`in`** / **`out`**，除了计算着色器
-**`index`** **=** | | X | | | 片段着色器 **`out`** 以及 subroutine 函数
-**`triangles`** <br /> **`quads`** <br /> **`isolines`** | X | | | | 细分曲面计算着色器 **`in`**
+**`shared`** <br /> **`packed`** <br /> **`std140`** <br /> **`std430`** | 〇 | ✖ | 〇 | ✖ | **`uniform`** / **`buffer`**
+**`row_major`** <br /> **`column_major`** | 〇 | ✖ | 〇 | 〇 | **`uniform`** / **`buffer`**
+**`binding`** **=** | 〇 | 仅限隐含类型 | 〇 | | **`uniform`** / **`buffer`**
+**`offset`** **=** | ✖ | 仅用于原子计数器 | ✖ | 〇 | **`uniform`** / **`buffer`**
+**`align`** **=** | ✖ | ✖ | 〇 | 〇 | **`uniform`** / **`buffer`**
+**`set`** **=** | ✖ | 仅用于隐含类型 | 〇 | ✖ | **`uniform`** / **`buffer`** （仅用于 Vulkan）
+**`push_constant`** | ✖ | ✖ | 〇 | ✖ | **`uniform`** （仅用于 Vulkan）
+**`input_attachment_index`** **=** | ✖ | 仅用于 subpass 类型 | ✖ | ✖ | **`uniform`** （仅用于 Vulkan）
+**`location`** **=** | ✖ | 〇 | ✖ | ✖ | **`uniform`** / **`buffer`** 以及 subroutine 变量
+**`location`** **=** | ✖ | 〇 | 〇 | 〇 | 所有 **`in`** / **`out`**，除了计算着色器
+**`component`** **=** | ✖ | 〇 | ✖ | 〇 | 所有 **`in`** / **`out`**，除了计算着色器
+**`index`** **=** | ✖ | 〇 | ✖ | ✖ | 片段着色器 **`out`** 以及 subroutine 函数
+**`triangles`** <br /> **`quads`** <br /> **`isolines`** | 〇 | ✖ | ✖ | ✖ | 细分曲面计算着色器 **`in`**
+**`equal_spacing`** <br /> **`fractional_even_spacing`** <br /> **`fractional_odd_spacing`** | 〇 | ✖ | ✖ | ✖ | 细分曲面计算着色器 **`in`**
+**`cw`** <br /> **`ccw`** | 〇 | ✖ | ✖ | ✖ | 细分曲面计算着色器 **`in`**
+**`point_mode`** | 〇 | ✖ | ✖ | ✖ | 细分曲面计算着色器 **`in`**
+**`points`** | 〇 | ✖ | ✖ | ✖ | 几何着色器 **`in`** / **`out`**
+**`[ points ]`** <br /> **`lines`** <br /> **`lines_adjacency`** <br /> **`triangles`** <br /> **`triangles_adjacency`** | 〇 | ✖ | ✖ | ✖ | 几何着色器 **`in`**
+**`invocations`** **=** | 〇 | ✖ | ✖ | ✖ | 几何着色器 **`in`**
+**`origin_upper_left`** <br /> **`pixel_center_integer`** | ✖ | 仅用于 *`gl_FragCoord`* | ✖ | ✖ | 片段着色器 **`in`**
+**`early_fragment_tests`** | 〇 | ✖ | ✖ | ✖ | 片段着色器 **`in`**
+**`local_size_x`** **=** <br /> **`local_size_y`** **=** <br /> **`local_size_z`** **=** | 〇 | ✖ | ✖ | ✖ | 计算着色器 **`in`**
+**`local_size_x_id`** **=** <br /> **`local_size_y_id`** **=** <br /> **`local_size_z_id`** **=** | 〇 | ✖ | ✖ | ✖ | 计算着色器 **`in`** （仅用于 SPIR-V）
+**`xfb_buffer`** **=** <br /> **`xfb_stride`** **=** | 〇 | 〇 | 〇 | 〇 | 顶点、细分曲面、几何着色器 **`out`**
+**`xfb_offset`** **=** | ✖ | 〇 | 〇 | 〇 | 顶点、细分曲面、几何着色器 **`out`**
+**`vertices`** **=** | 〇 | ✖ | ✖ | ✖ | 细分曲面控制 **`out`**
+**`[ points ]`** <br /> **`line_strip`** <br /> **`triangle_strip`** | 〇 | ✖ | ✖ | ✖ | 几何着色器 **`out`**
+**`max_vertices`** **=** | 〇 | ✖ | ✖ | ✖ | 几何着色器 **`out`**
+**`stream`** **=** | 〇 | 〇 | 〇 | 〇 | 几何着色器 **`out`**
+**`depth_any`** <br /> **`depth_greater`** <br /> **`depth_less`** <br /> **`depth_unchanged`** | ✖ | 仅用于 *`gl_FragDepth`* | ✖ | ✖ | 片段着色器 **`out`**
+**`constant_id`** **=** | ✖ | 仅用于标量 | ✖ | ✖ | **`const`** （仅用于 SPIR-V）
+**`rgba32f`** <br /> **`rgba16f`** <br /> 等颜色格式标识符 | ✖ | 仅用于图像类型 | ✖ | ✖ | **`uniform`**
+
+<br />
+
+<a name="input_layout_qualifiers"></a>
+#### 输入布局限定符（Input Layout Qualifiers）
+
+特定于一个指定着色器语言的布局限定符在以下小节分别讨论。
+
+除了计算着色器之外，所有着色器在输入变量声明、输入 block 声明、以及输入 block 成员声明上允许 **`location`** 布局限定符。当然，变量和 block 成员（而不是 blocks）额外地还允许 **`component`** 布局限定符。
+
+比如：
+
+```glsl
+layout(location = 3) in vec4 normal;
+const int start = 6;
+layout(location = start + 2) int vec4 v;
+```
 
 
