@@ -2120,7 +2120,7 @@ void test(in int x)
 **`location`** **=** | | X | | | **`uniform`** / **`buffer`** 以及 subroutine 变量
 **`location`** **=** | | X | X | X | 所有 **`in`** / **`out`**，除了计算着色器
 **`component`** **=** | | X | | X | 所有 **`in`** / **`out`**，除了计算着色器
-**`index`** **=** | | X | | | 片段 **`out`** 以及 subroutine 函数
+**`index`** **=** | | X | | | 片段着色器 **`out`** 以及 subroutine 函数
 **`triangles`** <br /> **`quads`** <br /> **`isolines`** | X | | | | 细分曲面计算着色器 **`in`**
 
 
