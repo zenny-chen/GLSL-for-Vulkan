@@ -2180,7 +2180,7 @@ layout(location = 6) in vec4 colors[3];
 layout(location = 9) in mat4 transforms[2];
 ```
 
-将建立：着色器输入 *transforms* 将被赋值给向量位置 9~16。而 *transforms\[0\]* 将被赋值给位置 9~12，而 *transforms\[1\]* 将被赋值给位置 13~16。
+将建立：着色器输入 *transforms* 将被赋值给向量位置 9～16。而 *transforms\[0\]* 将被赋值给位置 9～12，而 *transforms\[1\]* 将被赋值给位置 13～16。
 
 如果所声明的输入是一个结构体或是 block，那么其成员将以其声明次序被分配到连续的位置，而第一个成员将被分配到布局限定符中所提供的位置。对于一个结构体，这个过程应用到该整个结构体。对一个结构体的成员使用一个 **`location`** 限定符将引发一个编译时错误。对于一个 block，这个过程应用到该整个 block，或是直到碰到第一个成员具有一个 **`location`** 限定符时。
 
