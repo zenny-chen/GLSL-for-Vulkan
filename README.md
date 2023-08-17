@@ -2111,4 +2111,16 @@ void test(in int x)
 ---- | ---- | ---- | ---- | ---- | ----
 **`shared`** <br /> **`packed`** <br /> **`std140`** <br /> **`std430`** | X | | X | | **`uniform`** / **`buffer`**
 **`row_major`** <br /> **`column_major`** | X | | X | X | **`uniform`** / **`buffer`**
+**`binding`** **=** | X | 仅限隐含类型 | X | | **`uniform`** / **`buffer`**
+**`offset`** **=** | | 仅用于原子计数器 | | X | **`uniform`** / **`buffer`**
+**`align`** **=** | | | X | X | **`uniform`** / **`buffer`**
+**`set`** **=** | | 仅用于隐含类型 | X | | **`uniform`** / **`buffer`** （仅用于 Vulkan）
+**`push_constant`** | | | X | | **`uniform`** （仅用于 Vulkan）
+**`input_attachment_index`** **=** | | 仅用于 subpass 类型 | | | **`uniform`** （仅用于 Vulkan）
+**`location`** **=** | | X | | | **`uniform`** / **`buffer`** 以及 subroutine 变量
+**`location`** **=** | | X | X | X | 所有 **`in`** / **`out`**，除了计算着色器
+**`component`** **=** | | X | | X | 所有 **`in`** / **`out`**，除了计算着色器
+**`index`** **=** | | X | | | 片段 **`out`** 以及 subroutine 函数
+**`triangles`** <br /> **`quads`** <br /> **`isolines`** | X | | | | 细分曲面计算着色器 **`in`**
+
 
