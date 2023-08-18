@@ -2190,7 +2190,31 @@ layout(location = 9) in mat4 transforms[2];
 
 当生成 SPIR-V 时，所有用 **`in`** 和 **`out`** 所限定的用户声明的（非内建的）变量和 blocks（或所有其成员），必须具有一个着色器指定的 **`location`**。否则，会产生一个编译时错误。
 
+被 block 和结构体成员所消耗的位置通过递归地应用上述规则进行确定，就好比结构体成员被声明为同一种类型的输入变量。比如：
 
+```glsl
+layout(location = 3) in struct S
+{
+    vec3 a; // 得到 location 3
+    mat2 b; // 得到 locations 4 and 5
+    vec4 c[2]; // 得到 locations 6 and 7
+    layout(location = 8) vec2 A; // 错误！不能对结构体成员使用
+} s;
+
+layout(location = 4) in block
+{
+    vec4 d; // 得到 location 4
+    vec4 e; // 得到 location 5
+    layout(location = 7) vec4 f; // 得到 location 7
+    vec4 g; // gets location 8
+    layout(location = 1) vec4 h; // 得到 location 1
+    vec4 i; // 得到 location 2
+    vec4 j; // 得到 location 3
+    vec4 k; // 错误！已经使用了 location 4
+};
+```
+
+对于一个着色器的可用输入位置的个数是受限的。对于顶点着色器，此限制是给出的顶点属性的个数。对于其他所有着色器，此限制是依赖于实现的，并且必须不少于给出的最大输入组件个数的四分之一。
 
 
 
