@@ -2283,12 +2283,12 @@ layout(location = 0, component = 3) in float f[6];
 
 *layout-qualifier-id* :
 
-     *primitive_mode*
+     primitive_mode
  
-     *vertex_spacing*
+     vertex_spacing
  
-     *ordering*
+     ordering
  
-     *point_mode*
+     point_mode
 
 
