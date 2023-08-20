@@ -60,6 +60,7 @@ Introduction to GLSL for Vulkan API
     - [输入布局限定符（Input Layout Qualifiers）](#input_layout_qualifiers)
         - [细分曲面计算输入（Tessellation Evaluation Inputs）](#tessellation_evaluation_inputs)
         - [几何着色器输入（Geometry Shader Inputs）](#geometry_shader_inputs)
+        - [片段着色器输入（Fragment Shader Inputs）](#fragment_shader_inputs)
 
 <br />
 
@@ -2342,6 +2343,71 @@ point-mode:
 <a name="geometry_shader_inputs"></a>
 ##### 几何着色器输入（Geometry Shader Inputs）
 
+用于几何着色器输入的额外布局限定符包含了 *图元*（*primitive*）标识符和一个 *调用（线程）计数*（*invocation count*）标识符：
+
+```glsl
+layout-qualifier-id:
+    points
+    lines
+    lines_adjacency
+    triangles
+    triangles_adjacency
+    invocations = layout-qualifier-value
+```
+
+标识符 **points**、**lines**、**lines_adjacency**、**triangles**、和 **triangles_adjacency** 被用于指定由几何着色器所接受的输入图元的类型，并且只接受这些类型的其中之一。一个程序中至少有一个几何着色器（编译单元）必须声明此输入图元布局，并且一个程序中的所有几何着色器输入布局声明必须声明相同的布局。一个程序中不要求所有几何着色器都声明一个输入图元布局。
+
+标识符 **invocations** 被用于指定几何着色器可执行程序为每个所接受的输入图元被调用的次数。调用计数声明是可选的。如果一个程序中没有任何几何着色器声明调用计数，那么几何着色器将对每个输入图元运行一次。如果声明了一个调用计数，那么所有这种声明都必须指定为相同计数值。如果一个着色器指定了一个大于依赖于实现的最大值的调用计数，或是小于等于0的计数值，那么将引发一个编译时错误。
+
+比如，
+
+```glsl
+layout(triangles, invocations = 6) in;
+```
+
+这将建立：几何着色器的所有输入是三角形，并且几何着色器可执行程序为每个要被处理的三角形执行6次。
+
+所有几何着色器输入的未指定大小的数组声明将通过一个更早的输入图元布局限定符进行确定大小，当存在时，每种布局如下表所示
+
+布局 | 输入数组的大小
+---- | ----
+**points** | 1
+**lines** | 2
+**lines_adjacency** | 4
+**triangles** | 3
+**triangles_adjacency** | 6
+
+内部所声明的输入数组 *gl_in\[\]* 也将通过任一输入图元布局声明来指定大小。因而，表达式
+
+```glsl
+gl_in.length()
+```
+
+将返回来自上表所对应的值。
+
+对于声明了不带有数组大小的输入，包括内部声明的输入（比如，*gl_in*），必须在对 **`length()`** 方法或其他任何使用了要求已知数组大小的任一方法使用之前声明一个布局。
+
+如果一个布局声明的数组大小（来自上述表）在同一着色器中，并不匹配一个输入变量的声明中的所有显式指定的数组大小，那么将引发一个编译时错误。以下代码包含了编译时错误的例子：
+
+```glsl
+// 在一个着色器内的代码序列…
+in vec4 Color1[]; // 合法！大小仍然未知
+in vec4 Color2[2]; // 合法！大小为2
+in vec4 Color3[3]; // 非法！输入大小不一致
+
+layout(lines) in; // 对 Color2 合法！输入大小为2，匹配 Color2
+in vec4 Color4[3]; // 非法！与 lines 的布局矛盾
+
+layout(lines) in; // 合法！与其他 layout() 声明匹配
+layout(triangles) in; // 非法！没有与先前的 layout() 声明匹配
+```
+
+如果并非所有所提供的大小（指定大小的输入数组以及布局大小）在一个程序中跨所有几何着色器匹配，那么将引发一个连接时错误。
+
+<br />
+
+<a name="fragment_shader_inputs"></a>
+##### 片段着色器输入（Fragment Shader Inputs）
 
 
 
