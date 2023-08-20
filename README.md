@@ -2281,14 +2281,14 @@ layout(location = 0, component = 3) in float f[6];
 
 对于细分曲面计算着色器允许额外的输入布局限定符，如以下描述：
 
-> *layout-qualifier-id* :
-> 
->     *primitive_mode*
-> 
->     *vertex_spacing*
-> 
->     *ordering*
-> 
->     *point_mode*
+*layout-qualifier-id* :
+
+     *primitive_mode*
+ 
+     *vertex_spacing*
+ 
+     *ordering*
+ 
+     *point_mode*
 
 
