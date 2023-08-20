@@ -58,7 +58,8 @@ Introduction to GLSL for Vulkan API
     - [Interface Blocks](#interface_blocks)
 - [布局限定符（Layout Qualifiers）](#layout_qualifiers)
     - [输入布局限定符（Input Layout Qualifiers）](#input_layout_qualifiers)
-    - [细分曲面计算输入（Tessellation Evaluation Inputs）](#tessellation_evaluation_inputs)
+        - [细分曲面计算输入（Tessellation Evaluation Inputs）](#tessellation_evaluation_inputs)
+        - [几何着色器输入（Geometry Shader Inputs）](#geometry_shader_inputs)
 
 <br />
 
@@ -2277,7 +2278,7 @@ layout(location = 0, component = 3) in float f[6];
 <br />
 
 <a name="tessellation_evaluation_inputs"></a>
-#### 细分曲面计算输入（Tessellation Evaluation Inputs）
+##### 细分曲面计算输入（Tessellation Evaluation Inputs）
 
 对于细分曲面计算着色器允许额外的输入布局限定符，如以下描述：
 
@@ -2331,5 +2332,16 @@ ordering:
 point-mode:
     point_mode
 ```
+
+任一或所有这些标识符可以在一单个输入布局声明中指定一次或多次。如果在一个程序的细分曲面计算着色器中对图元模式、顶点空间划分、或是次序声明了多次，那么所有这些声明必须使用相同的标识符。
+
+一个程序中至少有一个细分曲面计算着色器必须在其输入布局中声明一个图元模式。声明顶点空间划分、次序、或点模式标识符是可选的。一个程序中不要求所有细分曲面计算着色器声明一个图元模式。如果空间划分或顶点次序声明被缺省，那么细分曲面图元生成器将分别使用 **`equal_spacing`** 或 **`ccw`** 顶点次序。如果一个点模式声明被缺省，那么细分曲面图元生成器将根据图元模式产生线和三角形。
+
+<br />
+
+<a name="geometry_shader_inputs"></a>
+##### 几何着色器输入（Geometry Shader Inputs）
+
+
 
 
