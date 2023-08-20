@@ -2409,5 +2409,15 @@ layout(triangles) in; // 非法！没有与先前的 layout() 声明匹配
 <a name="fragment_shader_inputs"></a>
 ##### 片段着色器输入（Fragment Shader Inputs）
 
+额外的片段布局限定符为 *`gl_FragCoord`* 包含了以下标识符：
 
+```glsl
+layout-qualifier-id:
+    origin_upper_left
+    pixel_center_integer
+```
+
+默认情况下，OpenGL 中的 *`gl_FragCoord`* 假定对于窗口坐标使用左下角作为原点，并假定像素中心坐落于半像素坐标上。比如位置为 (0.5, 0.5) 的 *(x, y)* 返回为一个窗口中的最左下角的像素。原点可以通过用 **`origin_upper_left`** 限定符来重新声明 *`gl_FragCoord`* 进行改变，从而将 *`gl_FragCoord`* 的原点移动到窗口的左上角，此时 *y* 坐标值朝窗口的底部方向递增。所返回的值也可以通过用 **`pixel_center_integer`** 在 *x* 和 *y* 方向上同时移动半个像素，这么看起来像素以整数像素偏移为中心。这将移动由默认情况下坐标值为 (0.5, 0.5) 的 *`gl_FragCoord`* 所返回的 (*x*, *y*) 值，到用 **`pixel_center_integer`** 情况下的 (0.0, 0.0)。
+
+当目标API为 Vulkan 时，将假定并要求 *`gl_FragCoord`* 的原点位于左上角，伴随着像素中心坐落于半像素坐标（即，(0.5, 0.5)）。此原点可以通过用 **`origin_upper_left`** 标识符来重新声明 *`gl_FragCoord`* 进行显式设置。
 
