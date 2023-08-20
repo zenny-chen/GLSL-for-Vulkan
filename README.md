@@ -2224,4 +2224,50 @@ layout(location = 4) in block
 
 如果在一个着色器文本中，一个没有分配位置的顶点着色器输入变量通过 OpenGL API 指定了一个位置，那么它将使用API所分配的位置。否则，这样的变量将由连接器来分配一个位置。更多细节请见 OpenGL 规范说明的 11.1.1小节“Vertex Attributes”。如果一个输入变量在同一语言的多个着色器中声明，且具有位置冲突，那么将会引发一个连接时错误。
 
+**`component`** 限定符允许能针对标量和向量进行更细粒度地指定，直到一个位置内要消耗的独立的分量。如果使用了 **`component`** 但没有指定 **`location`** 限定符（次序上没有关系），那么会产生一个编译时错误。在一个位置内的分量是0、1、2或3。从分量 *N* 开始的一个变量或 block 成员将消耗分量 *N*、*N+1*、*N+2*，…一直到其分量大小。如果此分量序列大于3，那将产生一个编译时错误。一个 **`double`** 标量将消耗两个分量位置，而一个 **`dvec2`** 则将消耗一个位置内可用的所有四个分量。**`dvec3`** 或 **`dvec4`** 只能通过不指定一个 **`component`** 进行声明。一个 **`dvec3`** 将消耗第一个位置的所有四个分量以及第二个位置的分量0和分量1。这可以让分量2和分量3对其他分量限定符声明可用。
+
+比如：
+
+```glsl
+// a 消耗了位置4的分量2和3
+layout(location = 4, component = 2) in vec2 a;
+// b 消耗了位置4的分量1
+layout(location = 4, component = 1) in float b;
+// 错误！c 在分量3之后溢出
+layout(location = 3, component = 2) in vec3 c;
+// d 消耗了位置5的分量2和3
+layout(location = 5, component = 2) in double d;
+// 错误！e 在位置6的分量3之后溢出
+layout(location = 6, component = 2) in dvec2 e;
+
+layout(location = 7, component = 0) double f;
+// 错误！f 与 g 重叠了（f 消耗了分量0和分量1；而 g 则消耗了分量1。两者在位置7的分量1上重叠）
+layout(location = 7, component = 1) float g;
+// 消耗了位置8的分量0、1和2，以及位置9的分量0和1
+layout(location = 8) in dvec3 h;
+// OK！消耗了位置9的分量2和3（输入变量会占满整个位置）
+layout(location = 9, component = 2) in float i; 
+```
+
+如果变量是一个数组，那么数组中的每个元素将按次序分配给连续的位置，但在每个位置内全都处于所指定的相同的分量。比如：
+
+```glsl
+// 消耗从位置2开始的连续6个位置（位置2到7）中的分量3
+layout(location = 2, component = 3) in float d[6];
+```
+
+也就是说，位置2的分量3将存放 *d\[0\]*，位置3的分量3将存放 *d\[1\]*，…，一直到位置7的分量3存放 *d\[5\]*。
+
+这允许将两个数组打包进同一个位置组：
+
+```glsl
+// e 消耗了6个槽（位置）的从0开始的3个分量（0、1和2）
+layout(location = 0, component = 0) in vec3 e[6];
+// f 消耗了与 e 相同的6个槽（位置）的最后一个分量（分量3）
+layout(location = 0, component = 3) in float f[6];
+```
+
+如果将此应用到一个数组的数组，那么数组的所有层级被移除，以得到每个位置被分配给指定的分量。这些非数组化的元素将按数组的数组所指定的次序来填充位置，见“[数组（Arrays）](#arrays)”。
+
+
 
