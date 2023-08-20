@@ -58,6 +58,7 @@ Introduction to GLSL for Vulkan API
     - [Interface Blocks](#interface_blocks)
 - [布局限定符（Layout Qualifiers）](#layout_qualifiers)
     - [输入布局限定符（Input Layout Qualifiers）](#input_layout_qualifiers)
+    - [细分曲面计算输入（Tessellation Evaluation Inputs）](#tessellation_evaluation_inputs)
 
 <br />
 
@@ -2269,5 +2270,13 @@ layout(location = 0, component = 3) in float f[6];
 
 如果将此应用到一个数组的数组，那么数组的所有层级被移除，以得到每个位置被分配给指定的分量。这些非数组化的元素将按数组的数组所指定的次序来填充位置，见“[数组（Arrays）](#arrays)”。
 
+将 **`component`** 限定符应用到一个矩阵、一个结构体、一个 block、或是一个包含以上这些类型的数组，将引发一个编译时错误。使用 **`component`** 1或3来作为一个 **`double`** 或 **`dvec2`** 的起始分量将引发一个编译时错误。在一个程序内对同一变量指定不同分量将引发一个连接时错误。
+
+*位置混淆*（*location aliasing*）使得两个变量或 block 成员具有相同的位置号。*分量混淆*（*component aliasing*）为两个位置混淆分配相同的（或重叠的）分量号。（回忆一下，如果 **`component`** 没有使用，那么分量从0开始分配。）有一个例外，仅当位置混淆不会导致分量混淆的情况下，位置混淆才被允许；而如果遭致分量混淆，那么将会引发一个编译时或连接时错误。此外，当位置混淆发生时，共享同一位置的混淆必须具有相同的底层数值类型与位宽（浮点类型或整数类型，32位 vs 64位，等等），要有相同的辅助存储类和插值限定符。而分量混淆能被允许的一个例外是，当目标API是 OpenGL 时，对于一个顶点着色器的两个输入变量（不是 block 成员），它们被允许具有分量混淆。此顶点变量分量混淆目的仅在于支持这么一些顶点着色器：对于每个混淆的分量，每条执行路径最多访问一个输入。允许实现，但不要求生成连接时错误，如果它们检测到通过顶点着色器可执行程序的每条执行路径对于任一单个分量访问多个输入。
+
+<br />
+
+<a name="tessellation_evaluation_inputs"></a>
+#### 细分曲面计算输入（Tessellation Evaluation Inputs）
 
 
