@@ -2289,3 +2289,47 @@ layout-qualifier-id:
      point_mode
 ```
 
+**primitive_mode** 用于指定由细分曲面图元生成器所使用的一个细分曲面图元模式。
+
+```glsl
+primitive-mode:
+    triangles
+    quads
+    isolines
+```
+
+如果存在，*primitive_mode* 指定了细分曲面图元生成器分别应该将一个三角形细分为更小的三角形，将一个四边形细分为三角形，或是将一个四边形细分为一组线。
+
+布局标识符的第二组，*vertex spacing* 被用于指定由细分曲面图元生成器在细分一条边时所使用的空间划分。
+
+```glsl
+vertex-spacing:
+    equal_spacing
+    fractional_even_spacing
+    fractional_odd_spacing
+```
+
+**`equal_spacing`** 指定了，边应该被划分为相等大小的线段；
+
+**`fractional_even_spacing`** 指定了边应该被划分为偶数个相等长度的线段，加上两条额外的更短的“小数”线段；或是
+
+**`fractional_odd_spacing`** 指定了边应该被划分为奇数个相等长度的线段，加上两条额外的更短的“小数”线段。
+
+第三组布局限定符 *ordering*，指定了细分曲面图元生成器是产生了顺时针次序还是逆时针次序，根据由 OpenGL 规范说明中所描述的坐标系统。
+
+```glsl
+ordering:
+    cw
+    ccw
+```
+
+标识符 **cw** 和 **ccw** 分别指示了顺时针和逆时针三角形。如果细分曲面图元生成器不产生三角形，那么此次序将被忽略。
+
+最后，*point mode* 指示了细分曲面图元生成器应该为细分好的图元中每个单独的顶点产生一个点，而不是生成线或三角形。
+
+```glsl
+point-mode:
+    point_mode
+```
+
+
