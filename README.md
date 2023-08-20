@@ -2279,4 +2279,12 @@ layout(location = 0, component = 3) in float f[6];
 <a name="tessellation_evaluation_inputs"></a>
 #### 细分曲面计算输入（Tessellation Evaluation Inputs）
 
+对于细分曲面计算着色器允许额外的输入布局限定符，如以下描述：
+
+> *layout-qualifier-id* :
+    *primitive_mode*
+    *vertex_spacing*
+    *ordering*
+    *point_mode*
+
 
