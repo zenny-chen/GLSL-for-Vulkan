@@ -2421,3 +2421,19 @@ layout-qualifier-id:
 
 当目标API为 Vulkan 时，将假定并要求 *`gl_FragCoord`* 的原点位于左上角，伴随着像素中心坐落于半像素坐标（即，(0.5, 0.5)）。此原点可以通过用 **`origin_upper_left`** 标识符来重新声明 *`gl_FragCoord`* 进行显式设置。
 
+重声明如下述代码实例那样完成
+
+```glsl
+in vec4 gl_FragCoord; // 允许不改变任何设置的重声明
+// 所有下列改变行为的重声明都被允许
+layout(origin_upper_left) in vec4 gl_FragCoord;
+layout(pixel_center_integer) in vec4 gl_FragCoord;
+layout(origin_upper_left, pixel_center_integer) in vec4 gl_FragCoord;
+```
+
+在一个程序中，如果 *`gl_FragCoord`* 在任一片段着色器中重新声明，那么它必须在所有片段着色器中进行重新声明，具有对 *`gl_FragCoord`* 的静态使用。一单个程序中，在所有片段着色器中的所有重声明的 *`gl_FragCoord`* 必须具有相同的限定符集。在任一着色器内，对 *`gl_FragCoord`* 的第一个重声明必须出现在任一对 *`gl_FragCoord`* 使用之前。内建 *`gl_FragCoord`* 只在片段着色器中被预声明，因而在其他任何着色器中重声明它将会导致一个编译时错误。
+
+用 **`origin_upper_left`** 及/或 **`pixel_center_integer`** 限定符来重新声明 *`glFragCoord`* 仅仅影响 *`glFragCoord.x`* 和 *`glFragCoord.y`*。它对光栅化、transformation、或任何其他部分的API流水线或语言特征没有影响。
+
+
+
