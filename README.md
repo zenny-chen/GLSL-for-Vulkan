@@ -61,6 +61,7 @@ Introduction to GLSL for Vulkan API
         - [细分曲面计算输入（Tessellation Evaluation Inputs）](#tessellation_evaluation_inputs)
         - [几何着色器输入（Geometry Shader Inputs）](#geometry_shader_inputs)
         - [片段着色器输入（Fragment Shader Inputs）](#fragment_shader_inputs)
+        - [计算着色器输入（Compute Shader Inputs）](#compute_shader_inputs)
 
 <br />
 
@@ -2434,6 +2435,41 @@ layout(origin_upper_left, pixel_center_integer) in vec4 gl_FragCoord;
 在一个程序中，如果 *`gl_FragCoord`* 在任一片段着色器中重新声明，那么它必须在所有片段着色器中进行重新声明，具有对 *`gl_FragCoord`* 的静态使用。一单个程序中，在所有片段着色器中的所有重声明的 *`gl_FragCoord`* 必须具有相同的限定符集。在任一着色器内，对 *`gl_FragCoord`* 的第一个重声明必须出现在任一对 *`gl_FragCoord`* 使用之前。内建 *`gl_FragCoord`* 只在片段着色器中被预声明，因而在其他任何着色器中重声明它将会导致一个编译时错误。
 
 用 **`origin_upper_left`** 及/或 **`pixel_center_integer`** 限定符来重新声明 *`glFragCoord`* 仅仅影响 *`glFragCoord.x`* 和 *`glFragCoord.y`*。它对光栅化、transformation、或任何其他部分的API流水线或语言特征没有影响。
+
+片段着色器允许以下布局限定符只能限定 **`in`** （而不能带有变量声明）：
+
+```glsl
+layout-qualifier-id:
+    early_fragment_tests
+```
+
+来请求在片段着色器运行之前片段测试被执行。这在 OpenGL 规范说明中的15.2.4小节“Early Fragment Tests”中描述。
+
+比如，
+
+```glsl
+layout(early_fragment_tests) in;
+```
+
+指定，这将使得逐片段的测试在片段着色器运行之前被执行。如果这没有被声明，那么逐片段测试将在片段着色器执行之后进行执行。只需要一个片段着色器（编译单元）来声明此，尽管可以允许有多个片段着色器来声明。如果至少有一个声明了 `layout(early_fragment_tests) in;`，那么该功能即被开启。
+
+<br />
+
+<a name="compute_shader_inputs"></a>
+##### 计算着色器输入（Compute Shader Inputs）
+
+对于计算着色器输入，没有布局位置限定符。
+
+计算着色器的布局限定符标识符为工作组大小限定符：
+
+```glsl
+layout-qualifier-id:
+    local_size_x = layout-qualifier-value
+    local_size_y = layout-qualifier-value
+    local_size_z = layout-qualifier-value
+```
+
+**local_size_x**、**local_size_y**、以及 **local_size_z** 限定符用于声明一个固定的工作组大小为计算着色器进行使用，分别在第一、第二、第三个维度上。如果一个着色器没有为某一维度指定一个大小，那么此维度的大小将是1。
 
 
 
