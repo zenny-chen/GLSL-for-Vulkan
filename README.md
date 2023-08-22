@@ -62,6 +62,7 @@ Introduction to GLSL for Vulkan API
         - [几何着色器输入（Geometry Shader Inputs）](#geometry_shader_inputs)
         - [片段着色器输入（Fragment Shader Inputs）](#fragment_shader_inputs)
         - [计算着色器输入（Compute Shader Inputs）](#compute_shader_inputs)
+        - [输出布局限定符（Output Layout Qualifiers）](#output_layout_qualifiers)
 
 <br />
 
@@ -2470,6 +2471,33 @@ layout-qualifier-id:
 ```
 
 **local_size_x**、**local_size_y**、以及 **local_size_z** 限定符用于声明一个固定的工作组大小为计算着色器进行使用，分别在第一、第二、第三个维度上。如果一个着色器没有为某一维度指定一个大小，那么此维度的大小将是1。
+
+比如，以下在一个计算着色器中的声明
+
+```glsl
+layout(local_size_x = 32, local_size_y = 32) in;
+```
+
+被用于声明一个大小为32x32元素的工作组大小的二维计算着色器，它等价于一个三维计算着色器，而第三维度的大小为1。
+
+另一个例子，声明
+
+```glsl
+layout(local_size_x = 8) in;
+```
+
+有效地指定了正在编译的一维计算着色器，并且其大小是8个元素。
+
+如果计算着色器任一维度的固定工作组大小小于等于0，或大于实现对于该维度的最大大小，则会引发一个编译时错误。同时，如果这么一个布局限定符在同一个着色器中被声明多次，那么所有那些声明都必须设置为相同的工作组大小以及工作组维度；否则将会导致一个编译时错误。如果有多个计算着色器附加到一单个程序对象，它们声明了一个固定的工作组大小，那么这些声明都必须是一模一样的；否则将会引发连接时错误。
+
+此外，如果一个程序对象包含了任何计算着色器，那么至少要有一个包含一个输入限定符来指定该程序的固定工作组大小，否则将会引发一个连接时错误。
+
+<br />
+
+<a name="output_layout_qualifiers"></a>
+##### 输出布局限定符（Output Layout Qualifiers）
+
+某些输出布局限定符应用于所有的着色器阶段，而某些则仅用于特定的着色器阶段。后者将在以下独立的小节中进行分别讨论。
 
 
 
