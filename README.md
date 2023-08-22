@@ -2499,5 +2499,12 @@ layout(local_size_x = 8) in;
 
 某些输出布局限定符应用于所有的着色器阶段，而某些则仅用于特定的着色器阶段。后者将在以下独立的小节中进行分别讨论。
 
+当带有输入布局限定符时，所有着色器，除了计算着色器之外，允许对输出变量声明、输出 block 声明、以及输出 block 成员声明使用 **`location`** 布局限定符。其中，变量和 block 成员（而不是 blocks）额外地还允许 **`component`** 限定符。
+
+```glsl
+layout-qualifier-id:
+    location = layout-qualifier-value
+    component = layout-qualifier-value
+```
 
 
