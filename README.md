@@ -2507,4 +2507,9 @@ layout-qualifier-id:
     component = layout-qualifier-value
 ```
 
+将 **`location`** 限定符以及 **`component`** 限定符 应用到 blocks 与 结构体的使用和规则在“[输入布局限定符（Input Layout Qualifiers）](#input_layout_qualifiers)”中完全描述。此外，对于片段着色器输出，如果两个变量放在了同一个位置内，那么它们必须具有相同的底层类型（浮点或整数类型）。输出变量或成员不允许分量混淆。
+
+
+
+
 
