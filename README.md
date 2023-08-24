@@ -63,6 +63,7 @@ Introduction to GLSL for Vulkan API
         - [片段着色器输入（Fragment Shader Inputs）](#fragment_shader_inputs)
         - [计算着色器输入（Compute Shader Inputs）](#compute_shader_inputs)
         - [输出布局限定符（Output Layout Qualifiers）](#output_layout_qualifiers)
+        - [Transform Feedback 布局限定符（Transform Feedback Layout Qualifiers）](#transform_feedback_layout_qualifiers)
 
 <br />
 
@@ -2530,6 +2531,8 @@ layout(location = 3, index = 1) out vec4 factor;
 
 将建立：片段着色器输出 *factor* 被分配到片段颜色3作为第二个（索引一）输入到混合方程。
 
+[Dual Source Blending](https://www.khronos.org/opengl/wiki/Blending#Dual_Source_Blending) 这一图形混合模式将会使用 **`index`** layout 来指定使用 color 0 还是 color 1。
+
 对于片段着色器输出，位置和索引指定了接受输出值的颜色输出编号以及索引。对于所有其他着色器阶段的输出，位置指定了一个向量编号，用于匹配一个后续着色器阶段的输入，即便该着色器处于不同的程序对象中。
 
 如果一个声明的输出是一个标量或向量类型，但不是 **`dvec3`** 和 **`dvec4`**，那么它将消耗一单个位置。类型 **`dvec3`** 和 **`dvec4`** 的输出将消耗两个连续的位置。类型 **`double`** 和 **`dvec2`** 在所有着色器阶段将仅消耗一单个位置。
@@ -2560,5 +2563,16 @@ layout(location = 2) out vec4 colors[3];
 - 如果来自相同的顶点、细分曲面或几何着色器阶段的任意两个输出变量被分配到同一个位置。
 
 对于片段着色器输出，可以使用一个 **`layout`** 限定符或是通过 OpenGL API 来分配位置。
+
+对于所有着色器类型，如果显式的位置赋值使得连接器在不显式赋值的情况下无法找到其他变量的空间，那么该程序将会连接失败。
+
+如果没有位置也没有索引分配的输出变量在着色器文本中具有通过 OpenGL API 指定的一个位置，那么将使用API所分配的位置。否则，这些变量将使用由连接器所分配的一个位置。所有这样的分配将具有一个颜色索引或是0。见 OpenGL 规范手册的15.2小节“着色器执行（Shader Execution）”获取更多细节。如果一个输出变量在同一语言的多个着色器中声明，并且它们所指定的位置或索引值有所冲突，那么将会引发一个连接时错误。
+
+出于判定一个非片段输出是否匹配来自一个后续着色器阶段的输入的目的，**`location`** 布局限定符（如果存在）则必须匹配。
+
+<br />
+
+<a name="transform_feedback_layout_qualifiers"></a>
+##### Transform Feedback 布局限定符（Transform Feedback Layout Qualifiers）
 
 
