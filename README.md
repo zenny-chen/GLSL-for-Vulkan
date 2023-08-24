@@ -2594,4 +2594,26 @@ layout(xfb_buffer = 0) out;
 
 此默认变量可以通过用 **`xfb_buffer`** 对接口限定符 **`out`** 声明一个不同的缓存进行改变。这是仅有的能用于改变全局默认变量的方法。如果一个变量或输出 block 没有用一个 **`xfb_buffer`** 限定符进行声明，那么它将继承该全局默认缓存。当一个变量或输出 block 用一个 **`xfb_buffer`** 限定符进行声明，那么它就具有那个声明的缓存。一个 block 的所有成员继承该 block 的缓存。一个成员允许声明一个 **`xfb_buffer`**，但它必须匹配继承自其 block 的缓存，否则会引发一个编译时错误。
 
+```glsl
+layout(xfb_buffer = 2, xfb_offset = 0) out block { // block 的缓存是2
+    layout(xfb_buffer = 2) vec4 v; // OK！匹配所继承的2
+    layout(xfb_buffer = 3) vec4 u; // 错误！错误匹配的缓存
+    vec4 w; // 继承了缓存2
+};
+
+layout(xfb_offset = 16) out vec4 t; // 初始默认为缓存0
+layout(xfb_buffer = 1) out; // 新的缓存为1的全局默认
+
+out block { // block 具有缓存 1
+    vec4 x; // x 具有缓存 1 (没有被捕获)
+    layout(xfb_buffer = 1) vec4 y; // OK (没有被捕获)
+    layout(xfb_buffer = 0) vec4 z; // 错误！错误匹配的缓存
+};
+
+layout(xfb_offset=0) out vec4 g; // g 具有缓存1
+layout(xfb_buffer=2) out vec4 h; // 不改变全局默认
+layout(xfb_offset=16) out vec4 j; // j 具有缓存1
+```
+
+注意，这意味着去往一个 transform feedback 缓存的一个 block 的所有成员将去往同一个缓存。
 
