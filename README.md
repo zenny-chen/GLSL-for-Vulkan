@@ -2575,4 +2575,23 @@ layout(location = 2) out vec4 colors[3];
 <a name="transform_feedback_layout_qualifiers"></a>
 ##### Transform Feedback 布局限定符（Transform Feedback Layout Qualifiers）
 
+顶点、细分曲面、以及几何阶段允许着色器来控制 transform feedback。当这么做时，着色器将说明正在使用哪些 feedback 缓存，要将哪些输出变量写入到哪些缓存中，以及每个缓存将如何安排。为了实现此，着色器允许对输出声明使用以下布局限定符标识符：
+
+```glsl
+layout-qualifier-id:
+    xfb_buffer = layout-qualifier-value
+    xfb_offset = layout-qualifier-value
+    xfb_stride = layout-qualifier-value
+```
+
+对任一这些 **xfb\_** 限定符的静态使用（在预处理之后）的任一着色器将使得该着色器处于 transform feedback 捕获模式，并从而负责描述 transform feedback 的设置。此模式将直接或间接地捕获任一由 **`xfb_offset`** 所选择的输出，捕获到一个 transform feedback 缓存。
+
+**`xfb_buffer`** 限定符指定了哪个 transform feedback 缓存将捕获由 **`xfb_offset`** 所选择的输出。**`xfb_buffer`** 限定符可以被应用到 **`out`** 限定符、输出变量、输出 blocks，以及输出 block 成员。在 transform feedback 捕获模式中的着色器具有一个初始的默认全局变量：
+
+```glsl
+layout(xfb_buffer = 0) out;
+```
+
+此默认变量可以通过用 **`xfb_buffer`** 对接口限定符 **`out`** 声明一个不同的缓存进行改变。这是仅有的能用于改变全局默认变量的方法。如果一个变量或输出 block 没有用一个 **`xfb_buffer`** 限定符进行声明，那么它将继承该全局默认缓存。当一个变量或输出 block 用一个 **`xfb_buffer`** 限定符进行声明，那么它就具有那个声明的缓存。一个 block 的所有成员继承该 block 的缓存。一个成员允许声明一个 **`xfb_buffer`**，但它必须匹配继承自其 block 的缓存，否则会引发一个编译时错误。
+
 
