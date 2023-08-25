@@ -2112,6 +2112,8 @@ void test(in int x)
 
 *integer-constant-expression* 在“[常量表达式（Constant Expressions）](#constant_expressions)”中定义为“整数常量表达式”。而要将 *integer-constant-expression* 作为一个特化常量则会引发一个编译时错误。
 
+一般，GLSL 中的布局限定符对应于 SPIR-V 中的 **Decoration** 系指令，比如 **`OpDecorate`**、**`OpMemberDecorate`**。
+
 下表概括了布局限定符的使用。它展示了对于每种限定符，它可以被应用到哪些种类的声明。这些将在后续部分做详细讨论。
 
 布局限定符 | 仅用于限定符 | 独立的变量 | Block | Block 成员 | 允许的接口
@@ -2616,4 +2618,11 @@ layout(xfb_offset=16) out vec4 j; // j 具有缓存1
 ```
 
 注意，这意味着去往一个 transform feedback 缓存的一个 block 的所有成员将去往同一个缓存。
+
+当一个 block 被声明为一个数组时，该 block 数组元素0的所有成员被捕获，如先前所描述的那样，通过所声明的 **`xfb_buffer`** 或是继承的 **`xfb_buffer`**。一般来说，一个大小为 *N* 的 blocks 数组由 *N* 个连续的缓存进行捕获，block 数组元素 *E* 的所有成员由缓存 *B* 进行捕获，这里 *B* 等于所声明或继承的 **`xfb_buffer`** 加上 *E*。
+
+指定一个 **`xfb_buffer`**，包含任何所需的额外的缓存以捕获一个 blocks 数组，其个数小于零或是大于等于依赖于实现的常量 *`gl_MaxTransformFeedbackBuffers`*，那么将引发一个编译时或连接时错误。
+
+
+
 
