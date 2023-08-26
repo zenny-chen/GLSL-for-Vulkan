@@ -64,6 +64,7 @@ Introduction to GLSL for Vulkan API
         - [计算着色器输入（Compute Shader Inputs）](#compute_shader_inputs)
         - [输出布局限定符（Output Layout Qualifiers）](#output_layout_qualifiers)
         - [Transform Feedback 布局限定符（Transform Feedback Layout Qualifiers）](#transform_feedback_layout_qualifiers)
+        - [细分曲面控制输出（Tessellation Control Outputs）](#tessellation_control_outputs)
 
 <br />
 
@@ -2630,6 +2631,60 @@ layout(xfb_offset=16) out vec4 j; // j 具有缓存1
 输出缓存中不允许混淆：指定带有叠交 transform feedback 偏移的变量会产生一个编译时或连接时错误。
 
 **`xfb_stride`** 限定符指定了每个所捕获的顶点消耗多少字节。它应用于为那个声明的 transform feedback 缓存，无论它是被继承的还是被显式声明的。它可以应用于变量、blocks、block 成员，或只用于限定符 **`out`**。如果此缓存正在捕获任何带有双精度类型的分量的输出，那么该跨度必须是8的倍数，否则它必须是4的倍数，否则会引发一个编译时或连接时错误。如果含有任何溢出 **`xfb_stride`** 的 **`xfb_offset`**，那么将引发一个编译时或连接时错误，无论是在 **`xfb_stride`** 之前还是之后声明，或是在不同的编译单元中声明。由于 **`xfb_stride`** 可以为同一个缓存声明多次，因而对同一个缓存指定不同的跨度值将会产生一个编译时或连接时错误。
+
+比如：
+
+```glsl
+// 缓存1具有32个字节的跨度
+layout(xfb_buffer = 1, xfb_stride = 32) out;
+
+// 与先前例子相同；在 layout 内的次序没有关系
+layout(xfb_stride = 32, xfb_buffer = 1) out;
+
+// 在此 block 中的所有成员都去往缓存0
+layout(xfb_buffer = 0, xfb_stride = 32) out block1 {
+    layout(xfb_offset = 0) vec4 a; // a 去往缓存0的字节偏移0
+    layout(xfb_offset = 16) vec4 b; // b 去往缓存0的偏移16
+};
+
+layout(xfb_buffer = 3, xfb_offset = 12) out block2 {
+    vec4 v; // v将被写入到缓存的字节偏移12到27
+    float u; // u 将被写入到偏移28
+    layout(xfb_offset = 40) vec4 w;
+    vec4 x; // x 将被写入到偏移56，下一个可用的偏移
+};
+
+layout(xfb_buffer = 2, xfb_stride = 32) out block3 {
+    layout(xfb_offset = 12) vec3 c;
+    layout(xfb_offset = 24) vec3 d; // 错误！此声明会导致要求36字节的跨度，而此 block 的声明则指定了32字节的跨度
+    layout(xfb_offset = 0) vec3 g; // okay, increasing order not required
+};
+```
+
+当一个缓存没有指定 **`xfb_stride`** 时，该缓存的跨度将为最小所需的在最高偏移位置处所存放的变量，包含任何所要求的填充。比如：
+
+```glsl
+// 如果对缓存3没有其他的声明，那么它具有32字节的跨度
+layout(xfb_buffer = 3) out block4 {
+    layout(xfb_offset = 0) vec4 e;
+    layout(xfb_offset = 16) vec4 f;
+};
+```
+
+当除以4时，结果跨度（隐式或显式）必须小于等于依赖于实现的常量 *`gl_MaxTransformFeedbackInterleavedComponents`*。
+
+<br />
+
+<a name="tessellation_control_outputs"></a>
+##### 细分曲面控制输出（Tessellation Control Outputs）
+
+不算 transform feedback 布局限定符，细分曲面控制着色器仅允许对接口限定符 **`out`** 使用输出布局限定符，而不能对一个输出 block、block 成员，或是变量声明。为细分曲面控制着色器所允许的输出布局限定符标识符是：
+
+```glsl
+layout-qualifier-id:
+    vertices = layout-qualifier-value
+```
+
 
 
 
