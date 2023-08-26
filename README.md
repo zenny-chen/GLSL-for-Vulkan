@@ -66,6 +66,7 @@ Introduction to GLSL for Vulkan API
         - [Transform Feedback 布局限定符（Transform Feedback Layout Qualifiers）](#transform_feedback_layout_qualifiers)
         - [细分曲面控制输出（Tessellation Control Outputs）](#tessellation_control_outputs)
         - [几何输出（Geometry Outputs）](#geometry_outputs)
+        - [片段输出（Fragment Outputs）](#fragment_outputs)
 
 <br />
 
@@ -2764,6 +2765,18 @@ out Block2 { // "Block2" 得到默认的 stream 0
 layout(stream=3) out vec4 var7; // var7 属于 stream 3
 ```
 
+由几何着色器所发射的每个顶点被分配到一条特定的流，且所发射顶点的属性从该输出 blocks 和变量集进行获取，这些输出 blocks 和变量被分配到指定目标的流上。在每个顶点被发射之后，所有输出变量的值都变为未定义的。此外，与每条顶点流所关联的输出变量可以共享存储。写入到与一条流相关联的一个输出变量可以覆盖与任一其他流相关联的输出变量。当发射每个顶点时，一个几何着色器应该对所有与该流相关联的输出进行写，而此顶点也将发射到此流，并且到不与其他任何流相关联的输出。
+
+如果一个几何着色器输出 block 或变量被声明多次，那么所有这样的声明必须将此变量与同一条顶点流相关联。如果任一流声明指定了一个不存在的流编号，那么该着色器将会编译失败。
+
+内建的几何着色器输出总是与顶点流零相关联。
+
+一个程序中的所有几何着色器输出布局声明必须为 **`max_vertices`** 声明相同的布局以及相同的值。如果一个程序中含有一个几何着色器，那么在此程序中必须在某个地方至少要有一个几何输出布局声明。但不需要所有几何着色器（编译单元）都要求来声明它。
+
+<br />
+
+<a name="fragment_outputs"></a>
+##### 片段输出（Fragment Outputs）
 
 
 
