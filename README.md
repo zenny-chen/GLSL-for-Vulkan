@@ -65,6 +65,7 @@ Introduction to GLSL for Vulkan API
         - [输出布局限定符（Output Layout Qualifiers）](#output_layout_qualifiers)
         - [Transform Feedback 布局限定符（Transform Feedback Layout Qualifiers）](#transform_feedback_layout_qualifiers)
         - [细分曲面控制输出（Tessellation Control Outputs）](#tessellation_control_outputs)
+        - [几何输出（Geometry Outputs）](#geometry_outputs)
 
 <br />
 
@@ -2684,6 +2685,26 @@ layout(xfb_buffer = 3) out block4 {
 layout-qualifier-id:
     vertices = layout-qualifier-value
 ```
+
+标识符 **`vertices`** 指定了由细分曲面控制着色器所产生的输出 patch 中的顶点个数，它也指定了细分曲面控制着色器被调用了多少次。
+
+内部声明的细分曲面控制输出数组 *`gl_out[]`* 也将通过任一输出布局声明来指定大小。因而，表达式
+
+```glsl
+gl_out.length()
+```
+
+将返回先前输出布局限定符中所指定的输出 patch 顶点个数。对于没有指定数组大小的输出声明，包括内建声明的输出（例如 *`gl_out`*），一个布局必须在对任一 **`length()`** 方法，或是使用此要求该数组已知大小值的其他数组的使用之前必须被声明。
+
+如果在一个输出布局限定符中所指定的输出 patch 顶点个数不匹配同一个着色器中任一输出变量声明中所指定的数组大小，那么将发生一个编译时错误。
+
+一个程序中所有细分曲面控制着色器布局声明必须指定相同的输出 patch 顶点个数。在包含细分曲面控制着色器的任一程序中必须至少有一个布局限定符来指定一个输出 patch 顶点个数；然而，这么一个声明不需要在所有细分曲面控制着色器中存在。
+
+<br />
+
+<a name="geometry_outputs"></a>
+##### 几何输出（Geometry Outputs）
+
 
 
 
