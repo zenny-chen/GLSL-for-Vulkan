@@ -2705,6 +2705,64 @@ gl_out.length()
 <a name="geometry_outputs"></a>
 ##### 几何输出（Geometry Outputs）
 
+几何着色器可以有三种额外的输出布局标识符类型：一个输出 *图元类型*，一个最大输出 *顶点数量*，以及每个输出的 *流* 个数。图元类型和顶点数量标识符仅允许对接口限定符 **`out`** 使用，而不能对一个输出 block、block 成员、或是变量声明进行使用。流标识符允许对接口限定符 **`out`** 、输出 blocks、以及对变量声明进行使用。
+
+用于几何着色器输出的布局限定符标识符是：
+
+```glsl
+layout-qualifier-id:
+    points
+    line_strip
+    triangle_strip
+    max_vertices = layout-qualifier-value
+    stream = layout-qualifier-value
+```
+
+图元类型标识符 **`points`**、**`line_strip`**、以及 **`triangle_strip`** 被用于指定由几何着色器所产生的输出图元的类型，并且只接受这些标识符的其中之一。一个程序中至少要有一个几何着色器（编译单元）必须声明一个输出图元类型，并且一个程序中的所有几何着色器输出图元类型必须声明相同的图元类型。一个程序中不需要所有的几何着色器来声明一个输出图元类型。
+
+顶点数量标识符 **`max_vertices`** 被用于指定着色器在一单个调用（线程）中将始终能发射的最大顶点个数。在一个程序中，至少要有一个几何着色器（编译单元）必须声明一个最大输出顶点个数，并且一个程序中，所有几何着色器输出顶点个数的声明必须声明相同的数量。一个程序中不要求所有几何着色器声明一个数量。
+
+在此例子中，
+
+```glsl
+layout(triangle_strip, max_vertices = 60) out; // layout 中的标识符声明次序没有关系
+layout(max_vertices = 60) out; // 重新声明，OK
+layout(triangle_strip) out; // 重新声明，OK
+layout(points) out; // 错误！与 triangle_strip 产生矛盾
+layout(max_vertices = 30) out; // 错误！与60产生矛盾
+```
+
+来自几何着色器的所有输出均为三角形，并且着色器将最多发射60个顶点。如果顶点的最大个数大于 *`gl_MaxGeometryOutputVertices`*，那么将产生一个错误。
+
+标识符 **`stream`** 用于指定一个几何着色器输出变量或 block 关联于一条特定的顶点流（编号从零开始）。一个默认的流的编号可以在全局作用域通过限定接口限定符 **`out`** 进行声明，如以下例子所示：
+
+```glsl
+layout(stream = 1) out;
+```
+
+在这么一个声明中所指定的流的编号替换了任一先前的默认值，并且应用于所有后续的 block 以及变量声明，直到建立了一个新的默认值。初始默认的流编号是零。
+
+每个输出 block 或者非 block 输出变量与一条顶点流关联。如果此 block 或变量用此流标识符进行声明，那么它就与此指定的流进行关联；否则，它与当前默认的流进行关联。一个 block 成员可以用一个流标识符进行声明，但所指定的流必须匹配与此包含的 block 相关联的流。一个例子：
+
+```glsl
+layout(stream=1) out; // 现在的默认值为 stream 1
+out vec4 var1; // var1 得到了默认的 stream 1
+
+layout(stream=2) out Block1 { // "Block1" 属于 stream 2
+    layout(stream=2) vec4 var2; // 冗余的 block 成员 stream 声明
+    layout(stream=3) vec2 var3; // 非法！ (必须跟 block stream 匹配)
+    vec3 var4; // 属于 stream 2
+};
+
+layout(stream=0) out; // 现在的默认值为 stream 0
+out vec4 var5; // var5 得到默认的 stream 0
+
+out Block2 { // "Block2" 得到默认的 stream 0
+    vec4 var6;
+};
+
+layout(stream=3) out vec4 var7; // var7 属于 stream 3
+```
 
 
 
