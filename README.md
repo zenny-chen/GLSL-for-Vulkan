@@ -2778,5 +2778,15 @@ layout(stream=3) out vec4 var7; // var7 属于 stream 3
 <a name="fragment_outputs"></a>
 ##### 片段输出（Fragment Outputs）
 
+内建片段着色器变量 *`gl_FragDepth`* 可以使用以下布局限定符其中之一进行重声明。
 
+```glsl
+layout-qualifier-id:
+    depth_any
+    depth_greater
+    depth_less
+    depth_unchanged
+```
+
+用于 *`gl_FragDepth`* 的布局限定符约束了由任一着色器着色器调用（线程）所写入的 *`gl_FragDepth`* 最终值的意图。允许 OpenGL 实现来实行这种优化：假定对于一个给定的片段，深度测试失败（或通过），如果所有与布局限定符相一致的 *`gl_FragDepth`* 的值会失败（或通过）
 
