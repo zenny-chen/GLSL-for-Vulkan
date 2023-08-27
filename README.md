@@ -67,6 +67,7 @@ Introduction to GLSL for Vulkan API
         - [细分曲面控制输出（Tessellation Control Outputs）](#tessellation_control_outputs)
         - [几何输出（Geometry Outputs）](#geometry_outputs)
         - [片段输出（Fragment Outputs）](#fragment_outputs)
+    - [Uniform 变量布局限定符（Uniform Variable Layout Qualifiers）](#uniform_variable_layout_qualifiers)
 
 <br />
 
@@ -2789,6 +2790,36 @@ layout-qualifier-id:
 ```
 
 用于 *`gl_FragDepth`* 的布局限定符约束了由任一着色器着色器调用（线程）所写入的 *`gl_FragDepth`* 最终值的意图。允许 OpenGL 实现来实行这种优化：假定对于一个给定的片段，深度测试失败（或通过），如果所有与布局限定符相一致的 *`gl_FragDepth`* 的值会失败（或通过）。这潜在地包含了所跳过的着色器执行，如果此片段被丢弃的话，因为它被遮挡且对当前着色器没有副作用。如果 *`gl_FragDepth`* 的最终值跟布局限定符不一致，那么为此相应片段的深度测试的结果是未定义的。然而，在这种情况下不会有错误产生。如果深度测试通过，且开启了深度写，那么写入到深度缓存的值总是 *`gl_FragDepth`* 的值，无论它是否与布局限定符相一致。
+
+默认情况下，*`gl_FragDepth`* 被限定为 *`depth_any`*。当用于 *`gl_FragDepth`* 的布局限定符是 *`depth_any`* 时，着色器编译器将会标注任一对 *`gl_FragDepth`* 的赋值以一种未知的方式来修改它。而深度测试将总是在着色器已经执行之后实行。当布局限定符是 *`depth_greater`* 时，OpenGL 可以假定 *`gl_FragDepth`* 的最终值大于等于当前片段的插值后的深度值，由 *`gl_FragCoord`* 的 *z* 分量给出。当布局限定符是 *`depth_less`* 时，OpenGL 可以假定任一对 *`gl_FragDepth`* 的修改将仅递减其值。当布局限定符是 *`depth_unchanged`* 时，着色器编译器将尊重任一对 *`gl_FragDepth`* 的修改，但 OpenGL 的其余部分可以假定 *`gl_FragDepth`* 没有被赋了一个新值。
+
+对 *`gl_FragDepth`* 的重声明如下实行：
+
+```glsl
+// 允许不改变任何东西的重声明
+out float gl_FragDepth;
+
+// 假定它可以用任一方式进行修改
+layout(depth_any) out float gl_FragDepth;
+
+// 假定它可以被修改，使得其值将只会递增
+layout(depth_greater) out float gl_FragDepth;
+
+// 假定它可以被修改，使得其值将只会递减
+layout(depth_less) out float gl_FragDepth;
+
+// 假定它不会被修改
+layout(depth_unchanged) out float gl_FragDepth;
+```
+
+如果一个程序中 *`gl_FragDepth`* 在任一片段着色器中被重新声明，那么它必须在那个程序中所有片段着色器中进行重声明，如果这些片段着色器具有对 *`gl_FragDepth`* 的静态赋值的话。一单个程序中的所有片段着色器中对 *`gl_FragDepth`* 的所有重声明必须具有相同的限定符集。在任一着色器内，对 *`gl_FragDepth`* 的首次重声明必须出现在对 *`gl_FragDepth`* 的任一使用之前。内建的 *`gl_FragDepth`* 只能在片段着色器中来预先声明，所以在其他任何着色语言中对它进行重声明都将导致一个编译时错误。
+
+<br />
+
+<a name="uniform_variable_layout_qualifiers"></a>
+#### Uniform 变量布局限定符（Uniform Variable Layout Qualifiers）
+
+
 
 
 
