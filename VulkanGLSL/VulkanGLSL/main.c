@@ -30,6 +30,12 @@ static inline FILE* OpenFileWithRead(const char* filePath)
 
 #define sprintf_s(buffer, maxBufferSize, fmt, ...)      sprintf((buffer), fmt, ## __VA_ARGS__)
 
+static inline errno strcat_s(char dst[], size_t maxSizeInBytes, const char src[])
+{
+    strcat(dst, src);
+    return 0;
+}
+
 static inline FILE* OpenFileWithRead(const char* filePath)
 {
     return fopen(filePath, "r");
@@ -480,6 +486,61 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
     }
 
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevices[deviceIndex], &queueFamilyPropertyCount, queueFamilyProperties);
+
+    char strBuf[256] = { '\0' };
+    for (uint32_t i = 0; i < queueFamilyPropertyCount; ++i)
+    {
+        bool containsItem = false;
+        const VkQueueFlags flags = queueFamilyProperties[i].queueFlags;
+        if ((flags & VK_QUEUE_GRAPHICS_BIT) != 0)
+        {
+            strcat_s(strBuf, sizeof(strBuf), "VK_QUEUE_GRAPHICS_BIT");
+            containsItem = true;
+        }
+        if((flags & VK_QUEUE_COMPUTE_BIT) != 0)
+        {
+            if (containsItem) {
+                strcat_s(strBuf, sizeof(strBuf), " | ");
+            }
+            strcat_s(strBuf, sizeof(strBuf), "VK_QUEUE_COMPUTE_BIT");
+            containsItem = true;
+        }
+        if ((flags & VK_QUEUE_TRANSFER_BIT) != 0)
+        {
+            if (containsItem) {
+                strcat_s(strBuf, sizeof(strBuf), " | ");
+            }
+            strcat_s(strBuf, sizeof(strBuf), "VK_QUEUE_TRANSFER_BIT");
+            containsItem = true;
+        }
+        if ((flags & VK_QUEUE_SPARSE_BINDING_BIT) != 0)
+        {
+            if (containsItem) {
+                strcat_s(strBuf, sizeof(strBuf), " | ");
+            }
+            strcat_s(strBuf, sizeof(strBuf), "VK_QUEUE_SPARSE_BINDING_BIT");
+            containsItem = true;
+        }
+        if ((flags & VK_QUEUE_PROTECTED_BIT) != 0)
+        {
+            if (containsItem) {
+                strcat_s(strBuf, sizeof(strBuf), " | ");
+            }
+            strcat_s(strBuf, sizeof(strBuf), "VK_QUEUE_PROTECTED_BIT");
+            containsItem = true;
+        }
+        if ((flags & VK_QUEUE_VIDEO_DECODE_BIT_KHR) != 0)
+        {
+            if (containsItem) {
+                strcat_s(strBuf, sizeof(strBuf), " | ");
+            }
+            strcat_s(strBuf, sizeof(strBuf), "VK_QUEUE_VIDEO_DECODE_BIT_KHR");
+            containsItem = true;
+        }
+
+        printf("queue family [%u] contains: %s\n", i, strBuf);
+        strBuf[0] = '\0';
+    }
 
     bool found = false;
     for (uint32_t i = 0; i < queueFamilyPropertyCount; i++)
