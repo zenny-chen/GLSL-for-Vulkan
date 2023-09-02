@@ -28,6 +28,8 @@ static inline FILE* OpenFileWithRead(const char* filePath)
 
 #else
 
+#define sprintf_s(buffer, maxBufferSize, fmt, ...)      sprintf((buffer), fmt, ## __VA_ARGS__)
+
 static inline FILE* OpenFileWithRead(const char* filePath)
 {
     return fopen(filePath, "r");
@@ -44,6 +46,7 @@ enum MY_CONSTANTS
 {
     MAX_VULKAN_LAYER_COUNT = 64,
     MAX_VULKAN_GLOBAL_EXT_PROPS = 256,
+    MAX_EXEC_PROPS_COUNT = 32,
 
     MAX_GPU_COUNT = 8,
     MAX_QUEUE_FAMILY_PROPERTY_COUNT = 8
@@ -60,8 +63,13 @@ static VkDevice s_specDevice = VK_NULL_HANDLE;
 static uint32_t s_specQueueFamilyIndex = 0;
 static VkPhysicalDeviceMemoryProperties s_memoryProperties = { 0 };
 
+static PFN_vkGetPipelineExecutablePropertiesKHR dyn_vkGetPipelineExecutablePropertiesKHR = NULL;
+static PFN_vkGetPipelineExecutableInternalRepresentationsKHR dyn_vkGetPipelineExecutableInternalRepresentationsKHR = NULL;
+static PFN_vkGetPipelineExecutableStatisticsKHR dyn_vkGetPipelineExecutableStatisticsKHR = NULL;
+
 static uint32_t s_maxWorkgroupSize = 1;
 static bool s_supportBufferDeviceAddress = true;
+static bool s_supportPipelineExecutableProperties = false;
 
 static const char* const s_deviceTypes[] = {
     "Other",
@@ -320,6 +328,11 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
             supportBufferDeviceAddress = true;
             puts("The current device supports `VK_KHR_buffer_device_address` extension!");
         }
+        if (strcmp(extProps[i].extensionName, VK_KHR_PIPELINE_EXECUTABLE_PROPERTIES_EXTENSION_NAME) == 0)
+        {
+            s_supportPipelineExecutableProperties = true;
+            puts("The current device supports `VK_KHR_pipeline_executable_properties` extension!");
+        }
     }
 
     if (!support8BitStorage) {
@@ -332,6 +345,15 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
     {
         puts("The current device does not support `VK_KHR_buffer_device_address` extension feature which may be required for the test!");
         s_supportBufferDeviceAddress = false;
+    }
+    if (!s_supportPipelineExecutableProperties) {
+        puts("The current device does not support `VK_KHR_pipeline_executable_properties` extension!");
+    }
+    else
+    {
+        dyn_vkGetPipelineExecutablePropertiesKHR = (PFN_vkGetPipelineExecutablePropertiesKHR)vkGetInstanceProcAddr(s_instance, "vkGetPipelineExecutablePropertiesKHR");
+        dyn_vkGetPipelineExecutableInternalRepresentationsKHR = (PFN_vkGetPipelineExecutableInternalRepresentationsKHR)vkGetInstanceProcAddr(s_instance, "vkGetPipelineExecutableInternalRepresentationsKHR");
+        dyn_vkGetPipelineExecutableStatisticsKHR = (PFN_vkGetPipelineExecutableStatisticsKHR)vkGetInstanceProcAddr(s_instance, "vkGetPipelineExecutableStatisticsKHR");
     }
 
     VkPhysicalDevice8BitStorageFeatures shader8BitStorageFeatures = {
@@ -351,11 +373,17 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
         .pNext = &shaderFloat16Int8Features
     };
 
+    VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR pipelineExecutablePropertiesFeature = {
+        .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_EXECUTABLE_PROPERTIES_FEATURES_KHR,
+        // link to deviceBufferAddresFeatures node
+        .pNext = &deviceBufferAddresFeatures
+    };
+
     // physical device feature 2
     VkPhysicalDeviceFeatures2 features2 = {
         .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2,
-        // link to deviceBufferAddresFeatures node
-        .pNext = &deviceBufferAddresFeatures
+        // link to pipelineExecutablePropertiesFeature node
+        .pNext = &pipelineExecutablePropertiesFeature
     };
 
     // Query all above features
@@ -397,6 +425,10 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
     }
     if (deviceBufferAddresFeatures.bufferDeviceAddressMultiDevice != VK_FALSE) {
         puts("Support bufferDeviceAddressMultiDevice!");
+    }
+
+    if (dyn_vkGetPipelineExecutablePropertiesKHR != NULL) {
+        pipelineExecutablePropertiesFeature.pipelineExecutableInfo = VK_TRUE;
     }
 
     // ==== Query the current selected device properties corresponding the above features ====
@@ -463,7 +495,7 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
     s_specQueueFamilyIndex = queue_info.queueFamilyIndex;
 
     uint32_t extCount = 0;
-    const char* extensionNames[3] = { NULL };
+    const char* extensionNames[4] = { NULL };
     if (support8BitStorage) {
         extensionNames[extCount++] = VK_KHR_8BIT_STORAGE_EXTENSION_NAME;
     }
@@ -472,6 +504,9 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
     }
     if (supportBufferDeviceAddress) {
         extensionNames[extCount++] = VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME;
+    }
+    if (s_supportPipelineExecutableProperties) {
+        extensionNames[extCount++] = VK_KHR_PIPELINE_EXECUTABLE_PROPERTIES_EXTENSION_NAME;
     }
 
     // There are two ways to enable features:
@@ -491,8 +526,18 @@ static VkResult InitializeDevice(VkQueueFlagBits queueFlag, VkPhysicalDeviceMemo
     };
 
     res = vkCreateDevice(physicalDevices[deviceIndex], &device_info, NULL, &s_specDevice);
-    if (res != VK_SUCCESS) {
-        fprintf(stderr, "vkCreateDevice failed: %d\n", res);
+    if (res != VK_SUCCESS)
+    {
+        if (res == VK_ERROR_FEATURE_NOT_PRESENT)
+        {
+            puts("ShaderInt64 feature is not supported on this device! It will be disabled...");
+            features2.features.shaderInt64 = VK_FALSE;
+            res = vkCreateDevice(physicalDevices[deviceIndex], &device_info, NULL, &s_specDevice);
+        }
+
+        if (res != VK_SUCCESS) {
+            fprintf(stderr, "vkCreateDevice failed: %d\n", res);
+        }
     }
 
     return res;
@@ -882,18 +927,143 @@ static VkResult CreateComputePipeline(VkDevice device, VkShaderModule computeSha
         .pSpecializationInfo = &specializationInfo
     };
 
+    VkPipelineCreateFlags pipelineCreateFlags = 0;
+    if (dyn_vkGetPipelineExecutablePropertiesKHR != NULL) {
+        pipelineCreateFlags = VK_PIPELINE_CREATE_CAPTURE_INTERNAL_REPRESENTATIONS_BIT_KHR | VK_PIPELINE_CREATE_CAPTURE_STATISTICS_BIT_KHR;
+    }
+
     const VkComputePipelineCreateInfo computePipelineCreateInfo = {
         .sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
         .pNext = NULL,
-        .flags = 0,
+        .flags = pipelineCreateFlags,
         .stage = shaderStageCreateInfo,
         .layout = *pPipelineLayout,
         .basePipelineHandle = VK_NULL_HANDLE,
         .basePipelineIndex = 0
     };
+
     res = vkCreateComputePipelines(device, VK_NULL_HANDLE, 1, &computePipelineCreateInfo, NULL, pComputePipeline);
-    if (res != VK_SUCCESS) {
+    if (res != VK_SUCCESS)
+    {
         fprintf(stderr, "vkCreateComputePipelines failed: %d\n", res);
+        return res;
+    }
+
+    if (dyn_vkGetPipelineExecutablePropertiesKHR != NULL)
+    {
+        VkPipelineExecutablePropertiesKHR executableProperties[MAX_EXEC_PROPS_COUNT] = { 0 };
+        VkPipelineExecutableInternalRepresentationKHR internalRepresentations[MAX_EXEC_PROPS_COUNT] = { 0 };
+        VkPipelineExecutableStatisticKHR statistics[MAX_EXEC_PROPS_COUNT] = { 0 };
+        char strBuf[64] = { '\0' };
+
+        const VkPipelineInfoKHR pipelineInfo = {
+            .sType = VK_STRUCTURE_TYPE_PIPELINE_INFO_KHR,
+            .pNext = NULL,
+            .pipeline = *pComputePipeline
+        };
+
+        uint32_t executableCount = 0;
+        res = dyn_vkGetPipelineExecutablePropertiesKHR(s_specDevice, &pipelineInfo, &executableCount, NULL);
+        if (res != VK_SUCCESS)
+        {
+            fprintf(stderr, "vkGetPipelineExecutablePropertiesKHR for count failed: %d\n", res);
+            return res;
+        }
+        if (executableCount > MAX_EXEC_PROPS_COUNT) {
+            executableCount = MAX_EXEC_PROPS_COUNT;
+        }
+        for (uint32_t i = 0; i < executableCount; ++i) {
+            executableProperties[i].sType = VK_STRUCTURE_TYPE_PIPELINE_EXECUTABLE_PROPERTIES_KHR;
+        }
+
+        res = dyn_vkGetPipelineExecutablePropertiesKHR(s_specDevice, &pipelineInfo, &executableCount, executableProperties);
+        if (res != VK_SUCCESS)
+        {
+            fprintf(stderr, "vkGetPipelineExecutablePropertiesKHR for data failed: %d\n", res);
+            return res;
+        }
+
+        for (uint32_t i = 0; i < executableCount; ++i)
+        {
+            printf("pipeline[%u]: %s(%s), subgroup size: %u\n", i, executableProperties[i].name, executableProperties[i].description, executableProperties[i].subgroupSize);
+
+            const VkPipelineExecutableInfoKHR executableInfo = {
+                .sType = VK_STRUCTURE_TYPE_PIPELINE_EXECUTABLE_INFO_KHR,
+                .pNext = NULL,
+                .pipeline = *pComputePipeline,
+                .executableIndex = i
+            };
+
+            uint32_t internalRepresentationCount = 0;
+            res = dyn_vkGetPipelineExecutableInternalRepresentationsKHR(s_specDevice, &executableInfo, &internalRepresentationCount, NULL);
+            if (res != VK_SUCCESS)
+            {
+                fprintf(stderr, "vkGetPipelineExecutableInternalRepresentationsKHR for count failed: %d\n", res);
+                return res;
+            }
+            if (internalRepresentationCount > MAX_EXEC_PROPS_COUNT) {
+                internalRepresentationCount = MAX_EXEC_PROPS_COUNT;
+            }
+
+            for (uint32_t j = 0; j < internalRepresentationCount; ++j) {
+                internalRepresentations[j].sType = VK_STRUCTURE_TYPE_PIPELINE_EXECUTABLE_INTERNAL_REPRESENTATION_KHR;
+            }
+            res = dyn_vkGetPipelineExecutableInternalRepresentationsKHR(s_specDevice, &executableInfo, &internalRepresentationCount, internalRepresentations);
+            if (res != VK_SUCCESS)
+            {
+                fprintf(stderr, "vkGetPipelineExecutableInternalRepresentationsKHR for data failed: %d\n", res);
+                return res;
+            }
+
+            uint32_t statisticCount = 0;
+            res = dyn_vkGetPipelineExecutableStatisticsKHR(s_specDevice, &executableInfo, &statisticCount, NULL);
+            if (res != VK_SUCCESS)
+            {
+                fprintf(stderr, "vkGetPipelineExecutableStatisticsKHR for count failed: %d\n", res);
+                return res;
+            }
+            if (statisticCount > MAX_EXEC_PROPS_COUNT) {
+                statisticCount = MAX_EXEC_PROPS_COUNT;
+            }
+
+            for (uint32_t j = 0; j < statisticCount; ++j) {
+                statistics[j].sType = VK_STRUCTURE_TYPE_PIPELINE_EXECUTABLE_STATISTIC_KHR;
+            }
+
+            res = dyn_vkGetPipelineExecutableStatisticsKHR(s_specDevice, &executableInfo, &statisticCount, statistics);
+            if (res != VK_SUCCESS)
+            {
+                fprintf(stderr, "vkGetPipelineExecutableStatisticsKHR for data failed: %d\n", res);
+                return res;
+            }
+
+            for (uint32_t j = 0; j < statisticCount; ++j)
+            {
+                switch (statistics[j].format)
+                {
+                case VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_BOOL32_KHR:
+                    sprintf_s(strBuf, sizeof(strBuf), "%s", statistics[j].value.b32 != 0 ? "TRUE" : "FALSE");
+                    break;
+
+                case VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_INT64_KHR:
+                    sprintf_s(strBuf, sizeof(strBuf), "%lld", (long long)statistics[j].value.i64);
+                    break;
+
+                case VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_UINT64_KHR:
+                    sprintf_s(strBuf, sizeof(strBuf), "%llu", (unsigned long long)statistics[j].value.u64);
+                    break;
+
+                case VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_FLOAT64_KHR:
+                    sprintf_s(strBuf, sizeof(strBuf), "%f", statistics[j].value.f64);
+                    break;
+
+                default:
+                    break;
+                }
+
+                printf("%s(%s): %s\n", statistics[j].name, statistics[j].description, strBuf);
+            }
+        }
     }
 
     return res;
