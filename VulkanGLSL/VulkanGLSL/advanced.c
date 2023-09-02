@@ -11,6 +11,15 @@
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #endif // !max
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+
+#define Sleep(duration)    usleep(duration)
+
+#endif // !WIN32
+
 
 enum MY_CONSTANTS
 {
@@ -282,7 +291,7 @@ static VkResult AllocateMemoryAndBuffers(VkDevice device, const VkPhysicalDevice
 }
 
 static void WriteBufferAndSync(VkCommandBuffer commandBuffer, uint32_t queueFamilyIndex, VkBuffer dataDeviceBuffer, VkBuffer addressDeviceBuffer,
-                                VkBuffer atomicDeviceBuffer, VkBuffer srcHostBuffer, VkDeviceSize dataBufferSize)
+    VkBuffer atomicDeviceBuffer, VkBuffer srcHostBuffer, VkDeviceSize dataBufferSize)
 {
     // Copy src device buffer from the host buffer
     VkBufferCopy copyRegion = {
@@ -341,7 +350,7 @@ static void WriteBufferAndSync(VkCommandBuffer commandBuffer, uint32_t queueFami
 }
 
 static void SyncAndReadBuffer(VkCommandBuffer commandBuffer, uint32_t queueFamilyIndex, VkBuffer dstHostBuffer, VkBuffer srcDeviceDataBuffer,
-                                VkBuffer srcDeviceAtomicBuffer, VkDeviceSize dataBufferSize)
+    VkBuffer srcDeviceAtomicBuffer, VkDeviceSize dataBufferSize)
 {
     const VkBufferMemoryBarrier bufferBarriers[] = {
         {
@@ -380,6 +389,21 @@ static void SyncAndReadBuffer(VkCommandBuffer commandBuffer, uint32_t queueFamil
     copyRegion.dstOffset = dataBufferSize + ADDITIONAL_ADDRESS_BUFFER_SIZE;
     copyRegion.size = sizeof(unsigned);
     vkCmdCopyBuffer(commandBuffer, srcDeviceAtomicBuffer, dstHostBuffer, 1, &copyRegion);
+
+    const VkBufferMemoryBarrier bufferBarrier = {
+        .sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER,
+        .pNext = NULL,
+        .srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT,
+        .dstAccessMask = VK_ACCESS_NONE,
+        .srcQueueFamilyIndex = queueFamilyIndex,
+        .dstQueueFamilyIndex = queueFamilyIndex,
+        .buffer = dstHostBuffer,
+        .offset = 0,
+        .size = dataBufferSize + sizeof(unsigned)
+    };
+
+    vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, 0,
+        0, NULL, 1U, &bufferBarrier, 0, NULL);
 }
 
 static VkResult CreateComputePipeline(VkDevice device, VkShaderModule computeShaderModule, VkPipeline* pComputePipeline,
@@ -548,9 +572,9 @@ static VkResult CreateDescriptorSets(VkDevice device, VkBuffer srcAddressDeviceB
 extern VkResult CreateShaderModule(VkDevice device, const char* fileName, VkShaderModule* pShaderModule);
 
 extern VkResult InitializeCommandBuffer(uint32_t queueFamilyIndex, VkDevice device, VkCommandPool* pCommandPool,
-                                        VkCommandBuffer commandBuffers[], uint32_t commandBufferCount);
+    VkCommandBuffer commandBuffers[], uint32_t commandBufferCount);
 
-void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryProperties *pMemoryProperties, uint32_t specQueueFamilyIndex, unsigned maxWorkgroupSize)
+void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryProperties* pMemoryProperties, uint32_t specQueueFamilyIndex, unsigned maxWorkgroupSize)
 {
     puts("\n================ Begin Advanced Compute Test ================\n");
 
@@ -566,6 +590,7 @@ void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPropertie
     VkCommandPool commandPool = VK_NULL_HANDLE;
     VkCommandBuffer commandBuffers[1] = { VK_NULL_HANDLE };
     VkFence fence = VK_NULL_HANDLE;
+    VkEvent event = VK_NULL_HANDLE;
     uint32_t const commandBufferCount = (uint32_t)(sizeof(commandBuffers) / sizeof(commandBuffers[0]));
 
     do
@@ -588,7 +613,7 @@ void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPropertie
         }
 
         result = CreateComputePipeline(specDevice, computeShaderModule, &computePipeline, &pipelineLayout, &descriptorSetLayout,
-                                    maxWorkgroupSize, elemCount);
+            maxWorkgroupSize, elemCount);
         if (result != VK_SUCCESS)
         {
             fprintf(stderr, "CreateComputePipeline failed!\n");
@@ -639,6 +664,20 @@ void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPropertie
 
         SyncAndReadBuffer(commandBuffers[0], specQueueFamilyIndex, deviceBuffers[0], deviceBuffers[1], deviceBuffers[3], bufferSize);
 
+        const VkEventCreateInfo eventCreateInfo = {
+            .sType = VK_STRUCTURE_TYPE_EVENT_CREATE_INFO,
+            .pNext = NULL,
+            .flags = 0
+        };
+        result = vkCreateEvent(specDevice, &eventCreateInfo, NULL, &event);
+        if (result != VK_SUCCESS)
+        {
+            fprintf(stderr, "vkCreateEvent failed: %d\n", result);
+            break;
+        }
+
+        vkCmdSetEvent(commandBuffers[0], event, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT);
+
         result = vkEndCommandBuffer(commandBuffers[0]);
         if (result != VK_SUCCESS)
         {
@@ -676,11 +715,8 @@ void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPropertie
             break;
         }
 
-        result = vkWaitForFences(specDevice, 1, &fence, VK_TRUE, UINT64_MAX);
-        if (result != VK_SUCCESS)
-        {
-            fprintf(stderr, "vkWaitForFences failed: %d\n", result);
-            break;
+        while (vkGetEventStatus(specDevice, event) != VK_EVENT_SET) {
+            Sleep(1);
         }
 
         // Verify the result
@@ -725,9 +761,19 @@ void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPropertie
         printf("The final atomic value is: %u\n", atomValue);
 
         vkUnmapMemory(specDevice, deviceMemories[0]);
+
+        result = vkWaitForFences(specDevice, 1, &fence, VK_TRUE, UINT64_MAX);
+        if (result != VK_SUCCESS)
+        {
+            fprintf(stderr, "vkWaitForFences failed: %d\n", result);
+            break;
+        }
     }
     while (false);
 
+    if (event != VK_NULL_HANDLE) {
+        vkDestroyEvent(specDevice, event, NULL);
+    }
     if (fence != VK_NULL_HANDLE) {
         vkDestroyFence(specDevice, fence, NULL);
     }
