@@ -1210,7 +1210,7 @@ static VkResult CreateDescriptorSets(VkDevice device, VkBuffer dstDeviceBuffer, 
     return res;
 }
 
-static VkResult InitializeInstanceAndeDevice(void)
+static VkResult InitializeInstanceAndDevice(void)
 {
     VkResult result = InitializeInstance();
     if (result != VK_SUCCESS)
@@ -1314,8 +1314,8 @@ static void RunSimpleComputeTest(void)
             break;
         }
 
-        vkCmdBindPipeline(commandBuffers[0], VK_PIPELINE_BIND_POINT_COMPUTE, computePipeline);
         vkCmdBindDescriptorSets(commandBuffers[0], VK_PIPELINE_BIND_POINT_COMPUTE, pipelineLayout, 0, 1, &descriptorSet, 0, NULL);
+        vkCmdBindPipeline(commandBuffers[0], VK_PIPELINE_BIND_POINT_COMPUTE, computePipeline);
 
         const struct CustomPushConstants pushConstants = { 100, 10U, .secondConstant = {1, 2, 3, 4} };
         vkCmdPushConstants(commandBuffers[0], pipelineLayout, VK_SHADER_STAGE_COMPUTE_BIT,
@@ -1441,7 +1441,7 @@ extern void RunAdvancedComputeTest(VkDevice specDevice, VkPhysicalDeviceMemoryPr
 
 int main(int argc, const char* argv[])
 {
-    if (InitializeInstanceAndeDevice() == VK_SUCCESS)
+    if (InitializeInstanceAndDevice() == VK_SUCCESS)
     {
         RunSimpleComputeTest();
 
