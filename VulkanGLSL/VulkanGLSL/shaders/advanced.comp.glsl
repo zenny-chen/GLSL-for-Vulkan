@@ -17,7 +17,7 @@ layout(buffer_reference, std430, buffer_reference_align = 4) buffer AtomicValueR
     uint atomValue;
 };
 
-layout(std430, set = 0, binding = 0) buffer readonly src {
+layout(std430, set = 0, binding = 0) readonly buffer src {
     DataBufferRef srcWrapperBuffer[];
 };
 
