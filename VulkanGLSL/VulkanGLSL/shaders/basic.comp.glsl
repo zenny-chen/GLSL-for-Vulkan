@@ -46,12 +46,12 @@ layout(push_constant, std430) uniform PushConstants {
 };
 
 // destination StorageBuffer
-layout(std430, set = 0, binding = 0) buffer writeonly Dst {
+layout(std430, set = 0, binding = 0) restrict writeonly buffer Dst {
     uint dstBuffer[];
 };
 
 // source StorageBuffer
-layout(std430, set = 0, binding = 1) buffer readonly Src {
+layout(std430, set = 0, binding = 1) restrict readonly buffer Src {
     uint srcBuffer[];
 };
 
