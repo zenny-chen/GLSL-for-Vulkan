@@ -2819,7 +2819,18 @@ layout(depth_unchanged) out float gl_FragDepth;
 <a name="uniform_variable_layout_qualifiers"></a>
 #### Uniform 变量布局限定符（Uniform Variable Layout Qualifiers）
 
+布局限定符可被用于 uniform 变量以及 subroutine uniforms。用于 uniform 变量及 subroutine uniforms 的布局限定符标识符有：
 
+```glsl
+layout-qualifier-id:
+    location = layout-qualifier-value
+```
 
+location 标识符可被用于默认块的 uniform 变量以及 subroutine uniforms。
 
+该 location 指定了位置，API 可以通过此位置引用对应的 uniform 并更新其值。一个 uniform 数组的独立的元素被分配相继连续的位置，其第一个元素取 **`location`** 所指定的位置。共享连接在程序中的同一位置的默认块的 uniform 变量声明必须要在名字、类型、限定符和数组类型上匹配。对于数组，它们的数组维度和数组大小都必须匹配。对于结构体，这个规则会递归地应用于其所有成员。在同一着色器阶段中不允许存在两个 subroutine uniform 变量具有相同的位置，否则会产生一个编译时或连接时错误。用于默认块 uniform 变量位置的有效位置是在 0 到实现定义的 uniform 位置的最大个数减一的范围内。用于 subroutine uniform 的有效位置是在 0 到实现定义的每个阶段的 subroutine uniform 位置最大个数减一的范围内。
+
+可以将 location 分配给默认块的 uniform 数组和结构体。第一关最内部的标量、向量或是矩阵成员或元素，取指定 **`location`** 并且编译器会将下一个最内部的成员或元素分配为下一个递增位置值。每个后续最内部的成员或元素为整个结构体或数组得到递增的位置。此规则应用于嵌套的结构体和数组，并给予每个最内部的标量、向量、或是矩阵成员一个唯一的位置。对于不带有一个显式指定大小的数组，其大小基于其静态使用进行计算。当连接器为不带有显式指定 location 的 uniforms 生成位置时，它假定对于所有带有一个显式指定位置的 uniforms，它们所有的数组元素和结构体成员被使用，并且连接器将不会产生一个位置冲突，即便那个元素或成员被认为是未被使用的。
+
+当为接受独立的（默认块）非隐含的 uniform 变量的 API 生成 SPIR-V 时，当声明那些 uniform 变量时不包含一个 location，则会引发一个编译时错误。
 
