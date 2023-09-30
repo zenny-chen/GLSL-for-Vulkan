@@ -68,6 +68,7 @@ Introduction to GLSL for Vulkan API
         - [几何输出（Geometry Outputs）](#geometry_outputs)
         - [片段输出（Fragment Outputs）](#fragment_outputs)
     - [Uniform 变量布局限定符（Uniform Variable Layout Qualifiers）](#uniform_variable_layout_qualifiers)
+    - [Uniform 与 Shader Storage Block 布局限定符（Uniform and Shader Storage Block Layout Qualifiers）](#uniform_and_shader_storage_block_layout_qualifiers)
 
 <br />
 
@@ -2833,4 +2834,12 @@ location 标识符可被用于默认块的 uniform 变量以及 subroutine unifo
 可以将 location 分配给默认块的 uniform 数组和结构体。第一关最内部的标量、向量或是矩阵成员或元素，取指定 **`location`** 并且编译器会将下一个最内部的成员或元素分配为下一个递增位置值。每个后续最内部的成员或元素为整个结构体或数组得到递增的位置。此规则应用于嵌套的结构体和数组，并给予每个最内部的标量、向量、或是矩阵成员一个唯一的位置。对于不带有一个显式指定大小的数组，其大小基于其静态使用进行计算。当连接器为不带有显式指定 location 的 uniforms 生成位置时，它假定对于所有带有一个显式指定位置的 uniforms，它们所有的数组元素和结构体成员被使用，并且连接器将不会产生一个位置冲突，即便那个元素或成员被认为是未被使用的。
 
 当为接受独立的（默认块）非隐含的 uniform 变量的 API 生成 SPIR-V 时，当声明那些 uniform 变量时不包含一个 location，则会引发一个编译时错误。
+
+当目标API为 Vulkan 时，**`push_constant`** 限定符被用于声明一整个 block，并表示一组 *push constants*，如 Vulkan API 所定义的。将此应用于其他不是一个 uniform block 的声明，或者目标API不是 Vulkan 时将产生一个编译时错误。block 中的值将作为每个 Vulkan API 规范说明进行初始化。用 `layout(push_constant)` 声明的一个 block 可以可选地包含一个 *实例名*（*instance-name*）。每个阶段只能有一个 **`push_constant`** block，否则将会导致一个编译时错误或是连接时错误。一个 push-constant 数组只能用 uniform 索引进行动态地索引。用 **`push_constant`** 所声明的 uniform blocks 与那些不带有 **`push_constant`** 的 uniform blocks 比起来，使用不同的资源；并且被分别计算占用。
+
+<br />
+
+<a name="uniform_and_shader_storage_block_layout_qualifiers"></a>
+#### Uniform 与 Shader Storage Block 布局限定符（Uniform and Shader Storage Block Layout Qualifiers）
+
 
